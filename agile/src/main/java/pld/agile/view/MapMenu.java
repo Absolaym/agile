@@ -1,5 +1,6 @@
 package pld.agile.view;
 
+import controller.Controller;
 import java.awt.Graphics;
 
 import javax.swing.*;
@@ -7,13 +8,15 @@ import javax.swing.*;
 public class MapMenu extends JPanel{
 	
 	private JButton computeCircuitsButton;
-	private JButton loadMapButton;
+	private JButton loadNewMapButton;
 	
-	public MapMenu() {
+	public MapMenu(Controller controller) {
 		computeCircuitsButton = new JButton("Compute circuits");
-		loadMapButton = new JButton("Load a new map");
+                computeCircuitsButton.addActionListener(new ButtonListener(controller));
+		loadNewMapButton = new JButton("Load a new map");
+                loadNewMapButton.addActionListener(new ButtonListener(controller));
 		this.add(computeCircuitsButton);
-		this.add(loadMapButton);
+		this.add(loadNewMapButton);
 	}
 	
 	public void paintComponent(Graphics g){

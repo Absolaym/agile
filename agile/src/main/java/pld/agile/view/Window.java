@@ -1,5 +1,6 @@
 package pld.agile.view;
 
+import controller.Controller;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -11,8 +12,12 @@ public class Window extends JFrame {
     
         private GraphicalView graphicalViewPanel;
         private DeliveryRequestView deliveryRequestPanel;
-
-	public Window(Map m) {
+        
+        protected final static String LOAD_MAP = "Load a map";
+        protected final static String COMPUTE_CIRCUITS = "Compute circuits";
+        protected final static String LOAD_NEW_MAP = "Load a new map";
+        
+	public Window(Map map, Controller controller) {
         super("App Name");
         this.setLayout(new BorderLayout());
         //Dimensions 
@@ -23,7 +28,7 @@ public class Window extends JFrame {
 //        JPanel mainPanel = new JPanel();
 //        this.setContentPane(mainPanel);
         
-        graphicalViewPanel = new GraphicalView(m,this);
+        graphicalViewPanel = new GraphicalView(map,this,controller);
         deliveryRequestPanel = new DeliveryRequestView(this);
 
         getContentPane().add(graphicalViewPanel, BorderLayout.CENTER);

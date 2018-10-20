@@ -1,4 +1,5 @@
 package pld.agile;
+import controller.Controller;
 import model.Map;
 import pld.agile.view.*;
 /**
@@ -11,6 +12,7 @@ public class App
     {
         System.out.println( "Hello World!" );
         Map m = new Map();
-        Window window = new Window(m);
+        Controller c = new Controller();
+        Window window = new Window(m,c);
     }
 }

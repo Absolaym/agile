@@ -1,5 +1,6 @@
 package pld.agile.view;
 
+import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,13 +16,15 @@ public class MapContainer extends JPanel implements Observer{
         private Map map;
 	private JButton loadMapButton;
 	
-	public MapContainer(Map m, Window w) {
+	public MapContainer(Map m, Window w, Controller c) {
             super();
             m.addObserver(this);
 	    loadMapButton = new JButton("Load a map");
+            loadMapButton.addActionListener(new ButtonListener(c));
             this.add(loadMapButton);
             this.map = m;
             setBackground(Color.white);
+            
 	}
 	
 	public void paintComponent(Graphics g){

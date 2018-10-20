@@ -11,4 +11,14 @@ package controller;
  */
 public class Controller {
     
+    public void loadMap() {
+        //TO DO
+        System.out.println("It has to load map.");
+    }
+    
+    public void computeCircuits() {
+        //TO DO
+        System.out.println("It has to compute circuits.");
+    }
+    
 }
