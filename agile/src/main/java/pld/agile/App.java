@@ -1,5 +1,6 @@
 package pld.agile;
 import controller.Controller;
+import model.DeliveryRequest;
 import model.Map;
 import pld.agile.view.*;
 /**
@@ -13,6 +14,7 @@ public class App
         System.out.println( "Hello World!" );
         Map m = new Map();
         Controller c = new Controller();
-        Window window = new Window(m,c);
+        DeliveryRequest dr = new DeliveryRequest();
+        Window window = new Window(m,c,dr);
     }
 }
