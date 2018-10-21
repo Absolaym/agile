@@ -12,7 +12,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        Map m = new Map();
+        Map m = new Map(null, null);
         Controller c = new Controller();
         DeliveryRequest dr = new DeliveryRequest();
         Window window = new Window(m,c,dr);
