@@ -25,6 +25,8 @@ public class ButtonListener implements ActionListener {
         if (e.getActionCommand().equals(Window.LOAD_MAP)) controller.loadMap();
         else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) controller.computeCircuits();
         else if (e.getActionCommand().equals(Window.LOAD_NEW_MAP)) controller.loadMap();
+        else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) controller.loadDeliveryRequests();
+        
     }
     
 }

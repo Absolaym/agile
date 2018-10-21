@@ -21,4 +21,9 @@ public class Controller {
         System.out.println("It has to compute circuits.");
     }
     
+     public void loadDeliveryRequests() {
+        //TO DO
+        System.out.println("It has to load delivery requests.");
+    }
+    
 }

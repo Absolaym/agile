@@ -9,32 +9,49 @@ import javax.swing.*;
 import model.Map;
 
 public class Window extends JFrame {
-    
-        private GraphicalView graphicalViewPanel;
-        private DeliveryRequestView deliveryRequestPanel;
-        
-        protected final static String LOAD_MAP = "Load a map";
-        protected final static String COMPUTE_CIRCUITS = "Compute circuits";
-        protected final static String LOAD_NEW_MAP = "Load a new map";
-        
-	public Window(Map map, Controller controller) {
+
+    private MapMenuView mapMenuPanel;
+    private MapContainerView mapContainerPanel;
+    private DeliveryRequestView deliveryRequestPanel;
+
+    //list of buttons
+    protected final static String LOAD_MAP = "Load a map";
+    protected final static String COMPUTE_CIRCUITS = "Compute circuits";
+    protected final static String LOAD_NEW_MAP = "Load a new map";
+    protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
+
+    public Window(Map map, Controller controller) {
         super("App Name");
-        this.setLayout(new BorderLayout());
+        //this.setLayout(new BorderLayout());
         //Dimensions 
-        this.setSize(new Dimension(1000,800)); // to do in a separate method
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setSize(new Dimension(1000, 800)); // to do in a separate method
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Main container
-//        JPanel mainPanel = new JPanel();
-//        this.setContentPane(mainPanel);
+        setLayout(null);
+        mapMenuPanel = new MapMenuView(this, controller);
+        mapContainerPanel = new MapContainerView(map, this, controller);
+        deliveryRequestPanel = new DeliveryRequestView(this, controller);
+
+       // getContentPane().add(graphicalViewPanel);
+       // getContentPane().add(deliveryRequestPanel);
+
+        setWindowSize();
+        //setSize(1000,800);
+        setVisible(true);
+    }
+
+    private void setWindowSize() {
+        int windowHeight = Math.max(mapMenuPanel.getHeight() + mapContainerPanel.getHeight(),deliveryRequestPanel.getHeight()) + 30;
+        int windowWidth = Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()) + deliveryRequestPanel.getWidth() + 40;
+        setSize(windowHeight, windowWidth);
         
-        graphicalViewPanel = new GraphicalView(map,this,controller);
-        deliveryRequestPanel = new DeliveryRequestView(this);
-
-        getContentPane().add(graphicalViewPanel, BorderLayout.CENTER);
-        getContentPane().add(deliveryRequestPanel, BorderLayout.EAST);
-
-        this.setVisible(true);
+        mapMenuPanel.setLocation(10, 10);
+        mapContainerPanel.setLocation(10, 20 + mapMenuPanel.getHeight());
+        deliveryRequestPanel.setLocation(10 + Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()), 10);
+        
+        mapMenuPanel.setSize(mapMenuPanel.getWidth(), mapMenuPanel.getHeight());
+        mapContainerPanel.setSize(mapContainerPanel.getWidth(), mapContainerPanel.getHeight());
+        deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
 }
