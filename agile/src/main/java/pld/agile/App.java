@@ -3,7 +3,7 @@ import controller.Controller;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Plan;
-import model.XmlParser;
+import utils.XmlParser;
 import pld.agile.view.*;
 /**
  * Hello world!

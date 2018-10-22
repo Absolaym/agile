@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 /**
  * A wrapper class around the time (since most of the Date object is now deprecated)

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.LinkedList;
+import utils.Time;
 
 public class Circuit {
 	

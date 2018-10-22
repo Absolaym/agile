@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.*;
+import model.Delivery;
+import model.DeliveryRequest;
+import model.Geolocation;
+import model.Intersection;
+import model.Plan;
+import model.Section;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
