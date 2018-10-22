@@ -51,4 +51,8 @@ public class Geolocation {
 	public static double RadToDeg(double rad) {
 		return rad / Math.PI * 180;
 	}
+	
+	public String toString() {
+		return "[" + this.latitude + ":" + this.longitude + "]";
+	}
 }

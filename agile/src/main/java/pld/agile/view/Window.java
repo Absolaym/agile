@@ -11,18 +11,25 @@ import model.Plan;
 
 public class Window extends JFrame {
 
-    private MapMenuView mapMenuPanel;
-    private MapContainerView mapContainerPanel;
-    private DeliveryRequestView deliveryRequestPanel;
+	// Subcomponents of the view
+    private MapMenuView 			mapMenuPanel;
+    private MapContainerView 	mapContainerPanel;
+    private DeliveryRequestView 	deliveryRequestPanel;
 
     //list of buttons
-    protected final static String LOAD_MAP = "Load a map";
-    protected final static String COMPUTE_CIRCUITS = "Compute circuits";
-    protected final static String LOAD_NEW_MAP = "Load a new map";
+    protected final static String LOAD_MAP 				= "Load a map";
+    protected final static String COMPUTE_CIRCUITS 		= "Compute circuits";
+    protected final static String LOAD_NEW_MAP 			= "Load a new map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
 
-    public Window(Plan map, Controller controller, DeliveryRequest deliveryRequest) {
-        super("App Name");
+    public Window(Controller controller) {
+    		this(controller, new DeliveryRequest());
+    }
+    
+    // It's not the responsibility of the window to keep track of the map and deliveryRequest
+    // This should be placed in the controller
+    public Window(Controller controller, DeliveryRequest deliveryRequest) {
+        super("Agility is the delivery");
         //this.setLayout(new BorderLayout());
         //Dimensions 
         //setSize(new Dimension(1000, 800)); // to do in a separate method
@@ -30,7 +37,7 @@ public class Window extends JFrame {
 
         setLayout(null);
         mapMenuPanel = new MapMenuView(this, controller);
-        mapContainerPanel = new MapContainerView(map, this, controller);
+        mapContainerPanel = new MapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller, deliveryRequest);
 
        // getContentPane().add(graphicalViewPanel);
