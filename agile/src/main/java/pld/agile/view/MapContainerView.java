@@ -9,7 +9,10 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import model.Geolocation;
 import model.Intersection;
@@ -19,11 +22,21 @@ import model.Section;
 public class MapContainerView extends JPanel implements Observer {
 
     private JButton loadMapButton;
+    private JSlider zoomSlider;
+    
     private int planHeight = 600;
     private int planWidth = 800;
     private Controller controller;
     
-    private double kmToPixel = 0.0030;
+    static public double KM_TO_PIXEL = 0.0001;
+    private double zoom = 1;
+    
+    private class SliderListener implements ChangeListener {
+        public void stateChanged(ChangeEvent e) {
+            JSlider source = (JSlider)e.getSource();
+            source.getParent().repaint();
+        }
+    }
 
     public MapContainerView(Window w, Controller c) {
         super();
@@ -31,6 +44,19 @@ public class MapContainerView extends JPanel implements Observer {
         
         setLayout(null);
         setBorder(BorderFactory.createTitledBorder("Map :"));
+        
+        this.zoomSlider = new JSlider();
+        this.zoomSlider.setMinimum(20);
+        this.zoomSlider.setMaximum(100);
+        this.zoomSlider.setValue(50);
+        this.zoomSlider.setSize(100, 30);
+        this.zoomSlider.setAlignmentX( this.getWidth() - this.zoomSlider.getWidth() - 20 );
+        this.zoomSlider.setAlignmentY( this.zoomSlider.getHeight() + 200 );
+        this.zoomSlider.addChangeListener(new SliderListener());
+
+        this.add(this.zoomSlider);
+        
+        
         this.controller.getPlan().addObserver(this);
         loadMapButton = new JButton("Load a plan");
         loadMapButton.addActionListener(new ButtonListener(c));
@@ -91,9 +117,10 @@ public class MapContainerView extends JPanel implements Observer {
     }
     
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
+    		double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
 		Geolocation geoX = new Geolocation( target.getLatitude(), origin.getLongitude() );
 		Geolocation geoY = new Geolocation( origin.getLatitude(), target.getLongitude() );
-		Geolocation ret = new Geolocation( origin.distance( geoX ) / this.kmToPixel, origin.distance( geoY ) / this.kmToPixel );
+		Geolocation ret = new Geolocation( origin.distance( geoX ) / coeff, origin.distance( geoY ) / coeff );
 		return ret;
     }
     
