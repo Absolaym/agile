@@ -6,8 +6,10 @@
 package pld.agile.view;
 
 import controller.Controller;
+import model.DeliveryRequest;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JTable;
 import javax.swing.JFileChooser;
 
 /**
@@ -33,10 +35,19 @@ public class ButtonListener implements ActionListener {
         }
         else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) controller.computeCircuits();
         else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
-        	JFileChooser jfc = new JFileChooser();
-        	int result = jfc.showOpenDialog(window);
-        	if(result==JFileChooser.APPROVE_OPTION)
-        		controller.loadDeliveryRequests(jfc.getSelectedFile().getAbsolutePath());
+        	
+        	try {
+	        	JFileChooser jfc = new JFileChooser();
+	        	int result = jfc.showOpenDialog(window);
+	        	DeliveryRequest dr;
+	        	if(result==JFileChooser.APPROVE_OPTION) {
+	        		dr = controller.loadDeliveryRequests(jfc.getSelectedFile().getAbsolutePath());
+	        		//faire un string[][] à partir de dr.getDeliveries()
+	        		//window.DeliveryRequestView.deliveryRequests = new JTable(dr.getDeliveries());
+	        	}
+        	}catch(Exception e2) {
+        		
+        	}
         }
         
     }

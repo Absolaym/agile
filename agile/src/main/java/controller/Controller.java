@@ -39,12 +39,13 @@ public class Controller {
         System.out.println("It has to load map.");
     }
     
-    public void loadDeliveryRequests(String path) {
+    public DeliveryRequest loadDeliveryRequests(String path) {
         //TO DO
         System.out.println("It has to load delivery requests.");
         
         XmlParser parser = new XmlParser();
         DeliveryRequest dr = parser.parseDeliveryRequest(path);
+        return dr;
     }
     
     public void computeCircuits() {
