@@ -1,9 +1,14 @@
 package pld.agile.view;
 
 import controller.Controller;
+
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
@@ -29,13 +34,41 @@ public class MapContainerView extends JPanel implements Observer {
     private Controller controller;
     
     static public double KM_TO_PIXEL = 0.0001;
-    private double zoom = 1;
+    private double offsetX = 0;
+    private double offsetY = 0;
     
     private class SliderListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             JSlider source = (JSlider)e.getSource();
             source.getParent().repaint();
         }
+    }
+    
+    private class MouseListener implements MouseMotionListener {
+    	
+    		private int previousX = -1;
+    		private int previousY = -1;
+    
+    		public void mouseDragged(MouseEvent e) {
+
+    			if(previousX == -1 && previousY == -1) {
+    				previousX = e.getX();
+    				previousY = e.getY();
+    			}
+    			
+    			MapContainerView.this.offsetX += e.getX() - previousX;
+    			MapContainerView.this.offsetY += e.getY() - previousY;
+    			
+    			previousX = e.getX();
+    			previousY = e.getY();
+    			
+    			MapContainerView.this.repaint();
+    			
+    		}
+
+		public void mouseMoved(MouseEvent e) {
+	
+		}
     }
 
     public MapContainerView(Window w, Controller c) {
@@ -66,6 +99,8 @@ public class MapContainerView extends JPanel implements Observer {
         add(loadMapButton);
         
         setBackground(Color.DARK_GRAY);
+        
+        this.addMouseMotionListener(new MouseListener());
         w.getContentPane().add(this);
     }
 
@@ -92,17 +127,10 @@ public class MapContainerView extends JPanel implements Observer {
         		}
         }
         
-        g.setColor(new Color(120, 255, 120));
-        
-        for(Intersection inter : plan.getIntersections().values()) {
-        		Geolocation geo = inter.getGeolocation();
-        		Geolocation target = geolocationToPixels( origin, geo );
-        		
-        		int dotSize = 5;
-        		g.drawArc((int)target.getLongitude(), (int)target.getLatitude(), dotSize, dotSize, 0, 360);
-        }
-        
-        g.setColor(new Color(120, 180, 120));
+        g.setColor(new Color(100, 100, 105));
+        int lineThickness = 4;
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(lineThickness));
         
         for(Section sec : plan.getSections()) {
         		Geolocation start 	= sec.getStartIntersection().getGeolocation();
@@ -114,13 +142,25 @@ public class MapContainerView extends JPanel implements Observer {
         		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
         }
         
+        g.setColor(new Color(180, 140, 180));
+        int dotSize = 6;
+        
+        for(Intersection inter : plan.getIntersections().values()) {
+        		Geolocation geo = inter.getGeolocation();
+        		Geolocation target = geolocationToPixels( origin, geo );
+        		
+        		
+        		g.fillArc((int)target.getLongitude() - dotSize / 2, (int)target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+        }
+        
+        
     }
     
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
     		double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
-		Geolocation geoX = new Geolocation( target.getLatitude(), origin.getLongitude() );
-		Geolocation geoY = new Geolocation( origin.getLatitude(), target.getLongitude() );
-		Geolocation ret = new Geolocation( origin.distance( geoX ) / coeff, origin.distance( geoY ) / coeff );
+		Geolocation geoY = new Geolocation( target.getLatitude(), origin.getLongitude() );
+		Geolocation geoX = new Geolocation( origin.getLatitude(), target.getLongitude() );
+		Geolocation ret = new Geolocation( origin.distance( geoY ) / coeff + offsetY, origin.distance( geoX ) / coeff + offsetX);
 		return ret;
     }
     
