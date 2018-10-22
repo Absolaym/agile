@@ -40,7 +40,7 @@ public class Controller {
         System.out.println("It has to compute circuits.");
     }
     
-     public void loadDeliveryRequests() {
+     public void loadDeliveryRequests(String path) {
         //TO DO
         System.out.println("It has to load delivery requests.");
     }

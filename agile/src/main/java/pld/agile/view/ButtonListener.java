@@ -32,7 +32,12 @@ public class ButtonListener implements ActionListener {
         		controller.loadMap(jfc.getSelectedFile().getAbsolutePath());
         }
         else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) controller.computeCircuits();
-        else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) controller.loadDeliveryRequests();
+        else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
+        	JFileChooser jfc = new JFileChooser();
+        	int result = jfc.showOpenDialog(window);
+        	if(result==JFileChooser.APPROVE_OPTION)
+        		controller.loadDeliveryRequests(jfc.getSelectedFile().getAbsolutePath());
+        }
         
     }
     
