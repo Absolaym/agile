@@ -26,11 +26,15 @@ public class Controller {
     public void loadMap(String path) {
         //TO DO
     		// This code is for testing purpose and by no means, should stay in place
+    	try {
     		XmlParser xmlParser = new XmlParser();
     		//Plan plan = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
     		Plan plan = xmlParser.parseMap(path);
     		this.setPlan( plan );
-    		
+    	}catch(Exception e) {
+    		//display exception in a pop up
+    		//make specific error for reading exception
+    	}
     		
         System.out.println("It has to load map.");
     }
