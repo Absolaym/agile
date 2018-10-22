@@ -29,6 +29,8 @@ public class Controller {
     		XmlParser xmlParser = new XmlParser();
     		Plan plan = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
     		this.setPlan( plan );
+    		
+    		
         System.out.println("It has to load map.");
     }
     

@@ -19,10 +19,12 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import model.Circuit;
 import model.Geolocation;
 import model.Intersection;
 import model.Plan;
 import model.Section;
+import model.Trip;
 
 public class MapContainerView extends JPanel implements Observer {
 
@@ -30,7 +32,7 @@ public class MapContainerView extends JPanel implements Observer {
     private JSlider zoomSlider;
     
     private int planHeight = 600;
-    private int planWidth = 800;
+    private int planWidth = 600;
     private Controller controller;
     
     static public double KM_TO_PIXEL = 0.0001;
@@ -149,10 +151,44 @@ public class MapContainerView extends JPanel implements Observer {
         		Geolocation geo = inter.getGeolocation();
         		Geolocation target = geolocationToPixels( origin, geo );
         		
-        		
         		g.fillArc((int)target.getLongitude() - dotSize / 2, (int)target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
         
+        g.setColor(new Color(180, 140, 140));
+        lineThickness = 6;
+        g2.setStroke(new BasicStroke(lineThickness));
+        
+        Circuit circuit = new Circuit();
+        Trip t = new Trip();
+        //t.addSection(plan.getSections().get(0));
+        //t.addSection(plan.getSections().get(1));
+        //t.addSection(plan.getSections().get(2));
+        //t.addSection(plan.getSections().get(3));
+        //t.addSection(plan.getSections().get(4));
+        circuit.getTrips().add(t);
+        
+        t = new Trip();
+        t.addSection(plan.getSections().get(10));
+        t.addSection(plan.getSections().get(11));
+        t.addSection(plan.getSections().get(12));
+        t.addSection(plan.getSections().get(13));
+        t.addSection(plan.getSections().get(14));
+        circuit.getTrips().add(t);
+        
+        int i = 0;
+        for(Trip trip : circuit.getTrips()) {
+        		g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
+        		i++;
+        		for(Section sec : trip.getSections()) {
+            		Geolocation start 	= sec.getStartIntersection().getGeolocation();
+            		Geolocation end 		= sec.getEndIntersection().getGeolocation();
+            		
+            		Geolocation pxStart 	= this.geolocationToPixels(origin, start);
+            		Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
+            		
+            		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
+        		}
+        }
         
     }
     
