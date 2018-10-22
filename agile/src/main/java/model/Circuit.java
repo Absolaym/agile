@@ -2,6 +2,9 @@ package model;
 
 import java.util.LinkedList;
 
+import utils.Time;
+
+
 public class Circuit {
 	
 	public static final int SPEED =  15;

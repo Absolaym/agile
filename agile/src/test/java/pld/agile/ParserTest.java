@@ -4,7 +4,7 @@ import junit.framework.*;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Plan;
-import model.XmlParser;
+import utils.XmlParser;
 
 public class ParserTest extends TestCase {
 	

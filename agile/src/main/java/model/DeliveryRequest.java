@@ -7,6 +7,8 @@ package model;
 
 import java.util.LinkedList;
 
+import utils.Time;
+
 /**
  *
  * @author olivi & Johnny

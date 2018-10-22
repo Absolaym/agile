@@ -5,6 +5,9 @@
  */
 package model;
 
+import utils.Time;
+
+
 /**
  *
  * @author olivi & Johnny
