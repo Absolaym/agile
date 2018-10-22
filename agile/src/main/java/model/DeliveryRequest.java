@@ -4,18 +4,74 @@
  * and open the template in the editor.
  */
 package model;
-import java.util.ArrayList;
+
+import java.util.LinkedList;
 
 /**
  *
- * @author olivi
+ * @author olivi & Johnny
  */
 public class DeliveryRequest {
     
-    private ArrayList<Delivery> deliveries;
+	// While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
+	// since we might have a bunch of addition/deletion to make. Tho it's not that relevant
+    private LinkedList<Delivery> deliveries;
+    private String warehouseAddress = "";
+    private Time departureTime = new Time();
 
-    public ArrayList<Delivery> getDeliveries() {
+    public DeliveryRequest() {
+    		this.deliveries = new LinkedList<Delivery>();
+    }
+    
+    /**
+     * 
+     * @param delivery The delivery you wanna add to the list of deliveries
+     * @return this
+     */
+    public DeliveryRequest addDelivery(Delivery delivery) {
+    		this.deliveries.add( delivery );
+    		return this;
+    }
+    
+    /**
+     * 
+     * @param delivery The delivery you want to remove from the list
+     * @return this
+     */
+    public DeliveryRequest removeDelivery(Delivery delivery) {
+    		this.deliveries.remove(delivery);
+    		return this;
+    }
+    
+    public LinkedList<Delivery> getDeliveries() {
         return deliveries;
     }
+
+	public String getWarehouseAddress() {
+		return warehouseAddress;
+	}
+
+	public void setWarehouseAddress(String warehouseAddress) {
+		this.warehouseAddress = warehouseAddress;
+	}
+
+	public Time getDepartureTime() {
+		return departureTime;
+	}
+
+	public void setDepartureTime(Time departureTime) {
+		this.departureTime = departureTime;
+	}
+	
+	public String toString() {
+		String str = "";
+		str += "Warehouse: " + this.warehouseAddress + " | ";
+		str += "Departure time: " + this.getDepartureTime();
+		
+		str += "\t" + this.getDeliveries().size() + " deliveries";
+		
+		return str;
+	}
+    
 }
 

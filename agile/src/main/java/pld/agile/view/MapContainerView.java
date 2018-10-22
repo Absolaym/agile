@@ -10,16 +10,16 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import model.Map;
+import model.Plan;
 
 public class MapContainerView extends JPanel implements Observer {
 
-    private Map map;
+    private Plan map;
     private JButton loadMapButton;
     private int mapHeight = 800;
     private int mapWidth = 600;
 
-    public MapContainerView(Map m, Window w, Controller c) {
+    public MapContainerView(Plan m, Window w, Controller c) {
         super();
         setLayout(null);
         setBorder(BorderFactory.createTitledBorder("Map :"));

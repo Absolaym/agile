@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 import model.DeliveryRequest;
-import model.Map;
+import model.Plan;
 
 public class Window extends JFrame {
 
@@ -21,7 +21,7 @@ public class Window extends JFrame {
     protected final static String LOAD_NEW_MAP = "Load a new map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
 
-    public Window(Map map, Controller controller, DeliveryRequest deliveryRequest) {
+    public Window(Plan map, Controller controller, DeliveryRequest deliveryRequest) {
         super("App Name");
         //this.setLayout(new BorderLayout());
         //Dimensions 

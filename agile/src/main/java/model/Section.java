@@ -7,6 +7,13 @@ public class Section {
 	private Intersection startIntersection;
 	private Intersection endIntersection;
 	
+	public Section() {
+		this.streetName 			= "";
+		this.length 				= 0;
+		this.startIntersection 	= null;
+		this.endIntersection 	= null;
+	}
+	
 	public Section(String aStreetName, double aLength, Intersection aStartIntersection, Intersection anEndIntersection) {
 		setStreetName(aStreetName);
 		setLength(aLength);
