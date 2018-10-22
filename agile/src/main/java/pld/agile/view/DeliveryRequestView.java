@@ -11,18 +11,23 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import model.DeliveryRequest;
 
 public class DeliveryRequestView extends JPanel implements Observer {
 
-    private final JTable deliveryRequests;
+    private JTable deliveriesTable;
+    private DefaultTableModel tabModel;
     private JButton loadDeliveryRequestsButton;
+    public String[][] deliveries;
+    
     private final int loadDeliveryRequestsButtonWidth = 200;
     private final int loadDeliveryRequestsButtonHeight = 30;
     private final int buttonLocationY = 50;
     private final int spaceElements = 30;
-    private int height = 800;
-    private int width = 300;
+    private final int height = 800;
+    private final int width = 300;
+    
 
     public DeliveryRequestView(Window w, Controller c) {
         super();
@@ -36,33 +41,35 @@ public class DeliveryRequestView extends JPanel implements Observer {
         loadDeliveryRequestsButton.setLocation(0, buttonLocationY);
         add(loadDeliveryRequestsButton);
 
-        //set table
-        String column[] = {"Address", "Delivery time", "Circuit"};
-        deliveryRequests = new JTable(getListRequests(), column) {
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        deliveryRequests.setAutoCreateRowSorter(true);
-        JScrollPane scrollPanel = new JScrollPane(deliveryRequests);
-        scrollPanel.setBounds(30, 40, width - 10, height - 10);
-        scrollPanel.setLocation(0, spaceElements + loadDeliveryRequestsButtonHeight + buttonLocationY);
-        add(scrollPanel);
-
+        createTable();
+  
         setBackground(Color.LIGHT_GRAY);
         w.getContentPane().add(this);
 
     }
     
-    public String[][] getListRequests() {
+    public void createTable() {
+        tabModel = new DefaultTableModel(); 
+        deliveriesTable = new JTable(tabModel) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tabModel.addColumn("Address");
+        tabModel.addColumn("Delivery time");
+        tabModel.addColumn("Circuit");
         
-        //deliveryRequests.getDeliveries();
-        
-        String data[][] = {{"101", "12:00", "1"},
-        {"102", "14:50", "2"},
-        {"101", "15:02", "7"}};
-        
-        return data;
+        deliveriesTable.setAutoCreateRowSorter(true);
+        JScrollPane scrollPanel = new JScrollPane(deliveriesTable);
+        scrollPanel.setBounds(30, 40, width-30, height - 10);
+        scrollPanel.setLocation(0, spaceElements + loadDeliveryRequestsButtonHeight + buttonLocationY);
+        add(scrollPanel);
+    }
+   
+    public void addDeliveries(String[] deliv){
+        for(int i=0; i<deliv.length; i++) {
+           tabModel.addRow(new String[]{deliv[i],"unknown","unknown"});
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -70,12 +77,10 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
     }
 
-    // to change
     public int getHeight() {
         return height;
     }
 
-    // to change
     public int getWidth() {
         return width;
     }
