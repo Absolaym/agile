@@ -53,8 +53,8 @@ public class MapContainerView extends JPanel implements Observer {
         this.createSlider();   
         
         this.controller.getPlan().addObserver(this);
-        loadMapButton = new JButton("Load a plan");
-        loadMapButton.addActionListener(new ButtonListener(c));
+        loadMapButton = new JButton("Load a map");
+        loadMapButton.addActionListener(new ButtonListener(c,w));
         
         loadMapButton.setSize(100,100);
         loadMapButton.setLocation(100,100);

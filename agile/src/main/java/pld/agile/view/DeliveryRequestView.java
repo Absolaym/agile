@@ -31,7 +31,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         loadDeliveryRequestsButton = new JButton("Load delivery requests");
-        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c));
+        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c,w));
         loadDeliveryRequestsButton.setSize(loadDeliveryRequestsButtonWidth, loadDeliveryRequestsButtonHeight);
         loadDeliveryRequestsButton.setLocation(0, buttonLocationY);
         add(loadDeliveryRequestsButton);

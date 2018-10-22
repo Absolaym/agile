@@ -15,7 +15,7 @@ public class App
     {
         
         Controller c = new Controller();
-        c.loadMap();
+        c.loadMap("");
         
         Window window = new Window( c );
     }

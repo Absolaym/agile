@@ -15,9 +15,9 @@ public class MapMenuView extends JPanel {
 
     public MapMenuView(Window w, Controller controller) {
         computeCircuitsButton = new JButton("Compute circuits");
-        computeCircuitsButton.addActionListener(new ButtonListener(controller));
+        computeCircuitsButton.addActionListener(new ButtonListener(controller,w));
         loadNewMapButton = new JButton("Load a new map");
-        loadNewMapButton.addActionListener(new ButtonListener(controller));
+        loadNewMapButton.addActionListener(new ButtonListener(controller,w));
         this.add(computeCircuitsButton);
         this.add(loadNewMapButton);
         setBackground(Color.WHITE);
