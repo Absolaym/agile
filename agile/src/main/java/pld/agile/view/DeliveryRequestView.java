@@ -24,7 +24,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private int height = 800;
     private int width = 300;
 
-    public DeliveryRequestView(Window w, Controller c, DeliveryRequest request) {
+    public DeliveryRequestView(Window w, Controller c) {
         super();
         setLayout(null);
 

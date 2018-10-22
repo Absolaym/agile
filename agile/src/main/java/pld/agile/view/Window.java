@@ -22,13 +22,13 @@ public class Window extends JFrame {
     protected final static String LOAD_NEW_MAP 			= "Load a new map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
 
-    public Window(Controller controller) {
-    		this(controller, new DeliveryRequest());
+    public Window() {
+    		this(new Controller());
     }
     
     // It's not the responsibility of the window to keep track of the map and deliveryRequest
     // This should be placed in the controller
-    public Window(Controller controller, DeliveryRequest deliveryRequest) {
+    public Window(Controller controller) {
         super("Agility is the delivery");
         //this.setLayout(new BorderLayout());
         //Dimensions 
@@ -36,9 +36,9 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
-        mapMenuPanel = new MapMenuView(this, controller);
-        mapContainerPanel = new MapContainerView(this, controller);
-        deliveryRequestPanel = new DeliveryRequestView(this, controller, deliveryRequest);
+        mapMenuPanel 			= new MapMenuView(this, controller);
+        mapContainerPanel 		= new MapContainerView(this, controller);
+        deliveryRequestPanel 	= new DeliveryRequestView(this, controller);
 
        // getContentPane().add(graphicalViewPanel);
        // getContentPane().add(deliveryRequestPanel);

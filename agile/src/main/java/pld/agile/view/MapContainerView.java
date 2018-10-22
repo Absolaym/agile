@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,42 +37,11 @@ public class MapContainerView extends JPanel implements Observer {
     private Controller controller;
     
     static public double KM_TO_PIXEL = 0.0001;
+    // For mouse listener
     private double offsetX = 0;
     private double offsetY = 0;
-    
-    private class SliderListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
-            JSlider source = (JSlider)e.getSource();
-            source.getParent().repaint();
-        }
-    }
-    
-    private class MouseListener implements MouseMotionListener {
-    	
-    		private int previousX = -1;
-    		private int previousY = -1;
-    
-    		public void mouseDragged(MouseEvent e) {
-
-    			if(previousX == -1 && previousY == -1) {
-    				previousX = e.getX();
-    				previousY = e.getY();
-    			}
-    			
-    			MapContainerView.this.offsetX += e.getX() - previousX;
-    			MapContainerView.this.offsetY += e.getY() - previousY;
-    			
-    			previousX = e.getX();
-    			previousY = e.getY();
-    			
-    			MapContainerView.this.repaint();
-    			
-    		}
-
-		public void mouseMoved(MouseEvent e) {
-	
-		}
-    }
+    private int originX = 0;
+    private int originY = 0;
 
     public MapContainerView(Window w, Controller c) {
         super();
@@ -80,17 +50,7 @@ public class MapContainerView extends JPanel implements Observer {
         setLayout(null);
         setBorder(BorderFactory.createTitledBorder("Map :"));
         
-        this.zoomSlider = new JSlider();
-        this.zoomSlider.setMinimum(20);
-        this.zoomSlider.setMaximum(100);
-        this.zoomSlider.setValue(50);
-        this.zoomSlider.setSize(100, 30);
-        this.zoomSlider.setAlignmentX( this.getWidth() - this.zoomSlider.getWidth() - 20 );
-        this.zoomSlider.setAlignmentY( this.zoomSlider.getHeight() + 200 );
-        this.zoomSlider.addChangeListener(new SliderListener());
-
-        this.add(this.zoomSlider);
-        
+        this.createSlider();   
         
         this.controller.getPlan().addObserver(this);
         loadMapButton = new JButton("Load a plan");
@@ -102,8 +62,62 @@ public class MapContainerView extends JPanel implements Observer {
         
         setBackground(Color.DARK_GRAY);
         
-        this.addMouseMotionListener(new MouseListener());
+        this.createMouseListener();
         w.getContentPane().add(this);
+    }
+    
+    private void createSlider() {
+        this.zoomSlider = new JSlider();
+        this.zoomSlider.setMinimum(20);
+        this.zoomSlider.setMaximum(100);
+        this.zoomSlider.setValue(50);
+        this.zoomSlider.setSize(100, 30);
+        this.zoomSlider.setAlignmentX( this.getWidth() - this.zoomSlider.getWidth() - 20 );
+        this.zoomSlider.setAlignmentY( this.zoomSlider.getHeight() + 200 );
+        this.zoomSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                JSlider source = (JSlider)e.getSource();
+                source.getParent().repaint();
+            }
+        });
+
+        this.add(this.zoomSlider);
+    }
+    
+    private void createMouseListener() {
+        this.addMouseListener(new MouseListener() {
+	    	  	public void mousePressed(MouseEvent e) {
+	    	  		MapContainerView that = MapContainerView.this;
+	    			
+	    			that.originX = e.getX();
+	    			that.originY = e.getY();
+	    	    }
+	
+	    	    public void mouseReleased(MouseEvent e) {}
+	    	    public void mouseEntered(MouseEvent e) {}
+	    	    public void mouseExited(MouseEvent e) {}
+	    	    public void mouseClicked(MouseEvent e) {}
+	    });
+	    this.addMouseMotionListener(new MouseMotionListener() {
+	    
+	    		public void mouseDragged(MouseEvent e) {
+	    			
+	    			MapContainerView that = MapContainerView.this;
+	    			
+	    			that.offsetX += e.getX() - that.originX;
+	    			that.offsetY += e.getY() - that.originY;
+	    			
+	    			that.originX = e.getX();
+	    			that.originY = e.getY();
+	    			
+	    			MapContainerView.this.repaint();
+	    			
+	    		}
+	
+			public void mouseMoved(MouseEvent e) {
+		
+			}
+	    });
     }
 
     public void paintComponent(Graphics g) {
@@ -154,6 +168,8 @@ public class MapContainerView extends JPanel implements Observer {
         		g.fillArc((int)target.getLongitude() - dotSize / 2, (int)target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
         
+        /*
+         This is for debug right now, there is smthg weird happenning with the section comming from the first node
         g.setColor(new Color(180, 140, 140));
         lineThickness = 6;
         g2.setStroke(new BasicStroke(lineThickness));
@@ -189,7 +205,7 @@ public class MapContainerView extends JPanel implements Observer {
             		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
         		}
         }
-        
+        */
     }
     
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
