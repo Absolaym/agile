@@ -89,4 +89,16 @@ public class DeliveryRequestView extends JPanel implements Observer {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public JTable getDeliveriesTable() {
+        return deliveriesTable;
+    }
+
+    public DefaultTableModel getTabModel() {
+        return tabModel;
+    }
+
+    public String[][] getDeliveries() {
+        return deliveries;
+    }
+    
 }

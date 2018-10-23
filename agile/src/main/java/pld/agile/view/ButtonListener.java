@@ -63,4 +63,12 @@ public class ButtonListener implements ActionListener {
 
     }
 
+    public Controller getController() {
+        return controller;
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+    
 }
