@@ -48,7 +48,6 @@ public class Controller {
         
         System.out.println("It has to load delivery requests.");
         
-     
         DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
         if(deliveryRequest != null ){
             this.setDeliveryRequest( deliveryRequest );
