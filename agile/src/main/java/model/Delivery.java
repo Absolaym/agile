@@ -18,6 +18,8 @@ public class Delivery {
 	 */
 	private String address = "";
 	
+	private Geolocation geolocation;
+	
 	/**
 	 * The time required to deliver the item to the customer (minutes)
 	 */
@@ -47,5 +49,13 @@ public class Delivery {
 		str += "Duration: " + new Time(this.duration * 60);
 		
 		return str;
+	}
+
+	public Geolocation getGeolocation() {
+		return geolocation;
+	}
+
+	public void setGeolocation(Geolocation geolocation) {
+		this.geolocation = geolocation;
 	}
 }

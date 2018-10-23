@@ -53,5 +53,9 @@ public class Plan extends Observable{
 	public List<Section> getSections() {
 		return sections;
 	}
+	
+	public Geolocation getIntersectionGeolocation(String address){
+		return this.intersections.get(address).getGeolocation();
+	}
     
 }

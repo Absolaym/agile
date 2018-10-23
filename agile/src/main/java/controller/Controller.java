@@ -5,7 +5,11 @@
  */
 package controller;
 
+import java.util.LinkedList;
+
+import model.Delivery;
 import model.DeliveryRequest;
+import model.Geolocation;
 import model.Plan;
 import utils.XmlParser;
 
@@ -45,8 +49,10 @@ public class Controller {
         
         XmlParser parser = new XmlParser();
         DeliveryRequest dr = parser.parseDeliveryRequest(path);
+        dr = setDeliveryRequestGeolocation(dr);
         return dr;
     }
+    
     
     public void computeCircuits() {
         //TO DO
@@ -64,4 +70,20 @@ public class Controller {
 		this.plan = plan;
 	}
     
+	
+	//je sais pas ou mettre ca oups --MF
+	private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
+		LinkedList<Delivery> deliveries = dr.getDeliveries();
+		for (Delivery delivery : deliveries){
+			Geolocation geolocation = plan.getIntersectionGeolocation(delivery.getAddress());
+			if(geolocation == null){
+		        System.out.println("The address " + delivery.getAddress() + " was not found");
+		        deliveries.remove(delivery);
+		        continue;
+			}
+			delivery.setGeolocation(geolocation);
+		}
+		dr.setDeliveries(deliveries);
+		return dr;
+	}
 }

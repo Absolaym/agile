@@ -15,7 +15,7 @@ import utils.Time;
 public class DeliveryRequest {
     
 	// While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
-	// since we might have a bunch of addition/deletion to make. Tho it's not that relevant
+	// since we might have a bunch of addition/deletion to make. Though it's not that relevant
     private LinkedList<Delivery> deliveries;
     private String warehouseAddress = "";
     private Time departureTime = new Time();
@@ -26,7 +26,7 @@ public class DeliveryRequest {
     
     /**
      * 
-     * @param delivery The delivery you wanna add to the list of deliveries
+     * @param delivery The delivery you want to add to the list of deliveries
      * @return this
      */
     public DeliveryRequest addDelivery(Delivery delivery) {
@@ -46,6 +46,10 @@ public class DeliveryRequest {
     
     public LinkedList<Delivery> getDeliveries() {
         return deliveries;
+    }
+    
+    public void setDeliveries(LinkedList<Delivery> d){
+    	this.deliveries = d;
     }
 
 	public String getWarehouseAddress() {
