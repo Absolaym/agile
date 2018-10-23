@@ -32,8 +32,8 @@ public class CityMapContainerView extends JPanel implements Observer {
     private JButton loadCityMapButton;
     private JSlider zoomSlider;
 
-    private int planHeight = 600;
-    private int planWidth = 600;
+    private int cityMapHeight = 600;
+    private int cityMapWidth = 600;
     private Controller controller;
 
     static public double KM_TO_PIXEL = 0.0001;
@@ -243,12 +243,12 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     // to change
     public int getHeight() {
-        return planHeight;
+        return cityMapHeight;
     }
 
     // to change
     public int getWidth() {
-        return planWidth;
+        return cityMapWidth;
     }
 
     public void update(Observable o, Object arg) {
