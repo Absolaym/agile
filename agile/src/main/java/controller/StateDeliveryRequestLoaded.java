@@ -15,14 +15,15 @@ import utils.XmlParser;
 public class StateDeliveryRequestLoaded extends StateDefault{
     
     public DeliveryRequest LoadDeliveryRequest(String path){
-        DeliveryRequest dr = null;
+        
         try{
+            DeliveryRequest dr = null;
             XmlParser parser = new XmlParser();
             dr = parser.parseDeliveryRequest(path);
             //dr = setDeliveryRequestGeolocation(dr);
-        }catch (Exception e){
             return dr;
+        }catch (Exception e){
+            return null;
         }
-        return dr;
     }
 }

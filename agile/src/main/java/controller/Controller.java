@@ -50,6 +50,9 @@ public class Controller {
         
         DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
         if(deliveryRequest != null ){
+            // POTENTIELLEMENT A DEPLACER => une classe service ?
+            this.setDeliveryRequestGeolocation(deliveryRequest);
+            //
             this.setDeliveryRequest( deliveryRequest );
             this.setState(this.stateDeliveryRequestLoaded);
         }

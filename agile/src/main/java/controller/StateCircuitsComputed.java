@@ -15,13 +15,13 @@ import utils.XmlParser;
 public class StateCircuitsComputed extends StateDefault{
     
     public DeliveryRequest LoadDeliveryRequest(String path){
+        
         DeliveryRequest dr = null;
         try{
             XmlParser parser = new XmlParser();
             dr = parser.parseDeliveryRequest(path);
             //dr = setDeliveryRequestGeolocation(dr);
         }catch (Exception e){
-            return dr;
         }
         return dr;
     }
