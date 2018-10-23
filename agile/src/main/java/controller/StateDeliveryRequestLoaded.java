@@ -15,13 +15,13 @@ import utils.CircuitAlgorithm;
  */
 public class StateDeliveryRequestLoaded extends StateDefault{
     
-    public DeliveryRequest LoadDeliveryRequest(String path){
+    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
         
         try{
             DeliveryRequest dr = null;
             XmlParser parser = new XmlParser();
             dr = parser.parseDeliveryRequest(path);
-            //dr = setDeliveryRequestGeolocation(dr);
+            dr.computeDeliveryRequestGeolocation(c.getCityMap());
             return dr;
         }catch (Exception e){
             return null;

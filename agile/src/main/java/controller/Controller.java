@@ -48,11 +48,8 @@ public class Controller {
         
         System.out.println("It has to load delivery requests.");
         
-        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
+        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path,this);
         if(deliveryRequest != null ){
-            // POTENTIELLEMENT A DEPLACER => une classe service ?
-            this.setDeliveryRequestGeolocation(deliveryRequest);
-            //
             this.setDeliveryRequest( deliveryRequest );
             this.setState(this.stateDeliveryRequestLoaded);
         }
@@ -86,24 +83,10 @@ public class Controller {
     public void setState(State state) {
         this.state = state;
     }
-    
+}  
 //    public State getState(){
 //        return this.state;
 //    }
     
     //je sais pas ou mettre ca oups --MF
-    private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
-        LinkedList<Delivery> deliveries = dr.getDeliveries();
-        for (Delivery delivery : deliveries){
-            Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
-            if(geolocation == null){
-            System.out.println("The address " + delivery.getAddress() + " was not found");
-            deliveries.remove(delivery);
-            continue;
-            }
-            delivery.setGeolocation(geolocation);
-        }
-        dr.setDeliveries(deliveries);
-        return dr;
-    }
-}
+    
