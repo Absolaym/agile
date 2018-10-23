@@ -49,15 +49,15 @@ public class ButtonListener implements ActionListener {
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];
+                    System.out.println("size " + dr.getDeliveries().size());
                     for(int i =0; i<dr.getDeliveries().size(); i++) {
                         deliveries[i] = dr.getDeliveries().get(i).getAddress();
                     }
-                    //faire un string[][] à partir de dr.getDeliveries()
+
                     window.getDeliveryRequestPanel().addDeliveries(deliveries);
-                    
+                    window.getCityMapContainerPanel().repaint();                   
                     
                 }
             } catch (Exception e2) {

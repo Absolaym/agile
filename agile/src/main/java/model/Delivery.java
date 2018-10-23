@@ -16,7 +16,6 @@ public class Delivery {
      * The id of the intersection corresponding to the address
      */
     private String address = "";
-
     private Geolocation geolocation;
 
     /**

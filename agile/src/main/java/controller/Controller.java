@@ -19,22 +19,21 @@ import utils.XmlParser;
  */
 public class Controller {
     
-    private CityMap plan;
-
+    private CityMap cityMap;
+    private DeliveryRequest dr;
+    
     public Controller() { 
-        this.setPlan(new CityMap());
+        this.setCityMap(new CityMap());
     }
 	
-	
-
     public void LoadCityMap(String path) {
         //TO DO
         // This code is for testing purpose and by no means, should stay in place
     	try {
     		XmlParser xmlParser = new XmlParser();
-    		//Plan plan = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
-    		CityMap plan = xmlParser.parseMap(path);
-    		this.setPlan( plan );
+    		//Plan cityMap = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
+    		CityMap cityMap = xmlParser.parseMap(path);
+    		this.setCityMap( cityMap );
     	}catch(Exception e) {
     		//display exception in a pop up
     		//make specific error for reading exception
@@ -50,6 +49,7 @@ public class Controller {
         XmlParser parser = new XmlParser();
         DeliveryRequest dr = parser.parseDeliveryRequest(path);
         dr = setDeliveryRequestGeolocation(dr);
+        this.dr = dr;
         return dr;
     }
     
@@ -59,26 +59,22 @@ public class Controller {
         System.out.println("It has to compute circuits.");
     }
     
-
-    public CityMap getPlan() {
-        return plan;
+    public CityMap getCityMap() {
+        return cityMap;
     }
 
-
-
-    public void setPlan(CityMap plan) {
-        this.plan = plan;
+    public void setCityMap(CityMap cityMap) {
+        this.cityMap = cityMap;
     }
     
-//    public DeliveryRequest getDeliveryRequest() {
-//        return 
-//    }
-	
+    public DeliveryRequest getDeliveryRequest(){
+        return this.dr;
+    }
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
         LinkedList<Delivery> deliveries = dr.getDeliveries();
         for (Delivery delivery : deliveries){
-            Geolocation geolocation = plan.getIntersectionGeolocation(delivery.getAddress());
+            Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if(geolocation == null){
             System.out.println("The address " + delivery.getAddress() + " was not found");
             deliveries.remove(delivery);
