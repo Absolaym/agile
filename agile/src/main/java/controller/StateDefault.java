@@ -32,7 +32,7 @@ public class StateDefault implements State{
        return null;
     }
     
-    public void ComputeCircuits(){
+    public void ComputeCircuits(Controller c){
         
     }
 }

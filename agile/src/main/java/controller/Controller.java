@@ -65,6 +65,7 @@ public class Controller {
     public void ComputeCircuits() {
         //TO DO
         System.out.println("It has to compute circuits.");
+        this.state.ComputeCircuits(this);
     }
     
     public CityMap getCityMap() {

@@ -25,4 +25,8 @@ public class StateCircuitsComputed extends StateDefault{
         }
         return dr;
     }
+    
+    public void ComputeCircuits(Controller c){
+        
+    }
 }

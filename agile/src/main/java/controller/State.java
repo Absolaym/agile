@@ -18,5 +18,5 @@ public interface State{
     
     public abstract DeliveryRequest LoadDeliveryRequest(String path);
     
-    public abstract void ComputeCircuits();
+    public abstract void ComputeCircuits(Controller c);
 }

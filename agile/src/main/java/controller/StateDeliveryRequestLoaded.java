@@ -7,6 +7,7 @@ package controller;
 
 import model.DeliveryRequest;
 import utils.XmlParser;
+import utils.CircuitAlgorithm;
 
 /**
  *
@@ -25,5 +26,10 @@ public class StateDeliveryRequestLoaded extends StateDefault{
         }catch (Exception e){
             return null;
         }
+    }
+    
+    public void ComputeCircuits(Controller c){
+        CircuitAlgorithm circuitAlgorithm = new CircuitAlgorithm();
+        circuitAlgorithm.init(c.getCityMap(), c.getDeliveryRequest());
     }
 }
