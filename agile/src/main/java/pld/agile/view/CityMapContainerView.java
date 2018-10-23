@@ -52,7 +52,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         this.createSlider();
 
-        this.controller.getPlan().addObserver(this);
+        this.controller.getCityMap().addObserver(this);
         loadCityMapButton = new JButton("Load a city map");
         loadCityMapButton.addActionListener(new ButtonListener(c, w, this));
 
@@ -126,9 +126,9 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         this.drawCityMap(g);
 
-        CityMap plan = controller.getPlan();
-        if (plan != null) {
-            Intersection warehouseIntersection = plan.getIntersectionById("25611425");
+        CityMap cityMap = controller.getCityMap();
+        if (cityMap != null) {
+            Intersection warehouseIntersection = cityMap.getIntersectionById("25611425");
             drawDeliveriesOnCityMap(g, Color.red, warehouseIntersection);
         }
 
@@ -147,15 +147,15 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     private void drawCityMap(Graphics g) {
 
-        CityMap plan = this.controller.getPlan();
+        CityMap cityMap = this.controller.getCityMap();
 
-        if (plan.getIntersections().size() == 0) {
+        if (cityMap.getIntersections().size() == 0) {
             return;
         }
 
         Geolocation origin = null;
         // Origin to the top left corner
-        for (Intersection inter : plan.getIntersections().values()) {
+        for (Intersection inter : cityMap.getIntersections().values()) {
             if (origin == null) {
                 origin = inter.getGeolocation();
             } else {
@@ -170,7 +170,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(lineThickness));
 
-        for (Section sec : plan.getSections()) {
+        for (Section sec : cityMap.getSections()) {
             Geolocation start = sec.getStartIntersection().getGeolocation();
             Geolocation end = sec.getEndIntersection().getGeolocation();
 
@@ -184,7 +184,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         g.setColor(new Color(180, 140, 180));
         int dotSize = 6;
 
-        for (Intersection inter : plan.getIntersections().values()) {
+        for (Intersection inter : cityMap.getIntersections().values()) {
             Geolocation geo = inter.getGeolocation();
             Geolocation target = geolocationToPixels(origin, geo);
 
