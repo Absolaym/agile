@@ -5,10 +5,19 @@
  */
 package controller;
 
+import model.DeliveryRequest;
+import utils.XmlParser;
+
 /**
  *
  * @author lgalle
  */
-public class StateCircuitsComputed {
+public class StateCircuitsComputed extends StateDefault{
     
+    public DeliveryRequest LoadDeliveryRequest(String path){
+        XmlParser parser = new XmlParser();
+        DeliveryRequest dr = parser.parseDeliveryRequest(path);
+        //dr = setDeliveryRequestGeolocation(dr);
+        return dr;
+    }
 }

@@ -36,6 +36,7 @@ public class ButtonListener implements ActionListener {
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.LoadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
+
                 ((JButton) e.getSource()).setVisible(false);
                 if (cityMapContainer != null)cityMapContainer.repaint();
             }

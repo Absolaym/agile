@@ -29,10 +29,7 @@ public class StateDefault implements State{
     }
     
     public DeliveryRequest LoadDeliveryRequest(String path){
-        XmlParser parser = new XmlParser();
-        DeliveryRequest dr = parser.parseDeliveryRequest(path);
-        //dr = setDeliveryRequestGeolocation(dr);
-        return dr;
+       return null;
     }
     
     public void ComputeCircuits(){
