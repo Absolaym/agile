@@ -43,7 +43,7 @@ public class Controller {
         System.out.println("It has to load map.");
     }
     
-    public DeliveryRequest LoadDeliveryRequest(String path) {
+    public DeliveryRequest loadDeliveryRequest(String path) {
         //TO DO
         System.out.println("It has to load delivery requests.");
         
@@ -70,6 +70,9 @@ public class Controller {
         this.plan = plan;
     }
     
+//    public DeliveryRequest getDeliveryRequest() {
+//        return 
+//    }
 	
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){

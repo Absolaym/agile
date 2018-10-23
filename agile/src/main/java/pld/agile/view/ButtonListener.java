@@ -21,12 +21,11 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
-    private CityMapContainerView cityMapContainer;
 
-    public ButtonListener(Controller c, Window w,CityMapContainerView mcv) {
+
+    public ButtonListener(Controller c, Window w) {
         this.controller = c;
         this.window = w;
-        this.cityMapContainer = mcv;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -38,7 +37,7 @@ public class ButtonListener implements ActionListener {
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
 
                 ((JButton) e.getSource()).setVisible(false);
-                if (cityMapContainer != null)cityMapContainer.repaint();
+                window.getCityMapContainerPanel().repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
@@ -49,7 +48,7 @@ public class ButtonListener implements ActionListener {
                 int result = jfc.showOpenDialog(window);
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    dr = controller.LoadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                    dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
                     
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];
@@ -58,6 +57,8 @@ public class ButtonListener implements ActionListener {
                     }
                     //faire un string[][] à partir de dr.getDeliveries()
                     window.getDeliveryRequestPanel().addDeliveries(deliveries);
+                    
+                    
                 }
             } catch (Exception e2) {
 

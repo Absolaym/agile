@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
@@ -24,6 +25,8 @@ import model.Circuit;
 import model.Geolocation;
 import model.Intersection;
 import model.CityMap;
+import model.Delivery;
+import model.DeliveryRequest;
 import model.Section;
 import model.Trip;
 
@@ -54,7 +57,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         this.controller.getPlan().addObserver(this);
         loadCityMapButton = new JButton("Load a city map");
-        loadCityMapButton.addActionListener(new ButtonListener(c, w, this));
+        loadCityMapButton.addActionListener(new ButtonListener(c, w));
 
         loadCityMapButton.setSize(100, 100);
         loadCityMapButton.setLocation(100, 100);
@@ -128,18 +131,26 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         CityMap plan = controller.getPlan();
         if (plan != null) {
+            DeliveryRequest dr;
+            //dr = controller.getDeliveryRequest();
             Intersection warehouseIntersection = plan.getIntersectionById("25611425");
-            drawDeliveriesOnCityMap(g, Color.red, warehouseIntersection);
+            drawDeliveriesOnCityMap(g, Color.red, warehouseIntersection.getGeolocation());
+            
+            LinkedList<Delivery> delivs = dr.getDeliveries();
+            for (Delivery d : delivs) {
+                //Intersection delivIntersection = plan.getIntersectionById("25611425");
+                drawDeliveriesOnCityMap(g, Color.green, d.getGeolocation());
+            }
         }
 
     }
 
-    private void drawDeliveriesOnCityMap(Graphics g, Color color, Intersection intersection) {
+    private void drawDeliveriesOnCityMap(Graphics g, Color color, Geolocation geolocation) {
         g.setColor(color);
         int dotSize = 6;
 
-        if (intersection != null) {
-            Geolocation geo = geolocationToPixels(intersection.getGeolocation(), intersection.getGeolocation());
+        if (geolocation != null) {
+            Geolocation geo = geolocationToPixels(geolocation, geolocation);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
 
