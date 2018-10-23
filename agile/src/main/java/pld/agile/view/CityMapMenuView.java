@@ -6,20 +6,20 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
-public class MapMenuView extends JPanel {
+public class CityMapMenuView extends JPanel {
 
     private JButton computeCircuitsButton;
-    private JButton loadNewMapButton;
+    private JButton loadNewCityMapButton;
     private int menuHeight = 80;
     private int menuWidth = 200;
 
-    public MapMenuView(Window w, Controller controller) {
+    public CityMapMenuView(Window w, Controller controller) {
         computeCircuitsButton = new JButton("Compute circuits");
-        computeCircuitsButton.addActionListener(new ButtonListener(controller,w));
-        loadNewMapButton = new JButton("Load a new map");
-        loadNewMapButton.addActionListener(new ButtonListener(controller,w));
+        computeCircuitsButton.addActionListener(new ButtonListener(controller,w,null));
+        loadNewCityMapButton = new JButton("Load a new city map");
+        loadNewCityMapButton.addActionListener(new ButtonListener(controller,w,null));
         this.add(computeCircuitsButton);
-        this.add(loadNewMapButton);
+        this.add(loadNewCityMapButton);
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Menu :"));
         w.getContentPane().add(this);
@@ -44,8 +44,8 @@ public class MapMenuView extends JPanel {
         return computeCircuitsButton;
     }
 
-    public JButton getLoadNewMapButton() {
-        return loadNewMapButton;
+    public JButton getLoadNewCityMapButton() {
+        return loadNewCityMapButton;
     }
 
     

@@ -21,20 +21,24 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
+    private CityMapContainerView cityMapContainer;
 
-    public ButtonListener(Controller c, Window w) {
+    public ButtonListener(Controller c, Window w,CityMapContainerView mcv) {
         this.controller = c;
         this.window = w;
+        this.cityMapContainer = mcv;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(Window.LOAD_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_MAP))) {
+        if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
             JFileChooser jfc = new JFileChooser();
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.LoadCityMap(jfc.getSelectedFile().getAbsolutePath());
-                //the button "Load a map should become invisible once the map is loaded"
+                //the button "Load aCityMap should become invisible once theCityMap is loaded"
+
                 ((JButton) e.getSource()).setVisible(false);
+                if (cityMapContainer != null)cityMapContainer.repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
@@ -46,7 +50,6 @@ public class ButtonListener implements ActionListener {
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     dr = controller.LoadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    System.out.println("DR:" + dr.getDeliveries().size());
                     
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];

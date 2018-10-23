@@ -12,14 +12,14 @@ import model.CityMap;
 public class Window extends JFrame {
 
     // Subcomponents of the view
-    private MapMenuView mapMenuPanel;
-    private MapContainerView mapContainerPanel;
+    private CityMapMenuView mapMenuPanel;
+    private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;
 
     //list of buttons
-    protected final static String LOAD_MAP = "Load a map";
+    protected final static String LOAD_CITY_MAP = "Load a city map";
     protected final static String COMPUTE_CIRCUITS = "Compute circuits";
-    protected final static String LOAD_NEW_MAP = "Load a new map";
+    protected final static String LOAD_NEW_CITY_MAP = "Load a new city map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
     
     private int width;
@@ -39,8 +39,8 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
-        mapMenuPanel = new MapMenuView(this, controller);
-        mapContainerPanel = new MapContainerView(this, controller);
+        mapMenuPanel = new CityMapMenuView(this, controller);
+        mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
 
         setWindowSize();
@@ -62,11 +62,11 @@ public class Window extends JFrame {
         deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
-    public MapMenuView getMapMenuPanel() {
+    public CityMapMenuView getMapMenuPanel() {
         return mapMenuPanel;
     }
 
-    public MapContainerView getMapContainerPanel() {
+    public CityMapContainerView getMapContainerPanel() {
         return mapContainerPanel;
     }
 
