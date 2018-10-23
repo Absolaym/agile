@@ -33,26 +33,30 @@ public class Controller {
         this.setState(stateInit);
     }
 	
-    public void LoadCityMap(String path) {
+    public CityMap LoadCityMap(String path) {
         
         CityMap cityMap = this.state.LoadCityMap(path);
         if(cityMap != null ){
             this.setCityMap( cityMap );
             this.setState(this.stateCityMapLoaded);
         }
-    		
-        System.out.println("It has to load map.");
+    	return cityMap;	
+        //System.out.println("It has to load map.");
     }
     
     public DeliveryRequest loadDeliveryRequest(String path) {
-        //TO DO
+        
         System.out.println("It has to load delivery requests.");
         
-        XmlParser parser = new XmlParser();
-        DeliveryRequest dr = parser.parseDeliveryRequest(path);
-        dr = setDeliveryRequestGeolocation(dr);
-        this.deliveryRequest = dr;
-        return dr;
+     
+        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
+        if(deliveryRequest != null ){
+            this.setDeliveryRequest( deliveryRequest );
+            this.setState(this.stateDeliveryRequestLoaded);
+        }
+        
+        this.deliveryRequest = deliveryRequest;
+        return deliveryRequest;
     }
     
     
@@ -71,6 +75,10 @@ public class Controller {
     
     public DeliveryRequest getDeliveryRequest(){
         return this.deliveryRequest;
+    }
+    
+    public void setDeliveryRequest(DeliveryRequest deliveryRequest) {
+        this.deliveryRequest = deliveryRequest;
     }
     public void setState(State state) {
         this.state = state;
