@@ -11,7 +11,7 @@ public class Circuit {
     private Time departureTime = new Time();
     private String courierId = "";
     
-    private LinkedList<Trip> 	trips;
+    private LinkedList<Trip> trips;
     private LinkedList<Delivery> deliveries;
     
     public Circuit() {
