@@ -27,9 +27,9 @@ import model.Plan;
 import model.Section;
 import model.Trip;
 
-public class MapContainerView extends JPanel implements Observer {
+public class CityMapContainerView extends JPanel implements Observer {
 
-    private JButton loadMapButton;
+    private JButton loadCityMapButton;
     private JSlider zoomSlider;
 
     private int planHeight = 600;
@@ -43,22 +43,22 @@ public class MapContainerView extends JPanel implements Observer {
     private int originX = 0;
     private int originY = 0;
 
-    public MapContainerView(Window w, Controller c) {
+    public CityMapContainerView(Window w, Controller c) {
         super();
         this.controller = c;
 
         setLayout(null);
-        setBorder(BorderFactory.createTitledBorder("Map :"));
+        setBorder(BorderFactory.createTitledBorder("City Map :"));
 
         this.createSlider();
 
         this.controller.getPlan().addObserver(this);
-        loadMapButton = new JButton("Load a map");
-        loadMapButton.addActionListener(new ButtonListener(c, w, this));
+        loadCityMapButton = new JButton("Load a city map");
+        loadCityMapButton.addActionListener(new ButtonListener(c, w, this));
 
-        loadMapButton.setSize(100, 100);
-        loadMapButton.setLocation(100, 100);
-        add(loadMapButton);
+        loadCityMapButton.setSize(100, 100);
+        loadCityMapButton.setLocation(100, 100);
+        add(loadCityMapButton);
 
         setBackground(Color.DARK_GRAY);
 
@@ -87,7 +87,7 @@ public class MapContainerView extends JPanel implements Observer {
     private void createMouseListener() {
         this.addMouseListener(new MouseListener() {
             public void mousePressed(MouseEvent e) {
-                MapContainerView that = MapContainerView.this;
+                CityMapContainerView that = CityMapContainerView.this;
 
                 that.originX = e.getX();
                 that.originY = e.getY();
@@ -109,7 +109,7 @@ public class MapContainerView extends JPanel implements Observer {
 
             public void mouseDragged(MouseEvent e) {
 
-                MapContainerView that = MapContainerView.this;
+                CityMapContainerView that = CityMapContainerView.this;
 
                 that.offsetX += e.getX() - that.originX;
                 that.offsetY += e.getY() - that.originY;
@@ -117,7 +117,7 @@ public class MapContainerView extends JPanel implements Observer {
                 that.originX = e.getX();
                 that.originY = e.getY();
 
-                MapContainerView.this.repaint();
+                CityMapContainerView.this.repaint();
 
             }
 
@@ -130,17 +130,17 @@ public class MapContainerView extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        this.drawMap(g);
+        this.drawCityMap(g);
 
         Plan plan = controller.getPlan();
         if (plan != null) {
             Intersection warehouseIntersection = plan.getIntersectionById("25611425");
-            drawDeliveriesOnMap(g, Color.red, warehouseIntersection);
+            drawDeliveriesOnCityMap(g, Color.red, warehouseIntersection);
         }
 
     }
 
-    private void drawDeliveriesOnMap(Graphics g, Color color, Intersection intersection) {
+    private void drawDeliveriesOnCityMap(Graphics g, Color color, Intersection intersection) {
         g.setColor(color);
         int dotSize = 6;
 
@@ -151,7 +151,7 @@ public class MapContainerView extends JPanel implements Observer {
 
     }
 
-    private void drawMap(Graphics g) {
+    private void drawCityMap(Graphics g) {
 
         Plan plan = this.controller.getPlan();
 
@@ -257,8 +257,8 @@ public class MapContainerView extends JPanel implements Observer {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public JButton getLoadMapButton() {
-        return loadMapButton;
+    public JButton getLoadCityMapButton() {
+        return loadCityMapButton;
     }
 
     public JSlider getZoomSlider() {

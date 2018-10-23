@@ -27,7 +27,7 @@ public class Controller {
 	
 	
 	
-    public void loadMap(String path) {
+    public void loadCityMap(String path) {
         //TO DO
     		// This code is for testing purpose and by no means, should stay in place
     	try {

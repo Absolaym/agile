@@ -21,23 +21,23 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
-    private MapContainerView mapContainer;
+    private CityMapContainerView cityMapContainer;
 
-    public ButtonListener(Controller c, Window w, MapContainerView mcv) {
+    public ButtonListener(Controller c, Window w,CityMapContainerView mcv) {
         this.controller = c;
         this.window = w;
-        this.mapContainer = mcv;
+        this.cityMapContainer = mcv;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals(Window.LOAD_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_MAP))) {
+        if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
             JFileChooser jfc = new JFileChooser();
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
-                controller.loadMap(jfc.getSelectedFile().getAbsolutePath());
-                //the button "Load a map should become invisible once the map is loaded"
+                controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
+                //the button "Load aCityMap should become invisible once theCityMap is loaded"
                 ((JButton) e.getSource()).setVisible(false);
-                if (mapContainer != null) mapContainer.repaint();
+                if (cityMapContainer != null)cityMapContainer.repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.computeCircuits();
@@ -49,7 +49,6 @@ public class ButtonListener implements ActionListener {
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     dr = controller.loadDeliveryRequests(jfc.getSelectedFile().getAbsolutePath());
-                    System.out.println("DR:" + dr.getDeliveries().size());
                     
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];
