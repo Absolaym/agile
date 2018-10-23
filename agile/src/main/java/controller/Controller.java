@@ -20,7 +20,8 @@ import utils.XmlParser;
 public class Controller {
     
     private CityMap cityMap;
-
+    private DeliveryRequest dr;
+    
     public Controller() { 
         this.setCityMap(new CityMap());
     }
@@ -41,13 +42,14 @@ public class Controller {
         System.out.println("It has to load map.");
     }
     
-    public DeliveryRequest LoadDeliveryRequest(String path) {
+    public DeliveryRequest loadDeliveryRequest(String path) {
         //TO DO
         System.out.println("It has to load delivery requests.");
         
         XmlParser parser = new XmlParser();
         DeliveryRequest dr = parser.parseDeliveryRequest(path);
         dr = setDeliveryRequestGeolocation(dr);
+        this.dr = dr;
         return dr;
     }
     
@@ -65,6 +67,9 @@ public class Controller {
         this.cityMap = cityMap;
     }
     
+    public DeliveryRequest getDeliveryRequest(){
+        return this.dr;
+    }
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
         LinkedList<Delivery> deliveries = dr.getDeliveries();
