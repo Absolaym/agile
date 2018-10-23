@@ -23,6 +23,10 @@ public class Circuit {
         return trips;
     }
 
+    public void setTrips(LinkedList<Trip> list){
+        trips = list;
+    }
+    
     public LinkedList<Delivery> getDeliveries() {
         return deliveries;
     }
