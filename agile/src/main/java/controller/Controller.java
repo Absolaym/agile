@@ -34,17 +34,12 @@ public class Controller {
     }
 	
     public void LoadCityMap(String path) {
-        //TO DO
-        // This code is for testing purpose and by no means, should stay in place
-    	try {
-    		XmlParser xmlParser = new XmlParser();
-    		//Plan cityMap = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
-    		CityMap cityMap = xmlParser.parseMap(path);
-    		this.setCityMap( cityMap );
-    	}catch(Exception e) {
-    		//display exception in a pop up
-    		//make specific error for reading exception
-    	}
+        
+        CityMap cityMap = this.state.LoadCityMap(path);
+        if(cityMap != null ){
+            this.setCityMap( cityMap );
+            this.setState(this.stateCityMapLoaded);
+        }
     		
         System.out.println("It has to load map.");
     }
