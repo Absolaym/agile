@@ -20,7 +20,7 @@ import utils.XmlParser;
 public class Controller {
     
     private CityMap cityMap;
-    private DeliveryRequest dr;
+    private DeliveryRequest deliveryRequest;
     
     public Controller() { 
         this.setCityMap(new CityMap());
@@ -49,7 +49,7 @@ public class Controller {
         XmlParser parser = new XmlParser();
         DeliveryRequest dr = parser.parseDeliveryRequest(path);
         dr = setDeliveryRequestGeolocation(dr);
-        this.dr = dr;
+        this.deliveryRequest = dr;
         return dr;
     }
     
@@ -68,7 +68,7 @@ public class Controller {
     }
     
     public DeliveryRequest getDeliveryRequest(){
-        return this.dr;
+        return this.deliveryRequest;
     }
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
