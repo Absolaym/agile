@@ -15,7 +15,6 @@ public class App
     {
         
         Controller c = new Controller();
-        c.LoadCityMap(null);
         
         Window window = new Window( c );
     }

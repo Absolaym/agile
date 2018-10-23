@@ -10,7 +10,9 @@ import java.util.LinkedList;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Geolocation;
+import model.Circuit;
 import model.CityMap;
+import utils.CircuitAlgorithm;
 import utils.XmlParser;
 
 /**
@@ -21,26 +23,34 @@ public class Controller {
     
     private CityMap cityMap;
     private DeliveryRequest deliveryRequest;
+    private LinkedList<Circuit> circuits;
+    
     private State state;
-    private StateDefault stateDefault = new StateDefault();
-    private StateInit stateInit = new StateInit();
-    private StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
+    private StateDefault stateDefault 														= new StateDefault();
+    private StateInit stateInit 																= new StateInit();
+    private StateCityMapLoaded stateCityMapLoaded 								= new StateCityMapLoaded();
     private StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
-    private StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
+    private StateCircuitsComputed stateCircuitsComputed 					= new StateCircuitsComputed();
     
     public Controller() { 
         this.setCityMap(new CityMap());
         this.setState(stateInit);
+        this.preload();
+    }
+    
+    public void preload() {
+    		this.loadCityMap("src/main/assets/maps/petitPlan.xml");
+    		this.loadDeliveryRequest("src/main/assets/deliveries/dl-petit-6.xml");
     }
 	
-    public CityMap LoadCityMap(String path) {
+    public CityMap loadCityMap(String path) {
         
         CityMap cityMap = this.state.LoadCityMap(path);
         if(cityMap != null ){
             this.setCityMap( cityMap );
             this.setState(this.stateCityMapLoaded);
         }
-    	return cityMap;	
+        return cityMap;	
         //System.out.println("It has to load map.");
     }
     
@@ -62,7 +72,11 @@ public class Controller {
     
     public void ComputeCircuits() {
         //TO DO
-        System.out.println("It has to compute circuits.");
+    		CircuitAlgorithm algo = new CircuitAlgorithm();
+    		algo.init(this.cityMap, this.deliveryRequest);
+    		algo.execute();
+    		this.circuits = algo.result();
+    		
     }
     
     public CityMap getCityMap() {
