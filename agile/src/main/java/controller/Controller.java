@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Geolocation;
-import model.Plan;
+import model.CityMap;
 import utils.XmlParser;
 
 /**
@@ -19,21 +19,21 @@ import utils.XmlParser;
  */
 public class Controller {
     
-    private Plan plan;
+    private CityMap plan;
 
     public Controller() { 
-        this.setPlan(new Plan());
+        this.setPlan(new CityMap());
     }
 	
 	
 	
-    public void loadMap(String path) {
+    public void LoadCityMap(String path) {
         //TO DO
         // This code is for testing purpose and by no means, should stay in place
     	try {
     		XmlParser xmlParser = new XmlParser();
     		//Plan plan = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
-    		Plan plan = xmlParser.parseMap(path);
+    		CityMap plan = xmlParser.parseMap(path);
     		this.setPlan( plan );
     	}catch(Exception e) {
     		//display exception in a pop up
@@ -43,7 +43,7 @@ public class Controller {
         System.out.println("It has to load map.");
     }
     
-    public DeliveryRequest loadDeliveryRequests(String path) {
+    public DeliveryRequest LoadDeliveryRequest(String path) {
         //TO DO
         System.out.println("It has to load delivery requests.");
         
@@ -54,19 +54,19 @@ public class Controller {
     }
     
     
-    public void computeCircuits() {
+    public void ComputeCircuits() {
         //TO DO
         System.out.println("It has to compute circuits.");
     }
     
 
-    public Plan getPlan() {
+    public CityMap getPlan() {
         return plan;
     }
 
 
 
-    public void setPlan(Plan plan) {
+    public void setPlan(CityMap plan) {
         this.plan = plan;
     }
     

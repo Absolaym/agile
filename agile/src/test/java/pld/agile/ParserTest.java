@@ -3,7 +3,7 @@ package pld.agile;
 import junit.framework.*;
 import model.Delivery;
 import model.DeliveryRequest;
-import model.Plan;
+import model.CityMap;
 import utils.XmlParser;
 
 public class ParserTest extends TestCase {
@@ -43,7 +43,7 @@ public class ParserTest extends TestCase {
     public void testParseMap() throws Exception {
         XmlParser xmlParser = new XmlParser();
 
-        Plan map = xmlParser.parseMap("src/main/assets/maps/petitPlan.xml");
+        CityMap map = xmlParser.parseMap("src/main/assets/maps/petitPlan.xml");
         assertEquals( "Plan : 308 intersections, 616 sections", map.getPlanInfos());
 
     }

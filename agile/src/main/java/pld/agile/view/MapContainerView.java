@@ -23,7 +23,7 @@ import javax.swing.event.ChangeListener;
 import model.Circuit;
 import model.Geolocation;
 import model.Intersection;
-import model.Plan;
+import model.CityMap;
 import model.Section;
 import model.Trip;
 
@@ -128,7 +128,7 @@ public class MapContainerView extends JPanel implements Observer {
     
     private void drawMap(Graphics g) {
  
-        Plan plan = this.controller.getPlan();
+        CityMap plan = this.controller.getPlan();
         
         if(plan.getIntersections().size() == 0)	return;
         

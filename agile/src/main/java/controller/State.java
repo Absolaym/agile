@@ -5,15 +5,18 @@
  */
 package controller;
 
+import model.DeliveryRequest;
+import model.CityMap;
+
 /**
  *
  * @author lgalle
  */
 public interface State{
     
-    public abstract void LoadCityMap(String path);
+    public abstract CityMap LoadCityMap(String path);
     
-    public abstract void LoadDeliveryRequest();
+    public abstract DeliveryRequest LoadDeliveryRequest(String path);
     
     public abstract void ComputeCircuits();
 }

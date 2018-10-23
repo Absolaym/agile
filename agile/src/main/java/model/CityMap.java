@@ -14,7 +14,7 @@ import java.util.Observable;
 /**
  * @author olivi
  */
-public class Plan extends Observable{
+public class CityMap extends Observable{
     
     private List<Section> sections;
     private Map<String,Intersection> intersections;
@@ -22,7 +22,7 @@ public class Plan extends Observable{
     /**
      * Default constructor that creates empty lists of sections and intersections
      */
-    public Plan() {
+    public CityMap() {
         this.sections = new LinkedList<Section>();
         this.intersections = new HashMap<String,Intersection>();
     }
