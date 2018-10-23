@@ -36,7 +36,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         loadDeliveryRequestsButton = new JButton("Load delivery requests");
-        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c,w));
+        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c,w,null));
         loadDeliveryRequestsButton.setSize(loadDeliveryRequestsButtonWidth, loadDeliveryRequestsButtonHeight);
         loadDeliveryRequestsButton.setLocation(0, buttonLocationY);
         add(loadDeliveryRequestsButton);
@@ -70,6 +70,11 @@ public class DeliveryRequestView extends JPanel implements Observer {
         for(int i=0; i<deliv.length; i++) {
            tabModel.addRow(new String[]{deliv[i],"unknown","unknown"});
         }
+        
+    }
+    
+    public void setCircuitNumber(){
+        tabModel.setValueAt("12:00", 1, 2);
     }
 
     public void paintComponent(Graphics g) {

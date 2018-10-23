@@ -12,7 +12,6 @@ import utils.Time;
  * @author olivi & Johnny
  */
 public class Delivery {
-	
     /**
      * The id of the intersection corresponding to the address
      */
@@ -26,18 +25,21 @@ public class Delivery {
     private int duration = 0;
 
     public Delivery() {
-    
+
     }
-	
+
     public String getAddress() {
         return this.address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
+
     public int getDuration() {
         return this.duration;
     }
+
     public void setDuration(int duration) {
         this.duration = duration;
     }
