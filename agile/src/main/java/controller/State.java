@@ -9,6 +9,11 @@ package controller;
  *
  * @author lgalle
  */
-public class State {
+public interface State{
     
+    public abstract void LoadCityMap(String path);
+    
+    public abstract void LoadDeliveryRequest();
+    
+    public abstract void ComputeCircuits();
 }
