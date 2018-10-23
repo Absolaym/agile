@@ -21,10 +21,12 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
+    private MapContainerView mapContainer;
 
-    public ButtonListener(Controller c, Window w) {
+    public ButtonListener(Controller c, Window w, MapContainerView mcv) {
         this.controller = c;
         this.window = w;
+        this.mapContainer = mcv;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -35,6 +37,7 @@ public class ButtonListener implements ActionListener {
                 controller.loadMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load a map should become invisible once the map is loaded"
                 ((JButton) e.getSource()).setVisible(false);
+                if (mapContainer != null) mapContainer.repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.computeCircuits();

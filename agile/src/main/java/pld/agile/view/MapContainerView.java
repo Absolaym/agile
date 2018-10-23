@@ -54,7 +54,7 @@ public class MapContainerView extends JPanel implements Observer {
 
         this.controller.getPlan().addObserver(this);
         loadMapButton = new JButton("Load a map");
-        loadMapButton.addActionListener(new ButtonListener(c, w));
+        loadMapButton.addActionListener(new ButtonListener(c, w, this));
 
         loadMapButton.setSize(100, 100);
         loadMapButton.setLocation(100, 100);
@@ -132,23 +132,24 @@ public class MapContainerView extends JPanel implements Observer {
 
         this.drawMap(g);
 
-        g.setColor(new Color(255, 0, 0));
-        int dotSize = 6;
-        
         Plan plan = controller.getPlan();
-        if(plan !=null){
+        if (plan != null) {
             Intersection warehouseIntersection = plan.getIntersectionById("25611425");
-            System.out.println("warehouseIntersection" + warehouseIntersection);
-            if (warehouseIntersection != null) {
-                Geolocation warehouseGeo = geolocationToPixels(warehouseIntersection.getGeolocation(),warehouseIntersection.getGeolocation());
-                g.fillArc((int) warehouseGeo.getLongitude() - dotSize / 2, (int) warehouseGeo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-            }
-        
+            drawDeliveriesOnMap(g, Color.red, warehouseIntersection);
         }
 
     }
-    
-    //private void drawDeliveriesOnMap (G)
+
+    private void drawDeliveriesOnMap(Graphics g, Color color, Intersection intersection) {
+        g.setColor(color);
+        int dotSize = 6;
+
+        if (intersection != null) {
+            Geolocation geo = geolocationToPixels(intersection.getGeolocation(), intersection.getGeolocation());
+            g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+        }
+
+    }
 
     private void drawMap(Graphics g) {
 
