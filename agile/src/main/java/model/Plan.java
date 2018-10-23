@@ -59,6 +59,14 @@ public class Plan extends Observable{
         return "Plan{" + "sections=" + sections + ", intersections=" + intersections + '}';
     }
     
+    public String getPlanInfos() {
+        String str = "";
+        
+        str += "Plan : " + intersections.size() + " intersections, ";
+        str += sections.size() + " sections" ;
+
+        return str;
+    }
     
     
 }

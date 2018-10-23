@@ -32,6 +32,4 @@ public class Intersection {
         return "Intersection{" + "geolocation=" + geolocation + ", id=" + id + '}';
     }
 	
-    
-	
 }

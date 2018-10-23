@@ -5,7 +5,7 @@ import utils.Time;
 
 public class Circuit {
 	
-	public static final int SPEED =  15;
+    public static final int SPEED =  15;
 
     private String warehouseAddress = "";
     private Time departureTime = new Time();
@@ -15,40 +15,47 @@ public class Circuit {
     private LinkedList<Delivery> deliveries;
     
     public Circuit() {
-    		this.trips = new LinkedList<Trip>();
-    		this.deliveries = new LinkedList<Delivery>();
+        this.trips = new LinkedList<Trip>();
+        this.deliveries = new LinkedList<Delivery>();
     }
     
-	public LinkedList<Trip> getTrips() {
-		return trips;
-	}
+    public LinkedList<Trip> getTrips() {
+        return trips;
+    }
 
-	public LinkedList<Delivery> getDeliveries() {
-		return deliveries;
-	}
+    public LinkedList<Delivery> getDeliveries() {
+        return deliveries;
+    }
 
-	public String getWarehouseAddress() {
-		return warehouseAddress;
-	}
+    public String getWarehouseAddress() {
+        return warehouseAddress;
+    }
 
-	public void setWarehouseAddress(String warehouseAddress) {
-		this.warehouseAddress = warehouseAddress;
-	}
+    public void setWarehouseAddress(String warehouseAddress) {
+        this.warehouseAddress = warehouseAddress;
+    }
 
-	public Time getDepartureTime() {
-		return departureTime;
-	}
+    public Time getDepartureTime() {
+        return departureTime;
+    }
 
-	public void setDepartureTime(Time departureTime) {
-		this.departureTime = departureTime;
-	}
+    public void setDepartureTime(Time departureTime) {
+        this.departureTime = departureTime;
+    }
 
-	public String getCourierId() {
-		return courierId;
-	}
+    public String getCourierId() {
+        return courierId;
+    }
 
-	public void setCourierId(String courierId) {
-		this.courierId = courierId;
-	}
+    public void setCourierId(String courierId) {
+        this.courierId = courierId;
+    }
+
+    @Override
+    public String toString() {
+        return "Circuit{" + "warehouseAddress=" + warehouseAddress + ", departureTime=" + departureTime + ", courierId=" + courierId + ", trips=" + trips + ", deliveries=" + deliveries + '}';
+    }
+        
+        
 
 }

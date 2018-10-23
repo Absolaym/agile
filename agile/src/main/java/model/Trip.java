@@ -18,5 +18,10 @@ public class Trip {
 		this.sections.add(section);
 		return this;
 	}
+
+    @Override
+    public String toString() {
+        return "Trip{" + "sections=" + sections + '}';
+    }
 	
 }

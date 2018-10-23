@@ -44,7 +44,7 @@ public class ParserTest extends TestCase {
             XmlParser xmlParser = new XmlParser();
 
             Plan map = xmlParser.parseMap("src/main/assets/maps/petitPlan.xml");
-            assertEquals( "", map.toString() );
+            assertEquals( "Plan : 308 intersections, 616 sections", map.getPlanInfos());
        
 	}
 	
