@@ -102,15 +102,15 @@ public class MapContainerView extends JPanel implements Observer {
 
             public void mouseDragged(MouseEvent e) {
 
-                    MapContainerView that = MapContainerView.this;
+                MapContainerView that = MapContainerView.this;
 
-                    that.offsetX += e.getX() - that.originX;
-                    that.offsetY += e.getY() - that.originY;
+                that.offsetX += e.getX() - that.originX;
+                that.offsetY += e.getY() - that.originY;
 
-                    that.originX = e.getX();
-                    that.originY = e.getY();
+                that.originX = e.getX();
+                that.originY = e.getY();
 
-                    MapContainerView.this.repaint();
+                MapContainerView.this.repaint();
 
             }
 
@@ -193,17 +193,17 @@ public class MapContainerView extends JPanel implements Observer {
         
         int i = 0;
         for(Trip trip : circuit.getTrips()) {
-        		g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
-        		i++;
-        		for(Section sec : trip.getSections()) {
-            		Geolocation start 	= sec.getStartIntersection().getGeolocation();
-            		Geolocation end 		= sec.getEndIntersection().getGeolocation();
-            		
-            		Geolocation pxStart 	= this.geolocationToPixels(origin, start);
-            		Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
-            		
-            		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
-        		}
+            g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
+            i++;
+            for(Section sec : trip.getSections()) {
+            Geolocation start 	= sec.getStartIntersection().getGeolocation();
+            Geolocation end 		= sec.getEndIntersection().getGeolocation();
+
+            Geolocation pxStart 	= this.geolocationToPixels(origin, start);
+            Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
+
+            g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
+            }
         }
         */
     }
