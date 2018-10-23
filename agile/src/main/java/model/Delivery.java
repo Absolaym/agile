@@ -29,27 +29,27 @@ public class Delivery {
     
     }
 	
-	public String getAddress() {
-		return this.address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public int getDuration() {
-		return this.duration;
-	}
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-	
-	public String toString() {
-		String str = "";
-		
-		str += "Delivery - Location: " + this.address + " \t| ";
-		str += "Duration: " + new Time(this.duration * 60);
-		
-		return str;
-	}
+    public String getAddress() {
+        return this.address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public int getDuration() {
+        return this.duration;
+    }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String toString() {
+        String str = "";
+
+        str += "Delivery - Location: " + this.address + " \t| ";
+        str += "Duration: " + new Time(this.duration * 60);
+
+        return str;
+    }
 
 	public Geolocation getGeolocation() {
 		return geolocation;

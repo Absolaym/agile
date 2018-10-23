@@ -39,4 +39,14 @@ public class MapMenuView extends JPanel {
     public int getWidth() {
         return menuWidth;
     }
+
+    public JButton getComputeCircuitsButton() {
+        return computeCircuitsButton;
+    }
+
+    public JButton getLoadNewMapButton() {
+        return loadNewMapButton;
+    }
+
+    
 }

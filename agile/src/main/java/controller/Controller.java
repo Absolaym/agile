@@ -19,11 +19,11 @@ import utils.XmlParser;
  */
 public class Controller {
     
-	private Plan plan;
-	
-	public Controller() { 
-		this.setPlan(new Plan());
-	}
+    private Plan plan;
+
+    public Controller() { 
+            this.setPlan(new Plan());
+    }
 	
 	
 	
@@ -60,15 +60,15 @@ public class Controller {
     }
     
 
-	public Plan getPlan() {
-		return plan;
-	}
+    public Plan getPlan() {
+            return plan;
+    }
 
 
 
-	public void setPlan(Plan plan) {
-		this.plan = plan;
-	}
+    public void setPlan(Plan plan) {
+            this.plan = plan;
+    }
     
 	
 	//je sais pas ou mettre ca oups --MF

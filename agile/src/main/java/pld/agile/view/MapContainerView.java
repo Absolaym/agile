@@ -229,4 +229,37 @@ public class MapContainerView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public JButton getLoadMapButton() {
+        return loadMapButton;
+    }
+
+    public JSlider getZoomSlider() {
+        return zoomSlider;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public static double getKM_TO_PIXEL() {
+        return KM_TO_PIXEL;
+    }
+
+    public double getOffsetX() {
+        return offsetX;
+    }
+
+    public double getOffsetY() {
+        return offsetY;
+    }
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+    
 }

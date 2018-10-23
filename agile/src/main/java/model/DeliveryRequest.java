@@ -16,12 +16,13 @@ public class DeliveryRequest {
     
 	// While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
 	// since we might have a bunch of addition/deletion to make. Though it's not that relevant
+
     private LinkedList<Delivery> deliveries;
     private String warehouseAddress = "";
     private Time departureTime = new Time();
 
     public DeliveryRequest() {
-    		this.deliveries = new LinkedList<Delivery>();
+        this.deliveries = new LinkedList<Delivery>();
     }
     
     /**
@@ -30,8 +31,8 @@ public class DeliveryRequest {
      * @return this
      */
     public DeliveryRequest addDelivery(Delivery delivery) {
-    		this.deliveries.add( delivery );
-    		return this;
+        this.deliveries.add( delivery );
+        return this;
     }
     
     /**
@@ -40,8 +41,8 @@ public class DeliveryRequest {
      * @return this
      */
     public DeliveryRequest removeDelivery(Delivery delivery) {
-    		this.deliveries.remove(delivery);
-    		return this;
+        this.deliveries.remove(delivery);
+        return this;
     }
     
     public LinkedList<Delivery> getDeliveries() {
@@ -52,31 +53,31 @@ public class DeliveryRequest {
     	this.deliveries = d;
     }
 
-	public String getWarehouseAddress() {
-		return warehouseAddress;
-	}
+    public String getWarehouseAddress() {
+        return warehouseAddress;
+    }
 
-	public void setWarehouseAddress(String warehouseAddress) {
-		this.warehouseAddress = warehouseAddress;
-	}
+    public void setWarehouseAddress(String warehouseAddress) {
+        this.warehouseAddress = warehouseAddress;
+    }
 
-	public Time getDepartureTime() {
-		return departureTime;
-	}
+    public Time getDepartureTime() {
+        return departureTime;
+    }
 
-	public void setDepartureTime(Time departureTime) {
-		this.departureTime = departureTime;
-	}
-	
-	public String toString() {
-		String str = "";
-		str += "Warehouse: " + this.warehouseAddress + " | ";
-		str += "Departure time: " + this.getDepartureTime();
-		
-		str += "\t" + this.getDeliveries().size() + " deliveries";
-		
-		return str;
-	}
+    public void setDepartureTime(Time departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String toString() {
+        String str = "";
+        str += "Warehouse: " + this.warehouseAddress + " | ";
+        str += "Departure time: " + this.getDepartureTime();
+
+        str += "\t" + this.getDeliveries().size() + " deliveries";
+
+        return str;
+    }
     
 }
 

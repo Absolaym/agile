@@ -16,46 +16,62 @@ import java.util.Observable;
  */
 public class Plan extends Observable{
     
-	private List<Section> sections;
+    private List<Section> sections;
     private Map<String,Intersection> intersections;
     
     /**
      * Default constructor that creates empty lists of sections and intersections
      */
     public Plan() {
-    		this.sections = new LinkedList<Section>();
-    		this.intersections = new HashMap<String,Intersection>();
+        this.sections = new LinkedList<Section>();
+        this.intersections = new HashMap<String,Intersection>();
     }
     
     public void AddIntersection(Intersection inter) {
-    		this.intersections.put( inter.getId(), inter );
+        this.intersections.put( inter.getId(), inter );
     }
     
     public void AddSection(Section sec) {
-    		this.sections.add( sec );
+        this.sections.add( sec );
     }
 
-    	/**
-    	 * Get an intersection by its Id
-    	 * @param intersectionId
-    	 * @return if found the intersection, null if not
-    	 */
+    /**
+     * Get an intersection by its Id
+     * @param intersectionId
+     * @return if found the intersection, null if not
+     */
     public Intersection getIntersectionById(String intersectionId) {
-    		// Olivia we should discuss the container you chose since Map seems better
-    		
-    		return this.intersections.get( intersectionId );
+        // Olivia we should discuss the container you chose since Map seems better
+
+        return this.intersections.get( intersectionId );
     }
     
-	public Map<String,Intersection> getIntersections() {
-		return intersections;
-	}
+    public Map<String,Intersection> getIntersections() {
+        return intersections;
+    }
 
-	public List<Section> getSections() {
-		return sections;
-	}
-	
+    public List<Section> getSections() {
+        return sections;
+    }
+
+
 	public Geolocation getIntersectionGeolocation(String address){
 		return this.intersections.get(address).getGeolocation();
 	}
+
+    @Override
+    public String toString() {
+        return "Plan{" + "sections=" + sections + ", intersections=" + intersections + '}';
+    }
+    
+    public String getPlanInfos() {
+        String str = "";
+        
+        str += "Plan : " + intersections.size() + " intersections, ";
+        str += sections.size() + " sections" ;
+
+        return str;
+    }
+    
     
 }
