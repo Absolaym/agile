@@ -86,38 +86,38 @@ public class MapContainerView extends JPanel implements Observer {
     
     private void createMouseListener() {
         this.addMouseListener(new MouseListener() {
-	    	  	public void mousePressed(MouseEvent e) {
-	    	  		MapContainerView that = MapContainerView.this;
-	    			
-	    			that.originX = e.getX();
-	    			that.originY = e.getY();
-	    	    }
-	
-	    	    public void mouseReleased(MouseEvent e) {}
-	    	    public void mouseEntered(MouseEvent e) {}
-	    	    public void mouseExited(MouseEvent e) {}
-	    	    public void mouseClicked(MouseEvent e) {}
-	    });
-	    this.addMouseMotionListener(new MouseMotionListener() {
-	    
-	    		public void mouseDragged(MouseEvent e) {
-	    			
-	    			MapContainerView that = MapContainerView.this;
-	    			
-	    			that.offsetX += e.getX() - that.originX;
-	    			that.offsetY += e.getY() - that.originY;
-	    			
-	    			that.originX = e.getX();
-	    			that.originY = e.getY();
-	    			
-	    			MapContainerView.this.repaint();
-	    			
-	    		}
-	
-			public void mouseMoved(MouseEvent e) {
-		
-			}
-	    });
+            public void mousePressed(MouseEvent e) {
+                MapContainerView that = MapContainerView.this;
+
+                that.originX = e.getX();
+                that.originY = e.getY();
+            }
+
+            public void mouseReleased(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {}
+        });
+        this.addMouseMotionListener(new MouseMotionListener() {
+
+            public void mouseDragged(MouseEvent e) {
+
+                    MapContainerView that = MapContainerView.this;
+
+                    that.offsetX += e.getX() - that.originX;
+                    that.offsetY += e.getY() - that.originY;
+
+                    that.originX = e.getX();
+                    that.originY = e.getY();
+
+                    MapContainerView.this.repaint();
+
+            }
+
+            public void mouseMoved(MouseEvent e) {
+
+            }
+        });
     }
 
     public void paintComponent(Graphics g) {
@@ -135,12 +135,12 @@ public class MapContainerView extends JPanel implements Observer {
         Geolocation origin = null;
         // Origin to the top left corner
         for(Intersection inter : plan.getIntersections().values()) {
-        		if(origin == null) {
-        			origin = inter.getGeolocation();
-        		} else {
-	        		origin.setLatitude(Math.max(origin.getLatitude(), inter.getGeolocation().getLatitude()));
-	        		origin.setLongitude(Math.min(origin.getLongitude(), inter.getGeolocation().getLongitude()));
-        		}
+            if(origin == null) {
+                    origin = inter.getGeolocation();
+            } else {
+                    origin.setLatitude(Math.max(origin.getLatitude(), inter.getGeolocation().getLatitude()));
+                    origin.setLongitude(Math.min(origin.getLongitude(), inter.getGeolocation().getLongitude()));
+            }
         }
         
         g.setColor(new Color(100, 100, 105));
@@ -149,23 +149,23 @@ public class MapContainerView extends JPanel implements Observer {
         g2.setStroke(new BasicStroke(lineThickness));
         
         for(Section sec : plan.getSections()) {
-        		Geolocation start 	= sec.getStartIntersection().getGeolocation();
-        		Geolocation end 		= sec.getEndIntersection().getGeolocation();
-        		
-        		Geolocation pxStart 	= this.geolocationToPixels(origin, start);
-        		Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
-        		
-        		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
+            Geolocation start 	= sec.getStartIntersection().getGeolocation();
+            Geolocation end 		= sec.getEndIntersection().getGeolocation();
+
+            Geolocation pxStart 	= this.geolocationToPixels(origin, start);
+            Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
+
+            g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
         }
         
         g.setColor(new Color(180, 140, 180));
         int dotSize = 6;
         
         for(Intersection inter : plan.getIntersections().values()) {
-        		Geolocation geo = inter.getGeolocation();
-        		Geolocation target = geolocationToPixels( origin, geo );
-        		
-        		g.fillArc((int)target.getLongitude() - dotSize / 2, (int)target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+            Geolocation geo = inter.getGeolocation();
+            Geolocation target = geolocationToPixels( origin, geo );
+
+            g.fillArc((int)target.getLongitude() - dotSize / 2, (int)target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
         
         /*
@@ -209,11 +209,11 @@ public class MapContainerView extends JPanel implements Observer {
     }
     
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
-    		double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
-		Geolocation geoY = new Geolocation( target.getLatitude(), origin.getLongitude() );
-		Geolocation geoX = new Geolocation( origin.getLatitude(), target.getLongitude() );
-		Geolocation ret = new Geolocation( origin.distance( geoY ) / coeff + offsetY, origin.distance( geoX ) / coeff + offsetX);
-		return ret;
+        double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
+        Geolocation geoY = new Geolocation( target.getLatitude(), origin.getLongitude() );
+        Geolocation geoX = new Geolocation( origin.getLatitude(), target.getLongitude() );
+        Geolocation ret = new Geolocation( origin.distance( geoY ) / coeff + offsetY, origin.distance( geoX ) / coeff + offsetX);
+        return ret;
     }
     
     // to change
