@@ -22,12 +22,22 @@ public class CircuitAlgorithm {
 			intersection = anIntersection;
 			links = new LinkedList<Link>();
 		}
+		
+		public void addLink(Link link) {
+			links.add(link);
+		}
 	}
 	
 	public class Link {
 		Section section;
 		Node startNode;
 		Node endNode;
+		
+		public Link(Section aSection, Node aStartNode, Node anEndNode) {
+			section = aSection;
+			startNode = aStartNode;
+			endNode = anEndNode;
+		}
 		
 	}
 	
@@ -39,16 +49,17 @@ public class CircuitAlgorithm {
 		this.cityMap = aCityMap;
 		this.deliveryRequest = aDeliveryRequest;
 		
-		nodes = new HashMap<String, Node>();
-		for(Intersection intersection : cityMap.getIntersections().values()){
-				/*
-			new Node().intersection = node;
-			newNode.instersection = intersection;
-			
-			nodes.put(intersection.getId(), arg1)
-			*/
-		}
+		this.nodes = new HashMap<String, Node>();
+		for(Intersection intersection : cityMap.getIntersections().values())
+			nodes.put(intersection.getId(), new Node(intersection));
 		
+		for(Section section : cityMap.getSections()){
+			Node startNode = nodes.get(section.getStartIntersection().getId());
+			Node endNode = nodes.get(section.getEndIntersection().getId());
+			Link newLink = new Link(section, startNode, endNode);
+			nodes.get(section.getStartIntersection().getId()).addLink(newLink);
+		}
+		System.out.println("");
 		
 	}
 	
