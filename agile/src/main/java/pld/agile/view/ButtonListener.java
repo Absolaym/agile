@@ -32,12 +32,12 @@ public class ButtonListener implements ActionListener {
             JFileChooser jfc = new JFileChooser();
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
-                controller.loadMap(jfc.getSelectedFile().getAbsolutePath());
+                controller.LoadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load a map should become invisible once the map is loaded"
                 ((JButton) e.getSource()).setVisible(false);
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
-            controller.computeCircuits();
+            controller.ComputeCircuits();
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
@@ -45,7 +45,7 @@ public class ButtonListener implements ActionListener {
                 int result = jfc.showOpenDialog(window);
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    dr = controller.loadDeliveryRequests(jfc.getSelectedFile().getAbsolutePath());
+                    dr = controller.LoadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
                     System.out.println("DR:" + dr.getDeliveries().size());
                     
                     //get deliveries and send to JTable to be displayed
