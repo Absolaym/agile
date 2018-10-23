@@ -73,17 +73,17 @@ public class Controller {
 	
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
-            LinkedList<Delivery> deliveries = dr.getDeliveries();
-            for (Delivery delivery : deliveries){
-                    Geolocation geolocation = plan.getIntersectionGeolocation(delivery.getAddress());
-                    if(geolocation == null){
-                    System.out.println("The address " + delivery.getAddress() + " was not found");
-                    deliveries.remove(delivery);
-                    continue;
-                    }
-                    delivery.setGeolocation(geolocation);
+        LinkedList<Delivery> deliveries = dr.getDeliveries();
+        for (Delivery delivery : deliveries){
+            Geolocation geolocation = plan.getIntersectionGeolocation(delivery.getAddress());
+            if(geolocation == null){
+            System.out.println("The address " + delivery.getAddress() + " was not found");
+            deliveries.remove(delivery);
+            continue;
             }
-            dr.setDeliveries(deliveries);
-            return dr;
+            delivery.setGeolocation(geolocation);
+        }
+        dr.setDeliveries(deliveries);
+        return dr;
     }
 }
