@@ -2,7 +2,7 @@ package pld.agile;
 import controller.Controller;
 import model.Delivery;
 import model.DeliveryRequest;
-import model.Plan;
+import model.CityMap;
 import utils.XmlParser;
 import pld.agile.view.*;
 /**

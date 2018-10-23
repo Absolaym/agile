@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 import model.DeliveryRequest;
-import model.Plan;
+import model.CityMap;
 
 public class Window extends JFrame {
 

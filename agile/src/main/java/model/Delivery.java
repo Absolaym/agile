@@ -12,7 +12,6 @@ import utils.Time;
  * @author olivi & Johnny
  */
 public class Delivery {
-
     /**
      * The id of the intersection corresponding to the address
      */

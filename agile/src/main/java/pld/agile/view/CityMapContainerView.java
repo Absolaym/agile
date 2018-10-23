@@ -23,7 +23,7 @@ import javax.swing.event.ChangeListener;
 import model.Circuit;
 import model.Geolocation;
 import model.Intersection;
-import model.Plan;
+import model.CityMap;
 import model.Section;
 import model.Trip;
 
@@ -88,22 +88,15 @@ public class CityMapContainerView extends JPanel implements Observer {
         this.addMouseListener(new MouseListener() {
             public void mousePressed(MouseEvent e) {
                 CityMapContainerView that = CityMapContainerView.this;
-
                 that.originX = e.getX();
                 that.originY = e.getY();
             }
 
-            public void mouseReleased(MouseEvent e) {
-            }
 
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-
-            public void mouseClicked(MouseEvent e) {
-            }
+            public void mouseReleased(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+            public void mouseClicked(MouseEvent e) {}
         });
         this.addMouseMotionListener(new MouseMotionListener() {
 
@@ -119,6 +112,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
                 CityMapContainerView.this.repaint();
 
+
             }
 
             public void mouseMoved(MouseEvent e) {
@@ -132,7 +126,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         this.drawCityMap(g);
 
-        Plan plan = controller.getPlan();
+        CityMap plan = controller.getPlan();
         if (plan != null) {
             Intersection warehouseIntersection = plan.getIntersectionById("25611425");
             drawDeliveriesOnCityMap(g, Color.red, warehouseIntersection);
@@ -153,7 +147,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     private void drawCityMap(Graphics g) {
 
-        Plan plan = this.controller.getPlan();
+        CityMap plan = this.controller.getPlan();
 
         if (plan.getIntersections().size() == 0) {
             return;
@@ -167,6 +161,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             } else {
                 origin.setLatitude(Math.max(origin.getLatitude(), inter.getGeolocation().getLatitude()));
                 origin.setLongitude(Math.min(origin.getLongitude(), inter.getGeolocation().getLongitude()));
+
             }
         }
 
@@ -183,6 +178,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             Geolocation pxEnd = this.geolocationToPixels(origin, end);
 
             g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
+
         }
 
         g.setColor(new Color(180, 140, 180));
@@ -193,6 +189,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             Geolocation target = geolocationToPixels(origin, geo);
 
             g.fillArc((int) target.getLongitude() - dotSize / 2, (int) target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+
         }
 
         /*
@@ -240,6 +237,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation geoY = new Geolocation(target.getLatitude(), origin.getLongitude());
         Geolocation geoX = new Geolocation(origin.getLatitude(), target.getLongitude());
         Geolocation ret = new Geolocation(origin.distance(geoY) / coeff + offsetY, origin.distance(geoX) / coeff + offsetX);
+
         return ret;
     }
 

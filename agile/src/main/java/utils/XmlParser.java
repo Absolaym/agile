@@ -11,7 +11,7 @@ import model.Delivery;
 import model.DeliveryRequest;
 import model.Geolocation;
 import model.Intersection;
-import model.Plan;
+import model.CityMap;
 import model.Section;
 
 import org.w3c.dom.Document;
@@ -92,8 +92,8 @@ public class XmlParser {
      * @param filePath the path to the xml file you want to convert in a Map
      * @return the Map converted
      */
-    public Plan parseMap(String filePath) {
-        Plan map = new Plan();
+    public CityMap parseMap(String filePath) {
+        CityMap map = new CityMap();
 
         try {
             final Document doc = this.docBuilder.parse( new File(filePath) );
