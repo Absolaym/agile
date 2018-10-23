@@ -44,7 +44,14 @@ public class ParserTest extends TestCase {
         XmlParser xmlParser = new XmlParser();
 
         CityMap map = xmlParser.parseMap("src/main/assets/maps/petitPlan.xml");
-        assertEquals( "Plan : 308 intersections, 616 sections", map.getPlanInfos());
+        assertEquals( "Plan : 308 intersections, 616 sections", map.getPlanInfos() );
+        assertEquals( map.getIntersections().containsKey("26079656"), true );
+        assertEquals( map.getIntersections().containsKey("41"), false );
+        
+        map = xmlParser.parseMap("src/main/assets/maps/moyenPlan.xml");
+        assertEquals( "Plan : 1448 intersections, 3097 sections", map.getPlanInfos() );
+        assertEquals( map.getIntersections().containsKey("1440845047"), true );
+        assertEquals( map.getIntersections().containsKey("41"), false );
 
     }
 	

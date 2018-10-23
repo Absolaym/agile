@@ -32,8 +32,8 @@ public class CityMapContainerView extends JPanel implements Observer {
     private JButton loadCityMapButton;
     private JSlider zoomSlider;
 
-    private int planHeight = 600;
-    private int planWidth = 600;
+    private int cityMapHeight = 600;
+    private int cityMapWidth = 600;
     private Controller controller;
 
     static public double KM_TO_PIXEL = 0.0001;
@@ -217,17 +217,17 @@ public class CityMapContainerView extends JPanel implements Observer {
         
         int i = 0;
         for(Trip trip : circuit.getTrips()) {
-        		g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
-        		i++;
-        		for(Section sec : trip.getSections()) {
-            		Geolocation start 	= sec.getStartIntersection().getGeolocation();
-            		Geolocation end 		= sec.getEndIntersection().getGeolocation();
-            		
-            		Geolocation pxStart 	= this.geolocationToPixels(origin, start);
-            		Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
-            		
-            		g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
-        		}
+            g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
+            i++;
+            for(Section sec : trip.getSections()) {
+            Geolocation start 	= sec.getStartIntersection().getGeolocation();
+            Geolocation end 		= sec.getEndIntersection().getGeolocation();
+
+            Geolocation pxStart 	= this.geolocationToPixels(origin, start);
+            Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
+
+            g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
+            }
         }
          */
     }
@@ -243,12 +243,12 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     // to change
     public int getHeight() {
-        return planHeight;
+        return cityMapHeight;
     }
 
     // to change
     public int getWidth() {
-        return planWidth;
+        return cityMapWidth;
     }
 
     public void update(Observable o, Object arg) {

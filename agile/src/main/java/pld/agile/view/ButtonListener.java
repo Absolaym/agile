@@ -49,7 +49,7 @@ public class ButtonListener implements ActionListener {
                 int result = jfc.showOpenDialog(window);
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    dr = controller.LoadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                    dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
                     
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];
