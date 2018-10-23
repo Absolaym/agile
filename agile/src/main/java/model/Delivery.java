@@ -13,19 +13,19 @@ import utils.Time;
  */
 public class Delivery {
 	
-	/**
-	 * The id of the intersection corresponding to the address
-	 */
-	private String address = "";
-	
-	private Geolocation geolocation;
-	
-	/**
-	 * The time required to deliver the item to the customer (minutes)
-	 */
-	private int duration = 0;
-    
-	public Delivery() {
+    /**
+     * The id of the intersection corresponding to the address
+     */
+    private String address = "";
+
+    private Geolocation geolocation;
+
+    /**
+     * The time required to deliver the item to the customer (minutes)
+     */
+    private int duration = 0;
+
+    public Delivery() {
     
     }
 	
@@ -51,11 +51,11 @@ public class Delivery {
         return str;
     }
 
-	public Geolocation getGeolocation() {
-		return geolocation;
-	}
+    public Geolocation getGeolocation() {
+        return geolocation;
+    }
 
-	public void setGeolocation(Geolocation geolocation) {
-		this.geolocation = geolocation;
-	}
+    public void setGeolocation(Geolocation geolocation) {
+        this.geolocation = geolocation;
+    }
 }

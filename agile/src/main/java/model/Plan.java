@@ -55,9 +55,9 @@ public class Plan extends Observable{
     }
 
 
-	public Geolocation getIntersectionGeolocation(String address){
-		return this.intersections.get(address).getGeolocation();
-	}
+    public Geolocation getIntersectionGeolocation(String address){
+        return this.intersections.get(address).getGeolocation();
+    }
 
     @Override
     public String toString() {

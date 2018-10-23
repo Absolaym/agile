@@ -14,8 +14,8 @@ import utils.Time;
  */
 public class DeliveryRequest {
     
-	// While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
-	// since we might have a bunch of addition/deletion to make. Though it's not that relevant
+    // While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
+    // since we might have a bunch of addition/deletion to make. Though it's not that relevant
 
     private LinkedList<Delivery> deliveries;
     private String warehouseAddress = "";
