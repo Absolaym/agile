@@ -20,37 +20,42 @@ import utils.XmlParser;
 public class Controller {
     
     private CityMap cityMap;
-    private DeliveryRequest dr;
+    private DeliveryRequest deliveryRequest;
+    private State state;
+    private StateDefault stateDefault = new StateDefault();
+    private StateInit stateInit = new StateInit();
+    private StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
+    private StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
+    private StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
     
     public Controller() { 
         this.setCityMap(new CityMap());
+        this.setState(stateInit);
     }
 	
-    public void LoadCityMap(String path) {
-        //TO DO
-        // This code is for testing purpose and by no means, should stay in place
-    	try {
-    		XmlParser xmlParser = new XmlParser();
-    		//Plan cityMap = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
-    		CityMap cityMap = xmlParser.parseMap(path);
-    		this.setCityMap( cityMap );
-    	}catch(Exception e) {
-    		//display exception in a pop up
-    		//make specific error for reading exception
-    	}
-    		
-        System.out.println("It has to load map.");
+    public CityMap LoadCityMap(String path) {
+        
+        CityMap cityMap = this.state.LoadCityMap(path);
+        if(cityMap != null ){
+            this.setCityMap( cityMap );
+            this.setState(this.stateCityMapLoaded);
+        }
+    	return cityMap;	
+        //System.out.println("It has to load map.");
     }
     
     public DeliveryRequest loadDeliveryRequest(String path) {
-        //TO DO
+        
         System.out.println("It has to load delivery requests.");
         
-        XmlParser parser = new XmlParser();
-        DeliveryRequest dr = parser.parseDeliveryRequest(path);
-        dr = setDeliveryRequestGeolocation(dr);
-        this.dr = dr;
-        return dr;
+        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
+        if(deliveryRequest != null ){
+            this.setDeliveryRequest( deliveryRequest );
+            this.setState(this.stateDeliveryRequestLoaded);
+        }
+        
+        this.deliveryRequest = deliveryRequest;
+        return deliveryRequest;
     }
     
     
@@ -68,8 +73,20 @@ public class Controller {
     }
     
     public DeliveryRequest getDeliveryRequest(){
-        return this.dr;
+        return this.deliveryRequest;
     }
+    
+    public void setDeliveryRequest(DeliveryRequest deliveryRequest) {
+        this.deliveryRequest = deliveryRequest;
+    }
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+//    public State getState(){
+//        return this.state;
+//    }
+    
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
         LinkedList<Delivery> deliveries = dr.getDeliveries();
