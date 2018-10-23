@@ -70,6 +70,11 @@ public class DeliveryRequestView extends JPanel implements Observer {
         for(int i=0; i<deliv.length; i++) {
            tabModel.addRow(new String[]{deliv[i],"unknown","unknown"});
         }
+        
+    }
+    
+    public void setCircuitNumber(){
+        tabModel.setValueAt("12:00", 1, 2);
     }
 
     public void paintComponent(Graphics g) {
