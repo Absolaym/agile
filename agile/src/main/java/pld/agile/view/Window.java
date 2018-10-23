@@ -66,7 +66,7 @@ public class Window extends JFrame {
         return mapMenuPanel;
     }
 
-    public CityMapContainerView getMapContainerPanel() {
+    public CityMapContainerView getCityMapContainerPanel() {
         return mapContainerPanel;
     }
 

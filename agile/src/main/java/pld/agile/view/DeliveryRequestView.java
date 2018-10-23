@@ -19,7 +19,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JTable deliveriesTable;
     private DefaultTableModel tabModel;
     private JButton loadDeliveryRequestsButton;
-    public String[][] deliveries;
+
     
     private final int loadDeliveryRequestsButtonWidth = 200;
     private final int loadDeliveryRequestsButtonHeight = 30;
@@ -36,7 +36,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         loadDeliveryRequestsButton = new JButton("Load delivery requests");
-        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c,w,null));
+        loadDeliveryRequestsButton.addActionListener(new ButtonListener(c,w));
         loadDeliveryRequestsButton.setSize(loadDeliveryRequestsButtonWidth, loadDeliveryRequestsButtonHeight);
         loadDeliveryRequestsButton.setLocation(0, buttonLocationY);
         add(loadDeliveryRequestsButton);
@@ -67,10 +67,14 @@ public class DeliveryRequestView extends JPanel implements Observer {
     }
    
     public void addDeliveries(String[] deliv){
+        emptyTable();
         for(int i=0; i<deliv.length; i++) {
            tabModel.addRow(new String[]{deliv[i],"unknown","unknown"});
         }
-        
+    }
+    
+    public void emptyTable(){
+        tabModel.setRowCount(0);
     }
     
     public void setCircuitNumber(){
@@ -102,8 +106,5 @@ public class DeliveryRequestView extends JPanel implements Observer {
         return tabModel;
     }
 
-    public String[][] getDeliveries() {
-        return deliveries;
-    }
     
 }

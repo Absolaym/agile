@@ -21,12 +21,11 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
-    private CityMapContainerView cityMapContainer;
 
-    public ButtonListener(Controller c, Window w,CityMapContainerView mcv) {
+
+    public ButtonListener(Controller c, Window w) {
         this.controller = c;
         this.window = w;
-        this.cityMapContainer = mcv;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -36,9 +35,9 @@ public class ButtonListener implements ActionListener {
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.LoadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
-
-                ((JButton) e.getSource()).setVisible(false);
-                if (cityMapContainer != null)cityMapContainer.repaint();
+ 
+                if(e.getActionCommand().equals(Window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
+                window.getCityMapContainerPanel().repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
@@ -50,14 +49,16 @@ public class ButtonListener implements ActionListener {
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    
                     //get deliveries and send to JTable to be displayed
                     String[] deliveries = new String[dr.getDeliveries().size()];
+                    System.out.println("size " + dr.getDeliveries().size());
                     for(int i =0; i<dr.getDeliveries().size(); i++) {
                         deliveries[i] = dr.getDeliveries().get(i).getAddress();
                     }
-                    //faire un string[][] à partir de dr.getDeliveries()
+
                     window.getDeliveryRequestPanel().addDeliveries(deliveries);
+                    window.getCityMapContainerPanel().repaint();                   
+                    
                 }
             } catch (Exception e2) {
 
