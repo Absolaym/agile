@@ -21,9 +21,16 @@ public class Controller {
     
     private CityMap cityMap;
     private DeliveryRequest deliveryRequest;
+    private State state;
+    private StateDefault stateDefault = new StateDefault();
+    private StateInit stateInit = new StateInit();
+    private StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
+    private StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
+    private StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
     
     public Controller() { 
         this.setCityMap(new CityMap());
+        this.setState(stateInit);
     }
 	
     public void LoadCityMap(String path) {
@@ -70,6 +77,14 @@ public class Controller {
     public DeliveryRequest getDeliveryRequest(){
         return this.deliveryRequest;
     }
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+//    public State getState(){
+//        return this.state;
+//    }
+    
     //je sais pas ou mettre ca oups --MF
     private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
         LinkedList<Delivery> deliveries = dr.getDeliveries();
