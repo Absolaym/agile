@@ -58,8 +58,7 @@ public class Controller {
         
         System.out.println("It has to load delivery requests.");
         
-     
-        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path);
+        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path,this);
         if(deliveryRequest != null ){
             this.setDeliveryRequest( deliveryRequest );
             this.setState(this.stateDeliveryRequestLoaded);
@@ -71,12 +70,13 @@ public class Controller {
     
     
     public void ComputeCircuits() {
-        //TO DO
+
     		CircuitAlgorithm algo = new CircuitAlgorithm();
     		algo.init(this.cityMap, this.deliveryRequest);
     		algo.execute();
     		this.circuits = algo.result();
     		
+      this.state.ComputeCircuits(this);
     }
     
     public CityMap getCityMap() {
@@ -97,24 +97,10 @@ public class Controller {
     public void setState(State state) {
         this.state = state;
     }
-    
+}  
 //    public State getState(){
 //        return this.state;
 //    }
     
     //je sais pas ou mettre ca oups --MF
-    private DeliveryRequest setDeliveryRequestGeolocation(DeliveryRequest dr){
-        LinkedList<Delivery> deliveries = dr.getDeliveries();
-        for (Delivery delivery : deliveries){
-            Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
-            if(geolocation == null){
-            System.out.println("The address " + delivery.getAddress() + " was not found");
-            deliveries.remove(delivery);
-            continue;
-            }
-            delivery.setGeolocation(geolocation);
-        }
-        dr.setDeliveries(deliveries);
-        return dr;
-    }
-}
+    

@@ -13,6 +13,10 @@ public class Trip {
     public List<Section> getSections() {
         return sections;
     }
+    
+    public void setSections(List<Section> s){
+        sections = s;
+    }
 
     public Trip addSection(Section section) {
         this.sections.add(section);

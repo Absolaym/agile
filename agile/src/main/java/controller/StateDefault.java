@@ -28,11 +28,11 @@ public class StateDefault implements State{
         return cityMap;
     }
     
-    public DeliveryRequest LoadDeliveryRequest(String path){
+    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
        return null;
     }
     
-    public void ComputeCircuits(){
+    public void ComputeCircuits(Controller c){
         
     }
 }
