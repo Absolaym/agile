@@ -79,6 +79,10 @@ public class Controller {
       this.state.ComputeCircuits(this);
     }
     
+    public LinkedList<Circuit> getCircuits() {
+    		return this.circuits;
+    }
+    
     public CityMap getCityMap() {
         return cityMap;
     }

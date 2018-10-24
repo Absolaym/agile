@@ -108,44 +108,34 @@ public class CityMapContainerView extends JPanel implements Observer {
         super.paintComponent(g);
         this.drawCityMap(g);
         this.drawDeliveriesOnCityMap(g);
-        //this.drawCircuits(g);
+        this.drawCircuits(g);
     }
 
     private void drawCircuits(Graphics g) {
         CityMap cityMap = controller.getCityMap();
-        Circuit circuit = new Circuit();
-        Trip t1 = new Trip();
-        t1.addSection(cityMap.getSections().get(0));
-        t1.addSection(cityMap.getSections().get(1));
-        t1.addSection(cityMap.getSections().get(2));
-        t1.addSection(cityMap.getSections().get(3));
-        t1.addSection(cityMap.getSections().get(4));
-        circuit.getTrips().add(t1);
+        LinkedList<Circuit> circuits = this.controller.getCircuits();
 
-        Trip t2 = new Trip();
-        t2.addSection(cityMap.getSections().get(10));
-        t2.addSection(cityMap.getSections().get(11));
-        t2.addSection(cityMap.getSections().get(12));
-        t2.addSection(cityMap.getSections().get(13));
-        t2.addSection(cityMap.getSections().get(14));
-        circuit.getTrips().add(t2);
-
+        	if(circuits == null)	return;
+        	
         Geolocation origin = getOrigin(cityMap);
 
-        int i = 0;
-        for (Trip trip : circuit.getTrips()) {
-            
-            colorSections(g, new Color(180, 150 - 40 * i, 120 + 40 * i), trip.getSections(), cityMap);
-            i++;
-//            for (Section sec : trip.getSections()) {
-//                Geolocation start = sec.getStartIntersection().getGeolocation();
-//                Geolocation end = sec.getEndIntersection().getGeolocation();
-//
-//                Geolocation pxStart = this.geolocationToPixels(origin, start);
-//                Geolocation pxEnd = this.geolocationToPixels(origin, end);
-//
-//                g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-//            }
+        for(Circuit circuit : circuits) {
+	        int i = 0;
+	        for (Trip trip : circuit.getTrips()) {
+	            
+	            colorSections(g, new Color(180, 150 - 40 * i, 120 + 40 * i), trip.getSections(), cityMap);
+	            
+	            for (Section sec : trip.getSections()) {
+	                Geolocation start = sec.getStartIntersection().getGeolocation();
+	                Geolocation end = sec.getEndIntersection().getGeolocation();
+	
+	                Geolocation pxStart = this.geolocationToPixels(origin, start);
+	                Geolocation pxEnd = this.geolocationToPixels(origin, end);
+	
+	                g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
+	            }
+	            i++;
+	        }
         }
     }
 

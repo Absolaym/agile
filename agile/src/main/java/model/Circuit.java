@@ -19,6 +19,11 @@ public class Circuit {
         this.deliveries = new LinkedList<Delivery>();
     }
     
+    public void addTripAndDelivery(Trip trip, Delivery delivery) {
+    		this.trips.add(trip);
+    		this.deliveries.add(delivery);
+    }
+    
     public LinkedList<Trip> getTrips() {
         return trips;
     }

@@ -60,6 +60,15 @@ public class CircuitAlgorithm {
 		}
 	}
 	
+	public class LinkTrip extends Link {
+		IntermediateResult intermediateResult;
+		public LinkTrip(Section aSection, Node aStartNode, Node anEndNode, IntermediateResult ir) {
+			super(aSection, aStartNode, anEndNode);
+			this.intermediateResult = ir;
+			
+		}
+	}
+	
 	public class IntermediateResult {
 		Node start;
 		Node end;
@@ -158,17 +167,19 @@ public class CircuitAlgorithm {
 		
 		LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
 		
+		// Establish the shortest paths between deliveries and warehouse
 		for(Delivery delivery : deliveries) {
 			
-			System.out.println( "Target delivery" + delivery );
+			//System.out.println( "Target delivery" + delivery );
 			
 			Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
 			Node target = this.nodes.get( delivery.getAddress() );
 			
 			IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 			
+			inter.computeLength();
 			shortestFromWarehouse.add( inter );
-			System.out.println( inter );
+			//System.out.println( inter );
 			
 			for(Delivery delivery2 : deliveries) {
 				
@@ -176,12 +187,91 @@ public class CircuitAlgorithm {
 				
 				origin = this.nodes.get( delivery2.getAddress() );
 				inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
+				inter.computeLength();
 				shortestBetweenDeliveries.add( inter );
-				System.out.println( inter );
+				
+				//System.out.println( inter );
 			}
 
 		}
 		
+		// Establish the best circuit
+		// Prepare data
+		HashMap<String, Node> delivNodes = new HashMap<String,Node>();
+		for(Delivery delivery : deliveries) {
+			Node node = new Node( this.cityMap.getIntersectionById(delivery.getAddress()) );
+			delivNodes.put(node.intersection.getId(), node);
+		}
+		for(IntermediateResult ir : shortestBetweenDeliveries) {
+			Node nodeStart = delivNodes.get(ir.start.intersection.getId());
+			Node nodeEnd = delivNodes.get(ir.end.intersection.getId());
+			Section sec = new Section();
+			sec.setStartIntersection( ir.start.intersection );
+			sec.setEndIntersection( ir.end.intersection );
+			sec.setLength( ir.length );
+
+			nodeStart.links.add(new LinkTrip(sec, nodeStart, nodeEnd, ir));
+		}
+		
+		// Random solution
+		Circuit circuit = new Circuit();
+		circuit.setCourierId("0");
+		circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
+		circuit.setWarehouseAddress( this.deliveryRequest.getWarehouseAddress() );
+		
+		double cost = 2e300;
+		IntermediateResult path = null;
+		
+		for(IntermediateResult ir : shortestFromWarehouse) {
+			if(ir.length >= cost) continue;
+			
+			cost = ir.length;
+			path = ir;
+		}
+		
+		System.out.println( path );
+		Delivery delivery = null;
+		Trip trip = new Trip();
+		for(Delivery delSearch : deliveries) {
+			System.out.println(delSearch.getAddress() + " " + path.end.intersection.getId());
+			if(delSearch.getAddress() == path.end.intersection.getId()) {
+				delivery = delSearch;
+				delivNodes.remove(delSearch.getAddress());
+				System.out.println(delivery);
+				break;
+			}
+		}
+		trip.setSections( path.path );
+		
+		circuit.addTripAndDelivery(trip, delivery);
+		
+		while(!delivNodes.isEmpty()) {
+			Node start = path.start;
+			cost = 2e300;
+			path = null;
+			
+			for(IntermediateResult ir : shortestBetweenDeliveries) {
+				if(ir.start != start) continue;
+				if(ir.length >= cost) continue;
+				
+				cost = ir.length;
+				path = ir;
+			}
+			
+			if(path == null) break;
+			
+			for(Delivery delSearch : deliveries) {
+				if(delSearch.getAddress() == path.end.intersection.getId()) {
+					delivery = delSearch;
+					delivNodes.remove(delSearch.getAddress());
+					break;
+				}
+			}
+			
+			circuit.addTripAndDelivery(trip, delivery);
+		}
+		System.out.println(circuit);
+		circuits.add( circuit );
 	}
 	
 	public LinkedList<Circuit> result() {
