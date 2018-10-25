@@ -11,10 +11,12 @@ import model.DeliveryRequest;
 import model.Intersection;
 import model.Section;
 import model.Trip;
-import utils.CircuitAlgorithm.IntermediateResult;
+import tsp.TSP1;
 import model.Circuit;
 
 public class CircuitAlgorithm {
+	//CHANGE THIS PART
+	private int numberOfDeliveries = 6;
 	
 	private CityMap cityMap;
 	private DeliveryRequest deliveryRequest;
@@ -162,116 +164,87 @@ public class CircuitAlgorithm {
 	
 	public void execute() {
 		this.circuits = new LinkedList<Circuit>();
-		LinkedList<IntermediateResult> shortestFromWarehouse = new LinkedList<>();
-		LinkedList<IntermediateResult> shortestBetweenDeliveries = new LinkedList<>();
+		
+		IntermediateResult[][] shortestTripBetweenDeliveryPoints = new IntermediateResult[numberOfDeliveries + 1][numberOfDeliveries +1];
+		
+		//Arrays for provided TSP algorithm
+		int[][] tripLength = new int[numberOfDeliveries + 1][numberOfDeliveries +1];
+		int[] deliveryDuration = new int[numberOfDeliveries + 1];
+		
+		//LinkedList<IntermediateResult> shortestBetweenDeliveries = new LinkedList<>();
 		
 		LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
-		
-		// Establish the shortest paths between deliveries and warehouse
+
+		int targetIndex = 0;
 		for(Delivery delivery : deliveries) {
 			
+			// Establish the shortest paths between deliveries and warehouse
 			//System.out.println( "Target delivery" + delivery );
-			
 			Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
 			Node target = this.nodes.get( delivery.getAddress() );
 			
 			IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 			
 			inter.computeLength();
-			shortestFromWarehouse.add( inter );
-			//System.out.println( inter );
+			shortestTripBetweenDeliveryPoints[numberOfDeliveries][targetIndex] = inter;
+			tripLength[numberOfDeliveries][targetIndex] = (int) Math.ceil(inter.length);
+			deliveryDuration[targetIndex] = delivery.getDuration();
 			
+			// Establish the shortest paths between warehouse and deliveries
+			inter = this.cleanCosts().dijkstra( target ).resolveDijkstra( target, origin );
+			
+			inter.computeLength();
+			shortestTripBetweenDeliveryPoints[targetIndex][numberOfDeliveries] = inter;
+			tripLength[targetIndex][numberOfDeliveries] = (int) Math.ceil(inter.length);
+			
+			// Establish the shortest paths between deliveries
+			int originIndex = 0;
 			for(Delivery delivery2 : deliveries) {
 				
-				if(delivery == delivery2) continue;
+				if(delivery == delivery2) {
+					originIndex++;
+					continue;
+				}
 				
 				origin = this.nodes.get( delivery2.getAddress() );
 				inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 				inter.computeLength();
-				shortestBetweenDeliveries.add( inter );
+				shortestTripBetweenDeliveryPoints[originIndex][targetIndex] = inter;				
+				tripLength[originIndex][targetIndex] = (int) Math.ceil(inter.length);				
+
+				originIndex++;
 				
-				//System.out.println( inter );
 			}
+			targetIndex++;
 
 		}
 		
-		// Establish the best circuit
-		// Prepare data
-		HashMap<String, Node> delivNodes = new HashMap<String,Node>();
-		for(Delivery delivery : deliveries) {
-			Node node = new Node( this.cityMap.getIntersectionById(delivery.getAddress()) );
-			delivNodes.put(node.intersection.getId(), node);
-		}
-		for(IntermediateResult ir : shortestBetweenDeliveries) {
-			Node nodeStart = delivNodes.get(ir.start.intersection.getId());
-			Node nodeEnd = delivNodes.get(ir.end.intersection.getId());
-			Section sec = new Section();
-			sec.setStartIntersection( ir.start.intersection );
-			sec.setEndIntersection( ir.end.intersection );
-			sec.setLength( ir.length );
+		System.out.println("synch");
 
-			nodeStart.links.add(new LinkTrip(sec, nodeStart, nodeEnd, ir));
-		}
+		TSP1 tsp = new TSP1();
+		tsp.chercheSolution(60000, numberOfDeliveries + 1, tripLength , deliveryDuration);
+		System.out.println("synch");
 		
-		// Random solution
+		
+		//Circuit object creation
 		Circuit circuit = new Circuit();
-		circuit.setCourierId("0");
-		circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
-		circuit.setWarehouseAddress( this.deliveryRequest.getWarehouseAddress() );
-		
-		double cost = 2e300;
-		IntermediateResult path = null;
-		
-		for(IntermediateResult ir : shortestFromWarehouse) {
-			if(ir.length >= cost) continue;
+		for(int i = 0; i < numberOfDeliveries+1; i++) {
+			int i2 = Math.floorMod(i+1, numberOfDeliveries + 1);
 			
-			cost = ir.length;
-			path = ir;
+			int currentDeliveryStopIndex = tsp.getMeilleureSolution(i);
+			int nextDeliveryStopIndex = tsp.getMeilleureSolution(i2);
+			
+			Trip nextTrip = new Trip();
+			nextTrip.setSections(shortestTripBetweenDeliveryPoints[currentDeliveryStopIndex][nextDeliveryStopIndex].path);
+			circuit.addTrip(nextTrip);
+			
+			//if next delivery is the warehouse, ignore
+			if(currentDeliveryStopIndex != numberOfDeliveries) circuit.addDelivery(deliveries.get(currentDeliveryStopIndex));
 		}
+		System.out.println("synch");
 		
-		System.out.println( path );
-		Delivery delivery = null;
-		Trip trip = new Trip();
-		for(Delivery delSearch : deliveries) {
-			System.out.println(delSearch.getAddress() + " " + path.end.intersection.getId());
-			if(delSearch.getAddress() == path.end.intersection.getId()) {
-				delivery = delSearch;
-				delivNodes.remove(delSearch.getAddress());
-				System.out.println(delivery);
-				break;
-			}
-		}
-		trip.setSections( path.path );
-		
-		circuit.addTripAndDelivery(trip, delivery);
-		
-		while(!delivNodes.isEmpty()) {
-			Node start = path.start;
-			cost = 2e300;
-			path = null;
-			
-			for(IntermediateResult ir : shortestBetweenDeliveries) {
-				if(ir.start != start) continue;
-				if(ir.length >= cost) continue;
-				
-				cost = ir.length;
-				path = ir;
-			}
-			
-			if(path == null) break;
-			
-			for(Delivery delSearch : deliveries) {
-				if(delSearch.getAddress() == path.end.intersection.getId()) {
-					delivery = delSearch;
-					delivNodes.remove(delSearch.getAddress());
-					break;
-				}
-			}
-			
-			circuit.addTripAndDelivery(trip, delivery);
-		}
-		System.out.println(circuit);
-		circuits.add( circuit );
+		//add the closing trip
+
 	}
 	
 	public LinkedList<Circuit> result() {
