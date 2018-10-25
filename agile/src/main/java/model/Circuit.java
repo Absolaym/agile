@@ -24,6 +24,14 @@ public class Circuit {
     		this.deliveries.add(delivery);
     }
     
+    public void addTrip(Trip trip) {
+		this.trips.add(trip);
+    }
+    
+    public void addDelivery(Delivery delivery) {
+		this.deliveries.add(delivery);
+}
+    
     public LinkedList<Trip> getTrips() {
         return trips;
     }
