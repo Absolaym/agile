@@ -33,14 +33,15 @@ public class ButtonListener implements ActionListener {
             JFileChooser jfc = new JFileChooser();
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
-                controller.LoadCityMap(jfc.getSelectedFile().getAbsolutePath());
+                controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
- 
                 if(e.getActionCommand().equals(Window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
                 window.getCityMapContainerPanel().repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
+            window.getDeliveryRequestPanel().setCircuitNumber();
+            window.getCityMapContainerPanel().repaint();
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
@@ -55,10 +56,9 @@ public class ButtonListener implements ActionListener {
                     for(int i =0; i<dr.getDeliveries().size(); i++) {
                         deliveries[i] = dr.getDeliveries().get(i).getAddress();
                     }
-
                     window.getDeliveryRequestPanel().addDeliveries(deliveries);
                     window.getCityMapContainerPanel().repaint();                   
-                    
+                  
                 }
             } catch (Exception e2) {
 

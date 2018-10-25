@@ -16,7 +16,7 @@ public interface State{
     
     public abstract CityMap LoadCityMap(String path);
     
-    public abstract DeliveryRequest LoadDeliveryRequest(String path);
+    public abstract DeliveryRequest LoadDeliveryRequest(String path,Controller c);
     
     public abstract void ComputeCircuits(Controller c);
 }

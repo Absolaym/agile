@@ -40,7 +40,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         loadCityMapButton = new JButton("Load a city map");
         loadCityMapButton.addActionListener(new ButtonListener(c, w));
 
-        loadCityMapButton.setSize(100, 100);
+        loadCityMapButton.setSize(200, 80);
         loadCityMapButton.setLocation(100, 100);
         add(loadCityMapButton);
 
@@ -108,44 +108,33 @@ public class CityMapContainerView extends JPanel implements Observer {
         super.paintComponent(g);
         this.drawCityMap(g);
         this.drawDeliveriesOnCityMap(g);
-   
         this.drawCircuits(g);
     }
 
     private void drawCircuits(Graphics g) {
         CityMap cityMap = controller.getCityMap();
-        DeliveryRequest dr = controller.getDeliveryRequest();
-        if (cityMap == null || dr == null) return;
-        
-        Circuit circuit = new Circuit();
-        Trip t1 = new Trip();
-        t1.addSection(cityMap.getSections().get(0));
-        t1.addSection(cityMap.getSections().get(1));
-        t1.addSection(cityMap.getSections().get(2));
-        t1.addSection(cityMap.getSections().get(3));
-        t1.addSection(cityMap.getSections().get(4));
-        circuit.getTrips().add(t1);
-
-        Trip t2 = new Trip();
-        t2.addSection(cityMap.getSections().get(10));
-        t2.addSection(cityMap.getSections().get(11));
-        t2.addSection(cityMap.getSections().get(12));
-        t2.addSection(cityMap.getSections().get(13));
-        t2.addSection(cityMap.getSections().get(14));
-        circuit.getTrips().add(t2);
+        LinkedList<Circuit> circuits = this.controller.getCircuits();
+       
+        if (cityMap == null || circuits == null) return;
+        System.out.println("circuits:" + circuits.size());
 
         Geolocation origin = getOrigin(cityMap);
-
-        int i = 0;
-        for (Trip trip : circuit.getTrips()) {
-            colorSections(g, colors[i], trip.getSections(), cityMap);
+        for (Circuit circuit : circuits) {
+            int i = 0;
+            for (Trip trip : circuit.getTrips()) {
+                colorSections(g, new Color(180, Math.floorMod(150 + 40 * i, 255), Math.floorMod(120 + 40 * i, 255)), trip.getSections(), cityMap);              
+            }
+            
+            for (Delivery deliv : circuit.getDeliveries()) {
+                colorDeliveries(g, new Color(180, Math.floorMod(150 + 40 * i, 255), Math.floorMod(120 + 40 * i, 255)), deliv.getGeolocation(), cityMap);
+            }
             i++;
         }
     }
 
     private void colorDeliveries(Graphics g, Color c, Geolocation geolocation, CityMap cityMap) {
         g.setColor(c);
-        int dotSize = 10;
+        int dotSize = 15;
         Geolocation origin = getOrigin(cityMap);
 
         if (geolocation != null) {
@@ -219,21 +208,21 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation origin = getOrigin(cityMap);
 
         colorSections(g, new Color(100, 100, 105), cityMap.getSections(), cityMap);
-//        g.setColor(new Color(100, 100, 105));
-//        int lineThickness = 4;
-//        Graphics2D g2 = (Graphics2D) g;
-//        g2.setStroke(new BasicStroke(lineThickness));
-//
-//        for (Section sec : cityMap.getSections()) {
-//            Geolocation start = sec.getStartIntersection().getGeolocation();
-//            Geolocation end = sec.getEndIntersection().getGeolocation();
-//
-//            Geolocation pxStart = this.geolocationToPixels(origin, start);
-//            Geolocation pxEnd = this.geolocationToPixels(origin, end);
-//
-//            g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-//
-//        }
+        //        g.setColor(new Color(100, 100, 105));
+        //        int lineThickness = 4;
+        //        Graphics2D g2 = (Graphics2D) g;
+        //        g2.setStroke(new BasicStroke(lineThickness));
+        //
+        //        for (Section sec : cityMap.getSections()) {
+        //            Geolocation start = sec.getStartIntersection().getGeolocation();
+        //            Geolocation end = sec.getEndIntersection().getGeolocation();
+        //
+        //            Geolocation pxStart = this.geolocationToPixels(origin, start);
+        //            Geolocation pxEnd = this.geolocationToPixels(origin, end);
+        //
+        //            g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
+        //
+        //        }
 
         g.setColor(new Color(180, 140, 180));
         int dotSize = 6;
@@ -251,7 +240,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         g.setColor(new Color(180, 140, 140));
         lineThickness = 6;
         g2.setStroke(new BasicStroke(lineThickness));
-        
+
         Circuit circuit = new Circuit();
         Trip t = new Trip();
         //t.addSection(cityMap.getSections().get(0));
@@ -260,7 +249,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         //t.addSection(cityMap.getSections().get(3));
         //t.addSection(cityMap.getSections().get(4));
         circuit.getTrips().add(t);
-        
+
         t = new Trip();
         t.addSection(cityMap.getSections().get(10));
         t.addSection(cityMap.getSections().get(11));
@@ -268,7 +257,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         t.addSection(cityMap.getSections().get(13));
         t.addSection(cityMap.getSections().get(14));
         circuit.getTrips().add(t);
-        
+
         int i = 0;
         for(Trip trip : circuit.getTrips()) {
             g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));

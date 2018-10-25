@@ -79,5 +79,19 @@ public class DeliveryRequest {
         return str;
     }
     
+    public void computeDeliveryRequestGeolocation(CityMap cityMap){
+//        LinkedList<Delivery> deliveries = this.getDeliveries();
+        for (Delivery delivery : this.deliveries){
+            Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
+            if(geolocation == null){
+            System.out.println("The address " + delivery.getAddress() + " was not found");
+            this.deliveries.remove(delivery);
+            continue;
+            }
+            delivery.setGeolocation(geolocation);
+        }
+//        this.setDeliveries(deliveries);
+    }
+
 }
 

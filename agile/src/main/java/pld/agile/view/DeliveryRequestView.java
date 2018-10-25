@@ -12,6 +12,8 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import model.Circuit;
+import model.Delivery;
 import model.DeliveryRequest;
 
 public class DeliveryRequestView extends JPanel implements Observer {
@@ -19,7 +21,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JTable deliveriesTable;
     private DefaultTableModel tabModel;
     private JButton loadDeliveryRequestsButton;
-
+    private Controller controller;
     
     private final int loadDeliveryRequestsButtonWidth = 200;
     private final int loadDeliveryRequestsButtonHeight = 30;
@@ -31,6 +33,8 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
     public DeliveryRequestView(Window w, Controller c) {
         super();
+        controller = c;
+        
         setLayout(null);
 
         //set button
@@ -42,7 +46,6 @@ public class DeliveryRequestView extends JPanel implements Observer {
         add(loadDeliveryRequestsButton);
 
         createTable();
-  
         setBackground(Color.LIGHT_GRAY);
         w.getContentPane().add(this);
 
@@ -78,7 +81,22 @@ public class DeliveryRequestView extends JPanel implements Observer {
     }
     
     public void setCircuitNumber(){
-        tabModel.setValueAt("12:00", 1, 2);
+        LinkedList<Circuit> circuits = controller.getCircuits();
+        if (circuits == null) return;
+
+        for (Circuit circuit : circuits) {
+            int i = 1;
+            for (Delivery deliv : circuit.getDeliveries()) {
+                for (int row = 0; row<tabModel.getRowCount(); row++)
+                    if(deliv.getAddress().equals(tabModel.getValueAt(row, 0))) {
+                        tabModel.setValueAt(i, row, 2);
+                        // to do : set delivery time
+                       // tabModel.setValueAt(circuit.getDepartureTime() + deliv.getDuration(), row, 1);
+                    }
+            }
+            i++;
+        }
+       
     }
 
     public void paintComponent(Graphics g) {
