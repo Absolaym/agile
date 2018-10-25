@@ -15,13 +15,12 @@ import tsp.TSP1;
 import model.Circuit;
 
 public class CircuitAlgorithm {
-	//CHANGE THIS PART
-	private int numberOfDeliveries = 6;
 	
 	private CityMap cityMap;
 	private DeliveryRequest deliveryRequest;
 	private HashMap<String, Node> nodes;
 	private LinkedList<Circuit> circuits;
+	private int numberOfDeliveries;
 	
 	private class Node {
 		Intersection intersection;
@@ -103,6 +102,8 @@ public class CircuitAlgorithm {
 	public void init(CityMap aCityMap, DeliveryRequest aDeliveryRequest){
 		this.cityMap = aCityMap;
 		this.deliveryRequest = aDeliveryRequest;
+		this.numberOfDeliveries = deliveryRequest.getDeliveries().size();
+
 		
 		this.nodes = new HashMap<String, Node>();
 		for(Intersection intersection : cityMap.getIntersections().values())
@@ -114,6 +115,7 @@ public class CircuitAlgorithm {
 			Link newLink = new Link(section, startNode, endNode);
 			nodes.get(section.getStartIntersection().getId()).addLink(newLink);
 		}
+		
 		
 	}
 	
