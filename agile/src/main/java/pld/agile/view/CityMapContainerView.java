@@ -108,11 +108,15 @@ public class CityMapContainerView extends JPanel implements Observer {
         super.paintComponent(g);
         this.drawCityMap(g);
         this.drawDeliveriesOnCityMap(g);
-        //this.drawCircuits(g);
+   
+        this.drawCircuits(g);
     }
 
     private void drawCircuits(Graphics g) {
         CityMap cityMap = controller.getCityMap();
+        DeliveryRequest dr = controller.getDeliveryRequest();
+        if (cityMap == null || dr == null) return;
+        
         Circuit circuit = new Circuit();
         Trip t1 = new Trip();
         t1.addSection(cityMap.getSections().get(0));
@@ -134,18 +138,8 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         int i = 0;
         for (Trip trip : circuit.getTrips()) {
-            
-            colorSections(g, new Color(180, 150 - 40 * i, 120 + 40 * i), trip.getSections(), cityMap);
+            colorSections(g, colors[i], trip.getSections(), cityMap);
             i++;
-//            for (Section sec : trip.getSections()) {
-//                Geolocation start = sec.getStartIntersection().getGeolocation();
-//                Geolocation end = sec.getEndIntersection().getGeolocation();
-//
-//                Geolocation pxStart = this.geolocationToPixels(origin, start);
-//                Geolocation pxEnd = this.geolocationToPixels(origin, end);
-//
-//                g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-//            }
         }
     }
 
