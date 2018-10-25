@@ -242,6 +242,7 @@ public class CircuitAlgorithm {
 			if(currentDeliveryStopIndex != numberOfDeliveries) circuit.addDelivery(deliveries.get(currentDeliveryStopIndex));
 		}
 		System.out.println("synch");
+		this.circuits.add(circuit);
 		
 		//add the closing trip
 
