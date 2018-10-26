@@ -200,6 +200,9 @@ public class CityMapContainerView extends JPanel implements Observer {
     }
 
     private void drawCityMap(Graphics g) {
+        
+        Graphics2D g2 = (Graphics2D)g;
+        
         CityMap cityMap = this.controller.getCityMap();
         if (cityMap.getIntersections().size() == 0) {
             return;
@@ -207,22 +210,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation origin = getOrigin(cityMap);
 
         colorSections(g, new Color(100, 100, 105), cityMap.getSections(), cityMap);
-        //        g.setColor(new Color(100, 100, 105));
-        //        int lineThickness = 4;
-        //        Graphics2D g2 = (Graphics2D) g;
-        //        g2.setStroke(new BasicStroke(lineThickness));
-        //
-        //        for (Section sec : cityMap.getSections()) {
-        //            Geolocation start = sec.getStartIntersection().getGeolocation();
-        //            Geolocation end = sec.getEndIntersection().getGeolocation();
-        //
-        //            Geolocation pxStart = this.geolocationToPixels(origin, start);
-        //            Geolocation pxEnd = this.geolocationToPixels(origin, end);
-        //
-        //            g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-        //
-        //        }
-
+        
         g.setColor(new Color(180, 140, 180));
         int dotSize = 6;
 
@@ -231,49 +219,32 @@ public class CityMapContainerView extends JPanel implements Observer {
             Geolocation target = geolocationToPixels(origin, geo);
 
             g.fillArc((int) target.getLongitude() - dotSize / 2, (int) target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-
         }
-
-        /*
-         This is for debug right now, there is smthg weird happenning with the section comming from the first node
-        g.setColor(new Color(180, 140, 140));
-        lineThickness = 6;
-        g2.setStroke(new BasicStroke(lineThickness));
-
-        Circuit circuit = new Circuit();
-        Trip t = new Trip();
-        //t.addSection(cityMap.getSections().get(0));
-        //t.addSection(cityMap.getSections().get(1));
-        //t.addSection(cityMap.getSections().get(2));
-        //t.addSection(cityMap.getSections().get(3));
-        //t.addSection(cityMap.getSections().get(4));
-        circuit.getTrips().add(t);
-
-        t = new Trip();
-        t.addSection(cityMap.getSections().get(10));
-        t.addSection(cityMap.getSections().get(11));
-        t.addSection(cityMap.getSections().get(12));
-        t.addSection(cityMap.getSections().get(13));
-        t.addSection(cityMap.getSections().get(14));
-        circuit.getTrips().add(t);
-
-        int i = 0;
-        for(Trip trip : circuit.getTrips()) {
-            g.setColor(new Color(180, 150 - 40 * i, 120 + 40 * i));
-            i++;
-            for(Section sec : trip.getSections()) {
-            Geolocation start 	= sec.getStartIntersection().getGeolocation();
-            Geolocation end 		= sec.getEndIntersection().getGeolocation();
-
-            Geolocation pxStart 	= this.geolocationToPixels(origin, start);
-            Geolocation pxEnd 	= this.geolocationToPixels(origin, end);
-
-            g.drawLine((int)pxStart.getLongitude(), (int)pxStart.getLatitude(), (int)pxEnd.getLongitude(), (int)pxEnd.getLatitude());
-            }
+        
+        g2.setFont(new Font("Arial", Font.PLAIN, 10));
+        
+        for(Section section : cityMap.getSections()) {
+            Geolocation first = section.getStartIntersection().getGeolocation();
+            Geolocation last = section.getEndIntersection().getGeolocation();
+            
+            
+            double length = distanceInPixels( first, last );
+            System.out.println( section.getStreetName().length() + " " + length * 100000);
+            if( section.getStreetName().length() * 1 < length * 100000) continue;
+            
+            Geolocation center = new Geolocation(
+                    (first.getLatitude() + last.getLatitude()) / 2, 
+                    (first.getLongitude() + last.getLongitude()) / 2 );
+            Geolocation target = geolocationToPixels( origin, center );
+            g2.drawString( section.getStreetName(), (int)target.getLongitude(), (int)target.getLatitude() );
         }
-         */
     }
 
+    private double distanceInPixels(Geolocation origin, Geolocation target) {
+        double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
+        return origin.distance(target) * coeff;
+    }
+    
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
         double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
         Geolocation geoY = new Geolocation(target.getLatitude(), origin.getLongitude());
