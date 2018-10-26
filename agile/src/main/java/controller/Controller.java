@@ -72,10 +72,10 @@ public class Controller {
     }
 
     public void ComputeCircuits() {
-        CircuitAlgorithm algo = new CircuitAlgorithm();
-        algo.init(this.cityMap, this.deliveryRequest);
-        algo.execute();
-        this.circuits = algo.result();
+//        CircuitAlgorithm algo = new CircuitAlgorithm();
+//        algo.init(this.cityMap, this.deliveryRequest);
+//        algo.execute();
+//        this.circuits = algo.result();
 
         this.state.ComputeCircuits(this);
 
@@ -85,6 +85,9 @@ public class Controller {
         return this.circuits;
     }
 
+    public void setCircuits(LinkedList<Circuit> circuits) {
+        this.circuits = circuits;
+    }
     public CityMap getCityMap() {
         return cityMap;
     }

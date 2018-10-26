@@ -29,8 +29,14 @@ public class ButtonListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        
+        String root = System.getProperty("user.dir");
+        String assets = root + "/src/main/assets";
+        
         if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
-            JFileChooser jfc = new JFileChooser();
+            
+            JFileChooser jfc = new JFileChooser( assets + "/maps" );
+            
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
@@ -39,13 +45,15 @@ public class ButtonListener implements ActionListener {
                 window.getCityMapContainerPanel().repaint();
             }
         } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
+            
             controller.ComputeCircuits();
             window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
+            
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                JFileChooser jfc = new JFileChooser();
+                JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
                 int result = jfc.showOpenDialog(window);
                 DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {

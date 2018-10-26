@@ -55,6 +55,8 @@ public class Time {
     }
 
     public String toString() {
-        return this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+        return String.format("%02d", this.getHours()) 
+                + ":" + String.format("%02d", this.getMinutes()) 
+                + ":" + String.format("%02d", this.getSeconds());
     }
 }

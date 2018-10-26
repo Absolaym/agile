@@ -116,7 +116,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         LinkedList<Circuit> circuits = this.controller.getCircuits();
        
         if (cityMap == null || circuits == null) return;
-        System.out.println("circuits:" + circuits.size());
 
         Geolocation origin = getOrigin(cityMap);
         for (Circuit circuit : circuits) {

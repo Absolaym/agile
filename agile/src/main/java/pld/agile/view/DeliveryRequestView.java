@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import model.Circuit;
 import model.Delivery;
 import model.DeliveryRequest;
+import utils.Time;
 
 public class DeliveryRequestView extends JPanel implements Observer {
 
@@ -86,13 +87,24 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
         for (Circuit circuit : circuits) {
             int i = 1;
+            
+            int departureTimeSec = circuit.getDepartureTime().time;
+
+            int j = 0;
             for (Delivery deliv : circuit.getDeliveries()) {
-                for (int row = 0; row<tabModel.getRowCount(); row++)
+                
+                for (int row = 0; row < tabModel.getRowCount(); row++) {
                     if(deliv.getAddress().equals(tabModel.getValueAt(row, 0))) {
                         tabModel.setValueAt(i, row, 2);
-                        // to do : set delivery time
-                       // tabModel.setValueAt(circuit.getDepartureTime() + deliv.getDuration(), row, 1);
+                        
+                        departureTimeSec += circuit.getTrips().get(j).getLength() / (Circuit.SPEED / 3.6);
+                        
+                        tabModel.setValueAt(new Time((int)departureTimeSec).toString(), row, 1);
+                        
+                        departureTimeSec += deliv.getDuration() * 60;
                     }
+                }
+                j++;
             }
             i++;
         }
