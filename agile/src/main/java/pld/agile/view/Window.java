@@ -62,7 +62,7 @@ public class Window extends JFrame {
         deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
-    public CityMapMenuView getMapMenuPanel() {
+    public CityMapMenuView getCityMapMenuPanel() {
         return mapMenuPanel;
     }
 

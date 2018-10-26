@@ -123,6 +123,10 @@ public class DeliveryRequestView extends JPanel implements Observer {
     public DefaultTableModel getTabModel() {
         return tabModel;
     }
+    
+    public JButton getLoadDeliveryRequestsButton() {
+        return loadDeliveryRequestsButton;
+    }
 
     
 }

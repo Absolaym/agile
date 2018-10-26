@@ -35,11 +35,13 @@ public class ButtonListener implements ActionListener {
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
-                if(e.getActionCommand().equals(Window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
+                if(e.getActionCommand().equals(window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
                 window.getCityMapContainerPanel().repaint();
             }
-        } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
+        } else if (e.getActionCommand().equals(window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
+            window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(false);
+            window.getDeliveryRequestPanel().getLoadDeliveryRequestsButton().setVisible(false);
             window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
