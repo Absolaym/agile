@@ -20,7 +20,6 @@ public class Model {
     private static Model INSTANCE = null;
     
     private Model(){
-//        cityMap = new CityMap();
 //        deliveryRequest = new DeliveryRequest();
 //        circuits = new LinkedList<Circuit>();
         cityMap = new CityMap();
