@@ -36,7 +36,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         setBorder(BorderFactory.createTitledBorder("City Map :"));
         this.createSlider();
 
-        this.controller.getCityMap().addObserver(this);
+        this.controller.getModel().getCityMap().addObserver(this);
         loadCityMapButton = new JButton("Load a city map");
         loadCityMapButton.addActionListener(new ButtonListener(c, w));
 
@@ -112,8 +112,8 @@ public class CityMapContainerView extends JPanel implements Observer {
     }
 
     private void drawCircuits(Graphics g) {
-        CityMap cityMap = controller.getCityMap();
-        LinkedList<Circuit> circuits = this.controller.getCircuits();
+        CityMap cityMap = controller.getModel().getCityMap();
+        LinkedList<Circuit> circuits = this.controller.getModel().getCircuits();
        
         if (cityMap == null || circuits == null) return;
 
@@ -162,12 +162,12 @@ public class CityMapContainerView extends JPanel implements Observer {
     }
 
     private void drawDeliveriesOnCityMap(Graphics g) {
-        CityMap cityMap = controller.getCityMap();
+        CityMap cityMap = controller.getModel().getCityMap();
         if (cityMap == null) {
             return;
         }
 
-        DeliveryRequest dr = controller.getDeliveryRequest();
+        DeliveryRequest dr = controller.getModel().getDeliveryRequest();
         if (dr == null) {
             return;
         }
@@ -203,7 +203,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         
         Graphics2D g2 = (Graphics2D)g;
         
-        CityMap cityMap = this.controller.getCityMap();
+        CityMap cityMap = this.controller.getModel().getCityMap();
         if (cityMap.getIntersections().size() == 0) {
             return;
         }

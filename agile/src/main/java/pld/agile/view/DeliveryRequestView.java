@@ -82,7 +82,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     }
     
     public void setCircuitNumber(){
-        LinkedList<Circuit> circuits = controller.getCircuits();
+        LinkedList<Circuit> circuits = controller.getModel().getCircuits();
         if (circuits == null) return;
 
         for (Circuit circuit : circuits) {

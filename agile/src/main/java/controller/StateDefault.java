@@ -7,6 +7,7 @@ package controller;
 
 import model.CityMap;
 import model.DeliveryRequest;
+import model.Model;
 import utils.XmlParser;
 
 /**
@@ -15,21 +16,26 @@ import utils.XmlParser;
  */
 public class StateDefault implements State{
     
-    public CityMap loadCityMap(String path){
-        CityMap cityMap = null;
+    public void loadCityMap(String path,Controller c){
         try {
+            CityMap cityMap = null;
+            Model model = c.getModel();
             XmlParser xmlParser = new XmlParser();
-            //Plan plan = xmlParser.parseMap("src/main/assets/maps/grandPlan.xml");
+            
             cityMap = xmlParser.parseMap(path);
+            if (cityMap != null){
+                model.setCityMap(cityMap);
+                model.setDeliveryRequest(null);
+                model.setCircuits(null);
+                c.setState(c.stateCityMapLoaded);
+            }
     	}catch(Exception e) {
             //display exception in a pop up
             //make specific error for reading exception
     	}
-        return cityMap;
     }
     
-    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
-       return null;
+    public void loadDeliveryRequest(String path,Controller c){
     }
     
     public void computeCircuits(Controller c){

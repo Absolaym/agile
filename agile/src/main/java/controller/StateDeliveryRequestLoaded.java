@@ -6,6 +6,7 @@
 package controller;
 
 import model.DeliveryRequest;
+import model.Model;
 import utils.XmlParser;
 import utils.CircuitAlgorithm;
 
@@ -15,23 +16,29 @@ import utils.CircuitAlgorithm;
  */
 public class StateDeliveryRequestLoaded extends StateDefault{
     
-    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
-        
+    public void loadDeliveryRequest(String path,Controller c){ 
         try{
-            DeliveryRequest dr = null;
+            Model model = c.getModel();
+            DeliveryRequest deliveryRequest = null;
             XmlParser parser = new XmlParser();
-            dr = parser.parseDeliveryRequest(path);
-            dr.computeDeliveryRequestGeolocation(c.getCityMap());
-            return dr;
+            
+            deliveryRequest = parser.parseDeliveryRequest(path);
+            if(deliveryRequest!=null){
+                deliveryRequest.computeDeliveryRequestGeolocation(model.getCityMap());
+                model.setDeliveryRequest(deliveryRequest);
+                model.setCircuits(null);
+                c.setState(c.stateDeliveryRequestLoaded);
+            }
         }catch (Exception e){
-            return null;
+            
         }
     }
     
     public void computeCircuits(Controller c){
+        Model model = c.getModel();
         CircuitAlgorithm circuitAlgorithm = new CircuitAlgorithm();
-        circuitAlgorithm.init(c.getCityMap(), c.getDeliveryRequest());
+        circuitAlgorithm.init(model.getCityMap(), model.getDeliveryRequest());
         circuitAlgorithm.execute();
-        c.setCircuits(circuitAlgorithm.result());
+        model.setCircuits(circuitAlgorithm.result());
     }
 }

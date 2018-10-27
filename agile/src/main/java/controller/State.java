@@ -7,6 +7,7 @@ package controller;
 
 import model.DeliveryRequest;
 import model.CityMap;
+import model.Model;
 
 /**
  *
@@ -14,9 +15,9 @@ import model.CityMap;
  */
 public interface State{
     
-    public abstract CityMap loadCityMap(String path);
+    public abstract void loadCityMap(String path,Controller c);
     
-    public abstract DeliveryRequest loadDeliveryRequest(String path,Controller c);
+    public abstract void loadDeliveryRequest(String path,Controller c);
     
     public abstract void computeCircuits(Controller c);
 }

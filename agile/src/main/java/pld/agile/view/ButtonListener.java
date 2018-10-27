@@ -44,33 +44,36 @@ public class ButtonListener implements ActionListener {
                 if(e.getActionCommand().equals(Window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
                 window.getCityMapContainerPanel().repaint();
             }
-        } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
-            
-            controller.computeCircuits();
-            window.getDeliveryRequestPanel().setCircuitNumber();
-            window.getCityMapContainerPanel().repaint();
-            
-        } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
+        }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
                 JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
                 int result = jfc.showOpenDialog(window);
-                DeliveryRequest dr;
+                DeliveryRequest deliveryRequest;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                    controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                    deliveryRequest = controller.getModel().getDeliveryRequest();
                     //get deliveries and send to JTable to be displayed
-                    String[] deliveries = new String[dr.getDeliveries().size()];
-                    System.out.println("size " + dr.getDeliveries().size());
-                    for(int i =0; i<dr.getDeliveries().size(); i++) {
-                        deliveries[i] = dr.getDeliveries().get(i).getAddress();
+                    if(deliveryRequest!=null){
+                        String[] deliveries = new String[deliveryRequest.getDeliveries().size()];
+                        System.out.println("size " + deliveryRequest.getDeliveries().size());
+                        for(int i =0; i<deliveryRequest.getDeliveries().size(); i++) {
+                            deliveries[i] = deliveryRequest.getDeliveries().get(i).getAddress();
+                        }
+                        window.getDeliveryRequestPanel().addDeliveries(deliveries);
                     }
-                    window.getDeliveryRequestPanel().addDeliveries(deliveries);
                     window.getCityMapContainerPanel().repaint();                   
                   
                 }
             } catch (Exception e2) {
 
             }
+        }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
+            
+            controller.computeCircuits();
+            window.getDeliveryRequestPanel().setCircuitNumber();
+            window.getCityMapContainerPanel().repaint();
+            
         }
 
     }
