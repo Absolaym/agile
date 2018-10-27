@@ -14,7 +14,7 @@ import utils.XmlParser;
  */
 public class StateCityMapLoaded extends StateDefault{
     
-    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
+    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
         
         try{
             DeliveryRequest dr = null;

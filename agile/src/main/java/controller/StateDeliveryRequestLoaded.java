@@ -15,7 +15,7 @@ import utils.CircuitAlgorithm;
  */
 public class StateDeliveryRequestLoaded extends StateDefault{
     
-    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
+    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
         
         try{
             DeliveryRequest dr = null;
@@ -28,7 +28,7 @@ public class StateDeliveryRequestLoaded extends StateDefault{
         }
     }
     
-    public void ComputeCircuits(Controller c){
+    public void computeCircuits(Controller c){
         CircuitAlgorithm circuitAlgorithm = new CircuitAlgorithm();
         circuitAlgorithm.init(c.getCityMap(), c.getDeliveryRequest());
         circuitAlgorithm.execute();

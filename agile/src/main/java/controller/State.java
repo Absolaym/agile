@@ -14,9 +14,9 @@ import model.CityMap;
  */
 public interface State{
     
-    public abstract CityMap LoadCityMap(String path);
+    public abstract CityMap loadCityMap(String path);
     
-    public abstract DeliveryRequest LoadDeliveryRequest(String path,Controller c);
+    public abstract DeliveryRequest loadDeliveryRequest(String path,Controller c);
     
-    public abstract void ComputeCircuits(Controller c);
+    public abstract void computeCircuits(Controller c);
 }

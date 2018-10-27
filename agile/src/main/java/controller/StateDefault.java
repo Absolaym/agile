@@ -15,7 +15,7 @@ import utils.XmlParser;
  */
 public class StateDefault implements State{
     
-    public CityMap LoadCityMap(String path){
+    public CityMap loadCityMap(String path){
         CityMap cityMap = null;
         try {
             XmlParser xmlParser = new XmlParser();
@@ -28,11 +28,11 @@ public class StateDefault implements State{
         return cityMap;
     }
     
-    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
+    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
        return null;
     }
     
-    public void ComputeCircuits(Controller c){
+    public void computeCircuits(Controller c){
         
     }
 }

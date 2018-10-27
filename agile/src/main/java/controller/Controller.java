@@ -45,7 +45,7 @@ public class Controller {
 
     public CityMap loadCityMap(String path) {
 
-        CityMap cityMap = this.state.LoadCityMap(path);
+        CityMap cityMap = this.state.loadCityMap(path);
         if (cityMap != null) {
             this.setCityMap(cityMap);
             this.setState(this.stateCityMapLoaded);
@@ -58,7 +58,7 @@ public class Controller {
 
         System.out.println("It has to load delivery requests.");
 
-        DeliveryRequest deliveryRequest = this.state.LoadDeliveryRequest(path, this);
+        DeliveryRequest deliveryRequest = this.state.loadDeliveryRequest(path, this);
         if (deliveryRequest != null) {
             this.setDeliveryRequest(deliveryRequest);
             this.setState(this.stateDeliveryRequestLoaded);
@@ -71,13 +71,13 @@ public class Controller {
         return deliveryRequest;
     }
 
-    public void ComputeCircuits() {
+    public void computeCircuits() {
 //        CircuitAlgorithm algo = new CircuitAlgorithm();
 //        algo.init(this.cityMap, this.deliveryRequest);
 //        algo.execute();
 //        this.circuits = algo.result();
 
-        this.state.ComputeCircuits(this);
+        this.state.computeCircuits(this);
 
     }
 

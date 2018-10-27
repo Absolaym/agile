@@ -14,7 +14,7 @@ import utils.XmlParser;
  */
 public class StateCircuitsComputed extends StateDefault{
     
-    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
+    public DeliveryRequest loadDeliveryRequest(String path,Controller c){
         
         try{
             DeliveryRequest dr = null;
@@ -27,7 +27,7 @@ public class StateCircuitsComputed extends StateDefault{
         }
     }
     
-    public void ComputeCircuits(Controller c){
+    public void computeCircuits(Controller c){
         
     }
 }
