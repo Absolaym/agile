@@ -5,8 +5,6 @@
  */
 package controller;
 
-import model.CityMap;
-import model.DeliveryRequest;
 import model.Model;
 
 /**
@@ -19,7 +17,7 @@ public class Controller {
     
     private State state;
     protected static final StateDefault stateDefault = new StateDefault();
-    protected static final StateInit stateInit = new StateInit();
+    public static final StateInit stateInit = new StateInit();
     protected static final StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
     protected static final StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
     protected static final StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
@@ -57,8 +55,10 @@ public class Controller {
     public void setState(State state) {
         this.state = state;
     }
+    
+    public State getState(){
+        return state;
+    }
 }
-//    public State getState(){
-//        return this.state;
-//    }
+    
 

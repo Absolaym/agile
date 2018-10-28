@@ -47,23 +47,25 @@ public class ButtonListener implements ActionListener {
         }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
-                int result = jfc.showOpenDialog(window);
-                DeliveryRequest deliveryRequest;
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    deliveryRequest = controller.getModel().getDeliveryRequest();
-                    //get deliveries and send to JTable to be displayed
-                    if(deliveryRequest!=null){
-                        String[] deliveries = new String[deliveryRequest.getDeliveries().size()];
-                        System.out.println("size " + deliveryRequest.getDeliveries().size());
-                        for(int i =0; i<deliveryRequest.getDeliveries().size(); i++) {
-                            deliveries[i] = deliveryRequest.getDeliveries().get(i).getAddress();
+                if(controller.getState()!=controller.stateInit){
+                    JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
+                    int result = jfc.showOpenDialog(window);
+                    DeliveryRequest deliveryRequest;
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                        deliveryRequest = controller.getModel().getDeliveryRequest();
+                        //get deliveries and send to JTable to be displayed
+                        if(deliveryRequest!=null){
+                            String[] deliveries = new String[deliveryRequest.getDeliveries().size()];
+                            System.out.println("size " + deliveryRequest.getDeliveries().size());
+                            for(int i =0; i<deliveryRequest.getDeliveries().size(); i++) {
+                                deliveries[i] = deliveryRequest.getDeliveries().get(i).getAddress();
+                            }
+                            window.getDeliveryRequestPanel().addDeliveries(deliveries);
                         }
-                        window.getDeliveryRequestPanel().addDeliveries(deliveries);
+                        window.getCityMapContainerPanel().repaint();                   
+
                     }
-                    window.getCityMapContainerPanel().repaint();                   
-                  
                 }
             } catch (Exception e2) {
 
