@@ -107,11 +107,11 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.drawCityMap(g);
+        this.drawCityMap(g,6);
         this.drawDeliveriesOnCityMap(g);
         this.drawCircuits(g);
         window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(true);
-        window.getDeliveryRequestPanel().getLoadDeliveryRequestsButton().setVisible(true);
+        window.getDeliveryRequestPanel().getLoadDeliveryRequestButton().setVisible(true);
     }
 
     private void drawCircuits(Graphics g) {
@@ -129,15 +129,15 @@ public class CityMapContainerView extends JPanel implements Observer {
             }
             
             for (Delivery deliv : circuit.getDeliveries()) {
-                colorDeliveries(g, new Color(180, Math.floorMod(150 + 40 * i, 255), Math.floorMod(120 + 40 * i, 255)), deliv.getGeolocation(), cityMap);
+                colorDeliveries(g, new Color(180, Math.floorMod(150 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100)), deliv.getGeolocation(), cityMap, 15);
             }
             i++;
         }
     }
 
-    private void colorDeliveries(Graphics g, Color c, Geolocation geolocation, CityMap cityMap) {
+    private void colorDeliveries(Graphics g, Color c, Geolocation geolocation, CityMap cityMap, int dotSize) {
         g.setColor(c);
-        int dotSize = 15;
+        
         Geolocation origin = getOrigin(cityMap);
 
         if (geolocation != null) {
@@ -179,13 +179,13 @@ public class CityMapContainerView extends JPanel implements Observer {
         LinkedList<Delivery> delivs = dr.getDeliveries();
         if (delivs.size() > 0) {
             for (Delivery d : delivs) {
-                colorDeliveries(g, Color.green, d.getGeolocation(), cityMap);
+                colorDeliveries(g, Color.green, d.getGeolocation(), cityMap, 15);
             }
         }
         
         Intersection warehouseIntersection = cityMap.getIntersectionById(dr.getWarehouseAddress());
         if (warehouseIntersection != null) {
-            colorDeliveries(g, Color.red, warehouseIntersection.getGeolocation(), cityMap);
+            colorDeliveries(g, Color.red, warehouseIntersection.getGeolocation(), cityMap, 15);
         }
     }
 
@@ -203,7 +203,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         return origin;
     }
 
-    private void drawCityMap(Graphics g) {
+    private void drawCityMap(Graphics g, int dotSize) {
         CityMap cityMap = this.controller.getCityMap();
         if (cityMap.getIntersections().size() == 0) {
             return;
@@ -212,7 +212,6 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         colorSections(g, new Color(100, 100, 105), cityMap.getSections(), cityMap);
         g.setColor(new Color(180, 140, 180));
-        int dotSize = 6;
 
         for (Intersection inter : cityMap.getIntersections().values()) {
             Geolocation geo = inter.getGeolocation();

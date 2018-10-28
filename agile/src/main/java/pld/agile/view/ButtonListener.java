@@ -35,13 +35,17 @@ public class ButtonListener implements ActionListener {
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
-                if(e.getActionCommand().equals(window.LOAD_CITY_MAP)) ((JButton) e.getSource()).setVisible(false);
+             
+                window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
+                window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
+                window.getDeliveryRequestPanel().getLoadDeliveryRequestButton().setEnabled(true);
+                
                 window.getCityMapContainerPanel().repaint();
             }
         } else if (e.getActionCommand().equals(window.COMPUTE_CIRCUITS)) {
             controller.ComputeCircuits();
             window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(false);
-            window.getDeliveryRequestPanel().getLoadDeliveryRequestsButton().setVisible(false);
+            window.getDeliveryRequestPanel().getLoadDeliveryRequestButton().setVisible(false);
             window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
@@ -49,16 +53,11 @@ public class ButtonListener implements ActionListener {
             try {
                 JFileChooser jfc = new JFileChooser();
                 int result = jfc.showOpenDialog(window);
-                DeliveryRequest dr;
+//                DeliveryRequest dr;
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    dr = controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    //get deliveries and send to JTable to be displayed
-                    String[] deliveries = new String[dr.getDeliveries().size()];
-                    System.out.println("size " + dr.getDeliveries().size());
-                    for(int i =0; i<dr.getDeliveries().size(); i++) {
-                        deliveries[i] = dr.getDeliveries().get(i).getAddress();
-                    }
-                    window.getDeliveryRequestPanel().addDeliveries(deliveries);
+                    controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                    window.getDeliveryRequestPanel().addDeliveries();
+                    window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                     window.getCityMapContainerPanel().repaint();                   
                   
                 }
