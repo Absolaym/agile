@@ -1,13 +1,8 @@
 package pld.agile.view;
 
 import controller.Controller;
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 import javax.swing.*;
-import model.DeliveryRequest;
-import model.CityMap;
 
 public class Window extends JFrame {
 
@@ -15,6 +10,7 @@ public class Window extends JFrame {
     private CityMapMenuView mapMenuPanel;
     private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;
+    private ErrorAreaView errorAreaPanel;
 
     //list of buttons
     protected final static String LOAD_CITY_MAP = "Load a city map";
@@ -42,6 +38,7 @@ public class Window extends JFrame {
         mapMenuPanel = new CityMapMenuView(this, controller);
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
+        errorAreaPanel = new ErrorAreaView(this, controller);
 
         setWindowSize();
         setSize(width, height);
@@ -50,11 +47,12 @@ public class Window extends JFrame {
     }
 
     private void setWindowSize() {
-        height = Math.max(mapMenuPanel.getHeight() + mapContainerPanel.getHeight(), deliveryRequestPanel.getHeight()) + 30;
+        height = Math.max(mapMenuPanel.getHeight() + mapContainerPanel.getHeight() + errorAreaPanel.getHeight(), deliveryRequestPanel.getHeight()) + 30;
         width = Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()) + deliveryRequestPanel.getWidth() + 10;
 
         mapMenuPanel.setLocation(10, 10);
         mapContainerPanel.setLocation(10, 20 + mapMenuPanel.getHeight());
+        errorAreaPanel.setLocation(10, 20 + mapContainerPanel.getHeight() + mapMenuPanel.getHeight());
         deliveryRequestPanel.setLocation(10 + Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()), 10);
 
         mapMenuPanel.setSize(mapMenuPanel.getWidth(), mapMenuPanel.getHeight());
@@ -73,7 +71,8 @@ public class Window extends JFrame {
     public DeliveryRequestView getDeliveryRequestPanel() {
         return deliveryRequestPanel;
     }
- 
-    
 
+    public ErrorAreaView getErrorAreaPanel() {
+        return errorAreaPanel;
+    }
 }
