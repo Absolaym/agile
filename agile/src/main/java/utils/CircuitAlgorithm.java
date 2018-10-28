@@ -230,6 +230,8 @@ public class CircuitAlgorithm {
 		
 		//Circuit object creation
 		Circuit circuit = new Circuit();
+                circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
+                
 		for(int i = 0; i < numberOfDeliveries+1; i++) {
 			int i2 = Math.floorMod(i+1, numberOfDeliveries + 1);
 			

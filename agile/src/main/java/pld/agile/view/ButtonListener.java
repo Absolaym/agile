@@ -29,8 +29,14 @@ public class ButtonListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        
+        String root = System.getProperty("user.dir");
+        String assets = root + "/src/main/assets";
+        
         if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
-            JFileChooser jfc = new JFileChooser();
+            
+            JFileChooser jfc = new JFileChooser( assets + "/maps" );
+            
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
@@ -38,32 +44,37 @@ public class ButtonListener implements ActionListener {
              
                 window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
                 window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
-                window.getDeliveryRequestPanel().getLoadDeliveryRequestButton().setEnabled(true);
+                window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
                 
                 window.getCityMapContainerPanel().repaint();
             }
-        } else if (e.getActionCommand().equals(window.COMPUTE_CIRCUITS)) {
-            controller.ComputeCircuits();
-            window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(false);
-            window.getDeliveryRequestPanel().getLoadDeliveryRequestButton().setVisible(false);
-            window.getDeliveryRequestPanel().setCircuitNumber();
-            window.getCityMapContainerPanel().repaint();
-        } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
+        }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                JFileChooser jfc = new JFileChooser();
-                int result = jfc.showOpenDialog(window);
-//                DeliveryRequest dr;
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                    window.getDeliveryRequestPanel().addDeliveries();
-                    window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
-                    window.getCityMapContainerPanel().repaint();                   
-                  
+                if(controller.getState()!=controller.stateInit){
+                    JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
+                    int result = jfc.showOpenDialog(window);
+                    DeliveryRequest deliveryRequest;
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                        deliveryRequest = controller.getModel().getDeliveryRequest();
+                        //get deliveries and send to JTable to be displayed
+                        if(deliveryRequest!=null){
+                            window.getDeliveryRequestPanel().addDeliveries();
+                            window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
+                        }
+                        window.getCityMapContainerPanel().repaint();                   
+                    }
                 }
             } catch (Exception e2) {
 
             }
+        }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
+            
+            controller.computeCircuits();
+            window.getDeliveryRequestPanel().setCircuitNumber();
+            window.getCityMapContainerPanel().repaint();
+            
         }
 
     }

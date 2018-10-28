@@ -22,6 +22,14 @@ public class Trip {
         this.sections.add(section);
         return this;
     }
+    
+    public int getLength() {
+        int sum = 0;
+        for(Section sec : sections) {
+            sum += sec.getLength();
+        }
+        return sum;
+    }
 
     @Override
     public String toString() {

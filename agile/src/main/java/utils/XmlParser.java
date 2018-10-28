@@ -123,7 +123,7 @@ public class XmlParser {
                 case "troncon":
                     Section sec = new Section();
                     sec.setLength(Double.parseDouble(elem.getAttribute("longueur")));
-                    sec.setStreetName(elem.getAttribute("destination"));
+                    sec.setStreetName(elem.getAttribute("nomRue"));
                     sec.setStartIntersection( map.getIntersectionById(elem.getAttribute("origine")) );
                     sec.setEndIntersection( map.getIntersectionById(elem.getAttribute("destination")) );
 
