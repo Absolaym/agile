@@ -6,6 +6,7 @@
 package controller;
 
 import model.DeliveryRequest;
+import model.Model;
 import utils.XmlParser;
 
 /**
@@ -14,20 +15,25 @@ import utils.XmlParser;
  */
 public class StateCircuitsComputed extends StateDefault{
     
-    public DeliveryRequest LoadDeliveryRequest(String path,Controller c){
-        
+    public void loadDeliveryRequest(String path,Controller c){ 
         try{
-            DeliveryRequest dr = null;
+            Model model = c.getModel();
+            DeliveryRequest deliveryRequest = null;
             XmlParser parser = new XmlParser();
-            dr = parser.parseDeliveryRequest(path);
-            dr.computeDeliveryRequestGeolocation(c.getCityMap());
-            return dr;
+            
+            deliveryRequest = parser.parseDeliveryRequest(path);
+            if(deliveryRequest!=null){
+                deliveryRequest.computeDeliveryRequestGeolocation(model.getCityMap());
+                model.setDeliveryRequest(deliveryRequest);
+                model.setCircuits(null);
+                c.setState(c.stateDeliveryRequestLoaded);
+            }
         }catch (Exception e){
-            return null;
+            
         }
     }
     
-    public void ComputeCircuits(Controller c){
+    public void computeCircuits(Controller c){
         
     }
 }
