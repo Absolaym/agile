@@ -220,23 +220,31 @@ public class CityMapContainerView extends JPanel implements Observer {
 
             g.fillArc((int) target.getLongitude() - dotSize / 2, (int) target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
-        
+      
         g2.setFont(new Font("Arial", Font.PLAIN, 10));
+        FontMetrics fm = g2.getFontMetrics();
+
         
         for(Section section : cityMap.getSections()) {
             Geolocation first = section.getStartIntersection().getGeolocation();
             Geolocation last = section.getEndIntersection().getGeolocation();
             
-            
             double length = distanceInPixels( first, last );
-            System.out.println( section.getStreetName().length() + " " + length * 100000);
-            if( section.getStreetName().length() * 1 < length * 100000) continue;
+            double strpx = fm.stringWidth( section.getStreetName() );
+            if( strpx < length * 400000) continue;
+            double angle = this.angleBetweenPositions(first, last);
             
             Geolocation center = new Geolocation(
                     (first.getLatitude() + last.getLatitude()) / 2, 
                     (first.getLongitude() + last.getLongitude()) / 2 );
             Geolocation target = geolocationToPixels( origin, center );
-            g2.drawString( section.getStreetName(), (int)target.getLongitude(), (int)target.getLatitude() );
+            int x = (int)(target.getLongitude() - strpx / 2);
+            int y = (int)target.getLatitude();
+          
+            g2.rotate(-angle, x, y );
+            g2.drawString( section.getStreetName(), x, y);
+            g2.rotate(+angle, x, y);
+            
         }
     }
 
@@ -252,6 +260,10 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation ret = new Geolocation(origin.distance(geoY) / coeff + offsetY, origin.distance(geoX) / coeff + offsetX);
 
         return ret;
+    }
+    
+    private double angleBetweenPositions(Geolocation A, Geolocation B) {
+    		return Math.atan( (A.getLatitude() - B.getLatitude()) / (A.getLongitude() - B.getLongitude() ) );
     }
 
     // to change
