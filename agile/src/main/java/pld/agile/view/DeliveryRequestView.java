@@ -6,6 +6,7 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
@@ -28,20 +29,36 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private final int spaceElements = 30;
     private final int height = 800;
     private final int width = 400;
-    
-    static class Renderer extends DefaultTableCellRenderer {
+    private int selectedRow = -1;
+    private Renderer cellRenderer = new Renderer(-1, null);
+    private HashMap<Delivery,JTextArea> table;
 
+    
+    //I implemented this class because I have to override getTableCell.. method
+    // it doesn't work because the method is called only when the JTable has changes
+    // since selecting a point on the map is not a change on JTable the method is not called and the row is not colored :(
+    static class Renderer extends DefaultTableCellRenderer {
+        private int selectedRow;
+        private Color color;
+        public Renderer(int row, Color c) {
+            selectedRow = row;
+            color = c;
+        }
+        public void setSelectedRow(int row) {
+            selectedRow = row;
+        }
+        
+        public void setColor(Color c){
+            color = c;
+        }
+        
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setBackground(null);
             Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            for(int i=0; i<table.getRowCount(); i++) {
-                if (!table.getValueAt(i, 3).equals("unknown")){
-                    int circuitNb = (int)table.getValueAt(i, 3) - 1;
-                    if (row == i)
-                        setBackground(new Color(180, Math.floorMod(50 + 40 * circuitNb, 100), Math.floorMod(120 + 40 * circuitNb, 100)));
-                }
-            }
+            
+            if(row == selectedRow) setBackground(color);
+            else setBackground(null);
+//            System.out.println("in cell rend table" + row);
             return tableCellRendererComponent;
         }
   
@@ -55,9 +72,28 @@ public class DeliveryRequestView extends JPanel implements Observer {
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         createTable();
+        
         setBackground(Color.LIGHT_GRAY);
         w.getContentPane().add(this);
 
+    }
+    
+  // just for test purposes
+    public void addToTable() {
+        DeliveryRequest dr = controller.getModel().getDeliveryRequest();
+        //String[] deliveries = new String[dr.getDeliveries().size()];
+        LinkedList<Delivery> deliveries = dr.getDeliveries();
+//        for (int i = 0; i < dr.getDeliveries().size(); i++) {
+//            deliveries[i] = dr.getDeliveries().get(i).getAddress();
+//        }
+        for (Delivery d : deliveries) {
+            table.put(d,new JTextArea(2,20));
+            table.get(d).append("adress");
+            table.get(d).insert("time", 2);
+            this.add((JTextArea)table.get(d));
+            revalidate();
+            repaint();
+        }
     }
 
     public void createTable() {
@@ -108,11 +144,13 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
             int j = 0;
             for (Delivery deliv : circuit.getDeliveries()) {
-                
+                ////////////////
+                deliv.addObserver(this);
+                /////////////////////
                 for (int row = 0; row < tabModel.getRowCount(); row++) {
                     if(deliv.getAddress().equals(tabModel.getValueAt(row, 0))) {
                         tabModel.setValueAt(i, row, 3);
-
+                        colorTable(row,new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100)) );
                         departureTimeSec += circuit.getTrips().get(j).getLength() / (Circuit.SPEED / 3.6);
                         tabModel.setValueAt(new Time((int)departureTimeSec).toString(), row, 1);
                         departureTimeSec += deliv.getDuration() * 60;
@@ -122,14 +160,21 @@ public class DeliveryRequestView extends JPanel implements Observer {
             }
             i++;
         }
-        Renderer cellRenderer = new Renderer();
+        
+    }
+   
+    // this method doesn't work well :(
+    public void colorTable(int row, Color c){
+        cellRenderer.setSelectedRow(row);
+        cellRenderer.setColor(c);
+        System.out.println("in color table");
+        tabModel.setValueAt(1, row, 3);
+       
         deliveriesTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
     }
-   
-    
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -144,7 +189,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("state" + arg);
     }
 
     public JTable getDeliveriesTable() {
