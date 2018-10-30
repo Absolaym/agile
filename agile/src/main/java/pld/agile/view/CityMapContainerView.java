@@ -21,12 +21,14 @@ public class CityMapContainerView extends JPanel implements Observer {
     private Controller controller;
     private Window window;
 
-    static public double KM_TO_PIXEL = 0.0001;
+    static public double KM_TO_PIXEL = 10;
     // For mouse listener
     private double offsetX = 0;
     private double offsetY = 0;
     private int originX = 0;
     private int originY = 0;
+    
+    private Intersection hoveredInter = null;
 
     public CityMapContainerView(Window w, Controller c) {
         super();
@@ -53,8 +55,8 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     private void createSlider() {
         this.zoomSlider = new JSlider();
-        this.zoomSlider.setMinimum(20);
-        this.zoomSlider.setMaximum(100);
+        this.zoomSlider.setMinimum(0);
+        this.zoomSlider.setMaximum(80);
         this.zoomSlider.setValue(50);
         this.zoomSlider.setSize(100, 30);
         this.zoomSlider.setAlignmentX(this.getWidth() - this.zoomSlider.getWidth() - 20);
@@ -87,7 +89,10 @@ public class CityMapContainerView extends JPanel implements Observer {
             }
 
             public void mouseClicked(MouseEvent e) {
-                System.out.println("");
+                if(CityMapContainerView.this.hoveredInter != null) {
+                	System.out.println("Do smthg on click on an intersection");
+                }
+                
             }
         });
         this.addMouseMotionListener(new MouseMotionListener() {
@@ -102,6 +107,31 @@ public class CityMapContainerView extends JPanel implements Observer {
             }
 
             public void mouseMoved(MouseEvent e) {
+            		final int maxpx = 16;
+            		
+            		int x = (int) (e.getX());
+            		int y = (int) (e.getY());
+            		
+            		CityMap cityMap = controller.getModel().getCityMap();
+            		Intersection bestIntersection = null;
+            		double distance = 2e300;
+            		Geolocation origin = CityMapContainerView.this.getOrigin(cityMap);
+            		
+            		for(Intersection inter : cityMap.getIntersections().values()) {
+            			Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, inter.getGeolocation());
+            			double dist = Math.pow(x-px.getLongitude(), 2) + Math.pow(y-px.getLatitude(), 2);
+            			
+            			if(dist > maxpx) continue;
+            			
+            			if(dist < distance) {
+            				bestIntersection = inter;
+            				distance = dist;
+            			}
+            		}
+            		
+            		if(CityMapContainerView.this.hoveredInter != bestIntersection)
+            			CityMapContainerView.this.repaint();
+            		CityMapContainerView.this.hoveredInter = bestIntersection;
             }
         });
     }
@@ -213,8 +243,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
         Geolocation origin = getOrigin(cityMap);
 
-        colorSections(g, new Color(100, 100, 105), cityMap.getSections(), cityMap);
-        
+        colorSections(g, new Color(100, 100, 105), cityMap.getSections(), cityMap);   
         g.setColor(new Color(180, 140, 180));
 
         for (Intersection inter : cityMap.getIntersections().values()) {
@@ -223,8 +252,21 @@ public class CityMapContainerView extends JPanel implements Observer {
 
             g.fillArc((int) target.getLongitude() - dotSize / 2, (int) target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
-      
-        g2.setFont(new Font("Arial", Font.PLAIN, 10));
+        
+        if(this.hoveredInter != null) {
+        		g.setColor(new Color(180, 120,160));
+        		Geolocation target = geolocationToPixels(origin, this.hoveredInter.getGeolocation());
+        		g.fillArc(
+        				(int)(target.getLongitude() - dotSize), 
+        				(int)(target.getLatitude() - dotSize), 
+        				(int)Math.round(dotSize * 2), 
+        				(int)Math.round(dotSize * 2), 
+        				0, 360);
+        }
+        
+        
+        g2.setColor(Color.LIGHT_GRAY);
+        g2.setFont(new Font("Arial", Font.PLAIN, 8));
         FontMetrics fm = g2.getFontMetrics();
 
         
@@ -234,39 +276,53 @@ public class CityMapContainerView extends JPanel implements Observer {
             
             double length = distanceInPixels( first, last );
             double strpx = fm.stringWidth( section.getStreetName() );
-            if( strpx < length * 400000) continue;
+            if( strpx > length ) continue;
             double angle = this.angleBetweenPositions(first, last);
+            double offsetleft = Math.cos(angle) * strpx / 2;
+            double offsettop = Math.sin(angle) * strpx / 2;
             
             Geolocation center = new Geolocation(
                     (first.getLatitude() + last.getLatitude()) / 2, 
                     (first.getLongitude() + last.getLongitude()) / 2 );
             Geolocation target = geolocationToPixels( origin, center );
-            int x = (int)(target.getLongitude() - strpx / 2);
-            int y = (int)target.getLatitude();
+            int x = (int) Math.round(target.getLongitude() - offsetleft);
+            int y = (int) Math.round(target.getLatitude() + offsettop);
           
             g2.rotate(-angle, x, y );
+            
+            //g2.drawOval(x, y, 5, 5);
             g2.drawString( section.getStreetName(), x, y);
             g2.rotate(+angle, x, y);
             
         }
     }
-
+    
+    private double kmToPixelCoeff() { return (100 - this.zoomSlider.getValue()) * KM_TO_PIXEL; }
+    
+    private Geolocation pixelsToGeolocation(Geolocation origin, int x, int y) {
+    		double coeff = kmToPixelCoeff();
+    		Geolocation ret = new Geolocation(y/coeff - offsetY,x/coeff - offsetX);
+    		return ret;
+    }
+    
     private double distanceInPixels(Geolocation origin, Geolocation target) {
-        double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
+        double coeff = kmToPixelCoeff();
         return origin.distance(target) * coeff;
     }
     
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
-        double coeff = this.zoomSlider.getValue() * KM_TO_PIXEL;
+        double coeff = kmToPixelCoeff();
         Geolocation geoY = new Geolocation(target.getLatitude(), origin.getLongitude());
         Geolocation geoX = new Geolocation(origin.getLatitude(), target.getLongitude());
-        Geolocation ret = new Geolocation(origin.distance(geoY) / coeff + offsetY, origin.distance(geoX) / coeff + offsetX);
+        Geolocation ret = new Geolocation(origin.distance(geoY) * coeff + offsetY, origin.distance(geoX) * coeff + offsetX);
 
         return ret;
     }
     
     private double angleBetweenPositions(Geolocation A, Geolocation B) {
-    		return Math.atan( (A.getLatitude() - B.getLatitude()) / (A.getLongitude() - B.getLongitude() ) );
+    		double a = Math.atan( (A.getLatitude() - B.getLatitude()) / (A.getLongitude() - B.getLongitude() ) );
+    		if(a > Math.PI / 2) a = a - Math.PI;
+    		return a;
     }
 
     // to change
