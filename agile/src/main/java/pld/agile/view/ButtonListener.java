@@ -61,6 +61,7 @@ public class ButtonListener implements ActionListener {
                         //get deliveries and send to JTable to be displayed
                         if(deliveryRequest!=null){
                             window.getDeliveryRequestPanel().addDeliveries();
+//                            window.getDeliveryRequestPanel().addToTable();
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                         }
                         window.getCityMapContainerPanel().repaint();                   

@@ -12,6 +12,13 @@ public class Geolocation {
         setLongitude(aLongitude);
     }
 
+    public static Geolocation center(Geolocation lhs, Geolocation rhs) {
+    		Geolocation center = new Geolocation(
+    				(lhs.getLatitude() +rhs.getLatitude()) / 2,
+    				(lhs.getLongitude() +rhs.getLongitude()) / 2);
+    		return center;
+    }
+    
     public double getLatitude() {
         return latitude;
     }

@@ -5,18 +5,22 @@
  */
 package model;
 
+import java.util.Observable;
 import utils.Time;
 
 /**
  *
  * @author olivi & Johnny
  */
-public class Delivery {
+public class Delivery extends Observable {
     /**
      * The id of the intersection corresponding to the address
      */
     private String address = "";
     private Geolocation geolocation;
+    
+    //for testing
+    private boolean isSelected = false;
 
     /**
      * The time required to deliver the item to the customer (minutes)
@@ -59,4 +63,17 @@ public class Delivery {
     public void setGeolocation(Geolocation geolocation) {
         this.geolocation = geolocation;
     }
+
+    // testing
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+        setChanged();
+        notifyObservers(isSelected);
+    }
+    
+    
 }
