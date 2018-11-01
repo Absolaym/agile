@@ -193,29 +193,25 @@ public class CityMapContainerView extends JPanel implements Observer {
 		window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(true);
 		window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setVisible(true);
 	}
+	
+	/**
+	 * Get an origin for the city map ( a geolocation reference that enables the transformation from degrees to kms then pixels)
+	 * @param cityMap
+	 * @return a north west geolocation on the map resolved as origin
+	 */
+	private Geolocation getOrigin(CityMap cityMap) {
+		Geolocation origin = null;
 
-	private void drawCircuits(Graphics g) {
-		CityMap cityMap = controller.getModel().getCityMap();
-		LinkedList<Circuit> circuits = this.controller.getModel().getCircuits();
-
-		if (cityMap == null || circuits == null) {
-			return;
-		}
-
-		Geolocation origin = getOrigin(cityMap);
-
-		for (Circuit circuit : circuits) {
-			int i = 0;
-			Color c = new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100));
-			for (Trip trip : circuit.getTrips()) {
-				colorSections(g, c, trip.getSections(), cityMap);
+		// Origin to the top left corner
+		for (Intersection inter : cityMap.getIntersections().values()) {
+			if (origin == null) {
+				origin = inter.getGeolocation().copy();
+			} else {
+				origin.setLatitude(Math.max(origin.getLatitude(), inter.getGeolocation().getLatitude()));
+				origin.setLongitude(Math.min(origin.getLongitude(), inter.getGeolocation().getLongitude()));
 			}
-
-			for (Delivery deliv : circuit.getDeliveries()) {
-				colorDelivery(g, c, deliv.getGeolocation(), cityMap, DELIV_DOT_SIZE, deliveriesPoints);
-			}
-			i++;
 		}
+		return origin;
 	}
 
 	private void drawDeliveriesOnCityMap(Graphics g) {
@@ -239,6 +235,30 @@ public class CityMapContainerView extends JPanel implements Observer {
 		Intersection warehouseIntersection = cityMap.getIntersectionById(dr.getWarehouseAddress());
 		if (warehouseIntersection != null) {
 			colorDelivery(g, Color.red, warehouseIntersection.getGeolocation(), cityMap, DELIV_DOT_SIZE, deliveriesPoints);
+		}
+	}
+	
+	private void drawCircuits(Graphics g) {
+		CityMap cityMap = controller.getModel().getCityMap();
+		LinkedList<Circuit> circuits = this.controller.getModel().getCircuits();
+
+		if (cityMap == null || circuits == null) {
+			return;
+		}
+
+		Geolocation origin = getOrigin(cityMap);
+
+		for (Circuit circuit : circuits) {
+			int i = 0;
+			Color c = new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100));
+			for (Trip trip : circuit.getTrips()) {
+				colorSections(g, c, trip.getSections(), cityMap);
+			}
+
+			for (Delivery deliv : circuit.getDeliveries()) {
+				colorDelivery(g, c, deliv.getGeolocation(), cityMap, DELIV_DOT_SIZE, deliveriesPoints);
+			}
+			i++;
 		}
 	}
 
@@ -289,20 +309,6 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 			
 		}
-	}
-
-	private Geolocation getOrigin(CityMap cityMap) {
-		Geolocation origin = null;
-		// Origin to the top left corner
-		for (Intersection inter : cityMap.getIntersections().values()) {
-			if (origin == null) {
-				origin = inter.getGeolocation();
-			} else {
-				origin.setLatitude(Math.max(origin.getLatitude(), inter.getGeolocation().getLatitude()));
-				origin.setLongitude(Math.min(origin.getLongitude(), inter.getGeolocation().getLongitude()));
-			}
-		}
-		return origin;
 	}
 
 	private void drawCityMap(Graphics g, int dotSize) {

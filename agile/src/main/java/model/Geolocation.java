@@ -11,6 +11,14 @@ public class Geolocation {
         setLatitude(aLatitude);
         setLongitude(aLongitude);
     }
+    
+    public Geolocation(Geolocation cpy) {
+    		 this(cpy.latitude,cpy.longitude);
+    }
+    
+    public Geolocation copy() {
+    		return new Geolocation(this);
+    }
 
     public static Geolocation center(Geolocation lhs, Geolocation rhs) {
     		Geolocation center = new Geolocation(
