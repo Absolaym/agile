@@ -37,7 +37,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 	private Section hoveredSection = null;
 
 	// Map elements
-	private final int DELIV_DOT_SIZE = 15;
+	private final int DELIV_DOT_SIZE = 12;
 	private Delivery selectedDelivery = null;
 
 	public CityMapContainerView(Window w, Controller c) {
@@ -100,6 +100,8 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 			public void mouseClicked(MouseEvent e) {
 
+				if(controller.getModel().getCityMap() == null) return;
+						
 				if(CityMapContainerView.this.hoveredInter != null) {
 					System.out.println("Do smthg on click on an intersection");
 				}
@@ -125,8 +127,16 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 			public void mouseDragged(MouseEvent e) {
 				CityMapContainerView that = CityMapContainerView.this;
+				
+				Vector2D dims = that.controller.getModel().getCityMap().getCoveredAreaDimensions();
+				
 				that.offsetX += e.getX() - that.originX;
 				that.offsetY += e.getY() - that.originY;
+				that.offsetX = Math.min(that.offsetX, that.kmToPixelCoeff() * 0.1 );
+				that.offsetX = Math.max(that.offsetX, -that.kmToPixelCoeff() * (0.1 + dims.x ) + WIDTH);
+				that.offsetY = Math.min(that.offsetY, that.kmToPixelCoeff() * 0.1 );
+				that.offsetY = Math.max(that.offsetY, -that.kmToPixelCoeff() * (0.1 + dims.y) + HEIGHT );
+				
 				that.originX = e.getX();
 				that.originY = e.getY();
 				CityMapContainerView.this.repaint();
@@ -215,26 +225,51 @@ public class CityMapContainerView extends JPanel implements Observer {
 		return origin;
 	}
 
-	private void colorDelivery(Graphics g, Color c, Geolocation geolocation, Geolocation origin, int dotSize ) {
+	private void colorDelivery(Graphics g, Color c, Delivery delivery, Geolocation origin, int dotSize ) {
 		
-			if (geolocation != null) {
-				Geolocation geo = geolocationToPixels(origin, geolocation);
-				//when user clicks on a particular delivery
-				if (selectedDelivery != null && selectedDelivery.getGeolocation() == geolocation) {
-					g.setColor(Color.YELLOW);
-					Geolocation selectedGeo = geolocationToPixels(origin, selectedDelivery.getGeolocation());
-					g.fillArc((int) selectedGeo.getLongitude() - dotSize / 2, (int) selectedGeo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);;
-					// should call a method in delivery request to notify that a row in a table has to be colored in yellow
-					// the following method doesn't work
-					window.getDeliveryRequestPanel().colorTable(1,Color.YELLOW);
-				}
-				else {
-					g.setColor(c);
-					g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-				}
+			if(delivery == null)	return;
+		
+			Geolocation geo = geolocationToPixels(origin, delivery.getGeolocation());
+			
+			if( hoveredInter != null && hoveredInter.getGeolocation().equals(delivery.getGeolocation())) {
+				g.setColor( new Color(140,100,100));
+				g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
+			}
+			else if (selectedDelivery == delivery) {
+				
+				g.setColor(Color.YELLOW);
+				g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+	
+			}
+			else {
+				g.setColor(c);
+				g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
 			}
 
 		}
+	
+	private void colorWarehouse(Graphics g, Color c, Geolocation geolocation, Geolocation origin, int dotSize ) {
+		
+		if(geolocation == null)	return;
+	
+		Geolocation geo = geolocationToPixels(origin, geolocation);
+		
+		if( hoveredInter != null && hoveredInter.getGeolocation().equals(geolocation)) {
+			g.setColor( new Color(140,100,100));
+			g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
+		}
+		else if (selectedDelivery != null && geolocation.equals(selectedDelivery.getGeolocation())) {
+			
+			g.setColor(Color.YELLOW);
+			g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+
+		}
+		else {
+			g.setColor(c);
+			g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+		}
+
+	}
 
 		private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin) {
 			g.setColor(c);
@@ -270,12 +305,12 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 		LinkedList<Delivery> delivs = dr.getDeliveries();
 		for (Delivery d : delivs) {
-			colorDelivery( g, Color.green, d.getGeolocation(), origin, DELIV_DOT_SIZE );
+			colorDelivery( g, Color.green, d, origin, DELIV_DOT_SIZE );
 		}
 
 		Intersection warehouseIntersection = cityMap.getIntersectionById(dr.getWarehouseAddress());
 		if (warehouseIntersection != null) {
-			colorDelivery( g, Color.red, warehouseIntersection.getGeolocation(), origin, DELIV_DOT_SIZE );
+			colorWarehouse( g, Color.red, warehouseIntersection.getGeolocation(), origin, DELIV_DOT_SIZE );
 		}
 	}
 	
@@ -297,7 +332,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 			}
 
 			for (Delivery deliv : circuit.getDeliveries()) {
-				colorDelivery( g, c, deliv.getGeolocation(), origin, DELIV_DOT_SIZE );
+				colorDelivery( g, c, deliv, origin, DELIV_DOT_SIZE );
 			}
 			i++;
 		}

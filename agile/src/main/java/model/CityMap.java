@@ -27,6 +27,24 @@ public class CityMap extends Observable{
         this.intersections = new HashMap<String,Intersection>();
     }
     
+    public Vector2D getCoveredAreaDimensions() {
+    		Vector2D dims = new Vector2D();
+    		double maxLat = -2e300;
+    		double minLat = 2e300;
+    		double maxLon = -2e300;
+    		double minLon = 2e300;
+    		for(Intersection inter : intersections.values()) {
+    			Geolocation geo = inter.getGeolocation();
+    			maxLat = Math.max(geo.getLatitude(), maxLat);
+    			minLat = Math.min(geo.getLatitude(), minLat);
+    			maxLon = Math.max(geo.getLongitude(), maxLon);
+    			minLon = Math.min(geo.getLongitude(), minLon);
+    		}
+    		dims.y = Math.max( Geolocation.distance(minLat, minLon, maxLat, minLon), Geolocation.distance(minLat, maxLon, maxLat, maxLon) );
+    		dims.x = Math.max( Geolocation.distance(minLat, minLon, minLat, maxLon), Geolocation.distance(maxLat, minLon, maxLat, maxLon) );
+    		return dims;
+    }
+    
     public void AddIntersection(Intersection inter) {
         this.intersections.put( inter.getId(), inter );
     }
