@@ -32,11 +32,9 @@ public class CityMapMenuView extends JPanel {
         loadDeliveryRequestButton.addActionListener(new ButtonListener(controller, w));
         loadDeliveryRequestButton.setEnabled(false);
         
-        
         courierNumberLabel = new JLabel("Couriers' number : ");
         courierNumberField = new JTextField("1", 4);
         courierNumberField.setEditable(true);
-        //courierNumberField.
         
         this.add(loadNewCityMapButton);
         this.add(loadDeliveryRequestButton);
