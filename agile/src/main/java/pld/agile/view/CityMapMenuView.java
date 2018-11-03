@@ -13,8 +13,10 @@ public class CityMapMenuView extends JPanel {
     private JButton loadNewCityMapButton;
     private JButton loadDeliveryRequestButton;
     private final int buttonHeight = 30;
-    private int menuHeight = 60;
-    private int menuWidth = 600;
+    private int menuHeight = 80;
+    private int menuWidth = 500;
+    private JLabel courierNumberLabel;
+    private JTextField courierNumberField;
 
     public CityMapMenuView(Window w, Controller controller) {
         setLayout(new FlowLayout());
@@ -30,9 +32,17 @@ public class CityMapMenuView extends JPanel {
         loadDeliveryRequestButton.addActionListener(new ButtonListener(controller, w));
         loadDeliveryRequestButton.setEnabled(false);
         
+        
+        courierNumberLabel = new JLabel("Couriers' number : ");
+        courierNumberField = new JTextField("1", 4);
+        courierNumberField.setEditable(true);
+        //courierNumberField.
+        
         this.add(loadNewCityMapButton);
         this.add(loadDeliveryRequestButton);
         this.add(computeCircuitsButton);
+        this.add(courierNumberLabel);
+        this.add(courierNumberField);
         
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Menu :"));
