@@ -18,11 +18,14 @@ public class DeliveryRequest {
     // since we might have a bunch of addition/deletion to make. Though it's not that relevant
 
     private LinkedList<Delivery> deliveries;
+    private int numberOfDeliveries;
     private String warehouseAddress = "";
+    private Intersection warehouseIntersection;
     private Time departureTime = new Time();
 
     public DeliveryRequest() {
         this.deliveries = new LinkedList<Delivery>();
+        this.numberOfDeliveries = 0;
     }
     
     /**
@@ -32,6 +35,7 @@ public class DeliveryRequest {
      */
     public DeliveryRequest addDelivery(Delivery delivery) {
         this.deliveries.add( delivery );
+        this.numberOfDeliveries = this.numberOfDeliveries + 1;
         return this;
     }
     
@@ -42,6 +46,7 @@ public class DeliveryRequest {
      */
     public DeliveryRequest removeDelivery(Delivery delivery) {
         this.deliveries.remove(delivery);
+        this.numberOfDeliveries = this.numberOfDeliveries - 1;
         return this;
     }
     
@@ -84,14 +89,30 @@ public class DeliveryRequest {
         for (Delivery delivery : this.deliveries){
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if(geolocation == null){
-            System.out.println("The address " + delivery.getAddress() + " was not found");
+            System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
             this.deliveries.remove(delivery);
             continue;
             }
             delivery.setGeolocation(geolocation);
         }
-//        this.setDeliveries(deliveries);
+        
+        this.warehouseIntersection = cityMap.getIntersectionById(this.warehouseAddress);
+        //Error
+        if(this.warehouseIntersection == null)
+        	System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
     }
+
+		public int getNumberOfDeliveries() {
+			return numberOfDeliveries;
+		}
+
+		public Intersection getWarehouseIntersection() {
+			return warehouseIntersection;
+		}
+
+		public void setWarehouseIntersection(Intersection warehouseIntersection) {
+			this.warehouseIntersection = warehouseIntersection;
+		}
 
 }
 

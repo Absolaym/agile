@@ -340,16 +340,16 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         Geolocation origin = getOrigin(cityMap);
 
+        int i = 0;
         for (Circuit circuit : circuits) {
-            int i = 0;
-            Color c = new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100));
+            Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);
             }
 
-            for (Delivery deliv : circuit.getDeliveries()) {
-                colorDelivery(g, c, deliv, origin, delivDotSize);
-            }
+            //for (Delivery deliv : circuit.getDeliveries()) {
+              //  colorDelivery(g, c, deliv, origin, delivDotSize);
+            //}
             i++;
         }
     }
