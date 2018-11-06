@@ -18,14 +18,12 @@ public class DeliveryRequest {
     // since we might have a bunch of addition/deletion to make. Though it's not that relevant
 
     private LinkedList<Delivery> deliveries;
-    private int numberOfDeliveries;
     private String warehouseAddress = "";
     private Intersection warehouseIntersection;
     private Time departureTime = new Time();
 
     public DeliveryRequest() {
         this.deliveries = new LinkedList<Delivery>();
-        this.numberOfDeliveries = 0;
     }
     
     /**
@@ -35,7 +33,6 @@ public class DeliveryRequest {
      */
     public DeliveryRequest addDelivery(Delivery delivery) {
         this.deliveries.add( delivery );
-        this.numberOfDeliveries = this.numberOfDeliveries + 1;
         return this;
     }
     
@@ -46,7 +43,6 @@ public class DeliveryRequest {
      */
     public DeliveryRequest removeDelivery(Delivery delivery) {
         this.deliveries.remove(delivery);
-        this.numberOfDeliveries = this.numberOfDeliveries - 1;
         return this;
     }
     
@@ -101,10 +97,6 @@ public class DeliveryRequest {
         if(this.warehouseIntersection == null)
         	System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
     }
-
-		public int getNumberOfDeliveries() {
-			return numberOfDeliveries;
-		}
 
 		public Intersection getWarehouseIntersection() {
 			return warehouseIntersection;
