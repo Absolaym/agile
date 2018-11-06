@@ -70,7 +70,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         this.zoomSlider.setMaximum(80);
         this.zoomSlider.setValue(50);
         this.zoomSlider.setSize(100, 30);
-        this.zoomSlider.setInverted(true);
         this.zoomSlider.setAlignmentX(this.getWidth() - this.zoomSlider.getWidth() - 20);
         this.zoomSlider.setAlignmentY(this.zoomSlider.getHeight() + 200);
         this.zoomSlider.addChangeListener(new ChangeListener() {
