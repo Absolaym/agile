@@ -71,8 +71,8 @@ public class ButtonListener implements ActionListener {
 
             }
         }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
-            
-            controller.computeCircuits();
+            int numberOfCouriers = window.getCityMapMenuPanel().getCourierNumber();
+            controller.computeCircuits(numberOfCouriers);
             window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
             
