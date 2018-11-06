@@ -35,10 +35,10 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
-        mapMenuPanel = new CityMapMenuView(this, controller);
-        mapContainerPanel = new CityMapContainerView(this, controller);
-        deliveryRequestPanel = new DeliveryRequestView(this, controller);
-        errorAreaPanel = new ErrorAreaView(this, controller);
+        mapMenuPanel 					= new CityMapMenuView(this, controller);
+        mapContainerPanel 		= new CityMapContainerView(this, controller);
+        deliveryRequestPanel 	= new DeliveryRequestView(this, controller);
+        errorAreaPanel 				= new ErrorAreaView( this );
 
         setWindowSize();
         setSize(width, height);
