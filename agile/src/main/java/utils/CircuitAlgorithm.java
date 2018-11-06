@@ -28,6 +28,8 @@ public class CircuitAlgorithm {
 	
 	private HashMap<String, HashMap<String, IntermediateResult>> shortestPaths;	
 	
+	private final int KMEANS_TIMEOUT = 10;
+	
 	
 	private class Node {
 		Intersection intersection;
@@ -191,8 +193,10 @@ public class CircuitAlgorithm {
 	}
 	
 	//////////////////////////// A FAIRE //////////////////////////
-	// Faire la boucle pour avoir plus de deux itérations et converger le kmeans
-	// Réorganiser les clusters quand un est trop peuplé
+	//X//  Faire la boucle pour avoir plus de deux itérations et converger le kmeans
+	// THINK OF TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
+	//X// Réorganiser les clusters quand un est trop peuplé
+	// Regarder bug les circuits ne sont pas ronds
 	// Calculer la qualité d'un cluster
 	// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
 	// choisir la meilleure solution
@@ -223,79 +227,59 @@ public class CircuitAlgorithm {
 		}
 		
 		
-		//finding closest center for each delivery
-		double currentDistanceToCenter;
-		for(Delivery delivery : deliveries){
-			double minDistance = Double.MAX_VALUE;
-			int closestCenter = 0;
-			for(int i = 0; i < numberOfCouriers; i++){
-				currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
-				if(currentDistanceToCenter < minDistance){
-					closestCenter = i;
-					minDistance = currentDistanceToCenter;
-				}
-			}
+		for (int k = 0 ; k < KMEANS_TIMEOUT ; k ++) {
 			
-			//add delivery to proper cluster
-			LinkedList<Delivery> list = correspondingCenter.get(centers[closestCenter]);
-			if(list == null) list = new LinkedList<Delivery>(); 
-			list.add(delivery);
-			correspondingCenter.put(centers[closestCenter],list);
-		}
-		System.out.println("hey");
-		
-		
-		//Compute new center geolocation
-		for(int i = 0; i<numberOfCouriers; i++){
-			double meanLatitude = 0;
-			double meanLongitude = 0;
-			
-			LinkedList <Delivery> deliveriesInCluster = correspondingCenter.get(centers[i]);
-			
-			for(Delivery delivery : deliveriesInCluster){
-				meanLatitude += delivery.getGeolocation().getLatitude();
-				meanLongitude += delivery.getGeolocation().getLongitude();
-			}
-			meanLatitude = meanLatitude / deliveriesInCluster.size();
-			meanLongitude = meanLongitude / deliveriesInCluster.size();
+			//finding closest center for each delivery
+			correspondingCenter = new HashMap<Geolocation, LinkedList<Delivery>>();
 
-			centers[i] = new Geolocation(meanLatitude, meanLongitude);
-			System.out.println("hey2");
-
-		}
-		//calcul des moyennes du centre entre les geolocation qui ont le meme centre
-		//nouveau calcul de centre
-		
-		
-		//once new center is defined, find closest center again. think of timeout. think of dynamic display
-		
-		
-		correspondingCenter = new HashMap<Geolocation, LinkedList<Delivery>>();
-		
-		//finding closest center for each delivery
-		for(Delivery delivery : deliveries){
-			double minDistance = Double.MAX_VALUE;
-			int closestCenter = 0;
-			for(int i = 0; i < numberOfCouriers; i++){
-				currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
-				if(currentDistanceToCenter < minDistance){
-					closestCenter = i;
-					minDistance = currentDistanceToCenter;
+			double currentDistanceToCenter;
+			for(Delivery delivery : deliveries){
+				double minDistance = Double.MAX_VALUE;
+				int closestCenter = 0;
+				for(int i = 0; i < numberOfCouriers; i++){
+					currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
+					if(currentDistanceToCenter < minDistance){
+						closestCenter = i;
+						minDistance = currentDistanceToCenter;
+					}
 				}
+				
+				//add delivery to proper cluster
+				LinkedList<Delivery> list = correspondingCenter.get(centers[closestCenter]);
+				if(list == null) list = new LinkedList<Delivery>(); 
+				list.add(delivery);
+				correspondingCenter.put(centers[closestCenter],list);
+			}
+			System.out.println("hey");
+			
+			//Compute new center geolocation
+			for(int i = 0; i<numberOfCouriers; i++){
+				double meanLatitude = 0;
+				double meanLongitude = 0;
+				
+				LinkedList <Delivery> deliveriesInCluster = correspondingCenter.get(centers[i]);
+				
+				for(Delivery delivery : deliveriesInCluster){
+					meanLatitude += delivery.getGeolocation().getLatitude();
+					meanLongitude += delivery.getGeolocation().getLongitude();
+				}
+				meanLatitude = meanLatitude / deliveriesInCluster.size();
+				meanLongitude = meanLongitude / deliveriesInCluster.size();
+
+				centers[i] = new Geolocation(meanLatitude, meanLongitude);
+				System.out.println("hey2");
+
 			}
 			
-			//add delivery to proper cluster
-			LinkedList<Delivery> list = correspondingCenter.get(centers[closestCenter]);
-			if(list == null) list = new LinkedList<Delivery>(); 
-			list.add(delivery);
-			correspondingCenter.put(centers[closestCenter],list);
 		}
-		System.out.println("hey");
 		
 		
 		
 		
 		
+		
+		
+			
 		
 		
 		//Return clusters
@@ -303,10 +287,82 @@ public class CircuitAlgorithm {
 		for(Map.Entry<Geolocation, LinkedList<Delivery>> entry : correspondingCenter.entrySet()){
 			clusters.add(entry.getValue());
 		}
+		
+		
+		double avgClusterSize = ((double)deliveries.size())/((double)numberOfCouriers);
+		clusters = equalizeClustersSize(clusters,avgClusterSize);
+		
+		
+		
 		return clusters;
 		
 		
 		
+	}
+	
+	private LinkedList<LinkedList<Delivery>> equalizeClustersSize(LinkedList<LinkedList<Delivery>> clusters, double avgClusterSize){
+		LinkedList<Delivery> deliveriesToChange = new LinkedList<Delivery>();
+		
+		for (LinkedList<Delivery> myCluster : clusters) {
+			int clusterSize = myCluster.size();
+			
+			// If the cluster is bigger than expected
+			if (clusterSize>avgClusterSize+1) {
+			
+				for (int i = 0 ; i < clusterSize-avgClusterSize ; i++) {
+					deliveriesToChange.add(myCluster.getFirst());
+					myCluster.removeFirst();
+					
+					
+					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
+				}
+				
+			}
+		}
+		for (LinkedList<Delivery> myCluster : clusters) {
+			int clusterSize = myCluster.size();
+			
+			// If the cluster is smaller than expected
+			if (clusterSize<avgClusterSize-1) {
+				
+				for (int i = 0 ; i < clusterSize-avgClusterSize ; i++) {
+					myCluster.add(myCluster.getFirst());
+					deliveriesToChange.removeFirst();
+					
+
+					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
+				}
+				
+			}
+			
+		}
+		
+		if (!deliveriesToChange.isEmpty()) {
+			for (LinkedList<Delivery> myCluster : clusters) {
+				int clusterSize = myCluster.size();
+				
+				// If the cluster is smaller than expected
+				if (clusterSize<avgClusterSize) {
+					myCluster.add(deliveriesToChange.get(0));
+					deliveriesToChange.removeFirst();		
+					
+
+					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
+				}
+				
+				if(deliveriesToChange.isEmpty()) {
+					break;
+				}
+				
+			}
+			
+			
+		}
+		
+		
+		
+		
+		return clusters;
 	}
 
 	private int getRandomIndex(int size){

@@ -73,19 +73,43 @@ public class Model {
 					return;
 				}
 				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				///////////////////////////////////////////////////////////
 				//CHANGE THIS
 				if(this.numberOfCouriers == -1) {
 					//System.out.println("Error: cannot compute circuits without a set number of couriers");//error
 					//return;
-					this.numberOfCouriers = 2;
+					this.numberOfCouriers = 5;
 				}
+				////////////////////////////////////////////////////
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				if(this.circuitAlgorithm == null) 
 					this.circuitAlgorithm = new CircuitAlgorithm();
 				
 				this.circuitAlgorithm.init(this.cityMap, this.deliveryRequest);
 				this.circuitAlgorithm.execute(this.numberOfCouriers); //ATTENTION CHANGER
-        this.circuits = this.circuitAlgorithm.result();
+				this.circuits = this.circuitAlgorithm.result();
 
     }
 
