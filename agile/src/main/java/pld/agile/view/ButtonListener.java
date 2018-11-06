@@ -51,7 +51,7 @@ public class ButtonListener implements ActionListener {
         }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                if(controller.getState()!=controller.stateInit){
+                
                     JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
                     int result = jfc.showOpenDialog(window);
                     DeliveryRequest deliveryRequest;
@@ -66,7 +66,7 @@ public class ButtonListener implements ActionListener {
                         }
                         window.getCityMapContainerPanel().repaint();                   
                     }
-                }
+                
             } catch (Exception e2) {
 
             }

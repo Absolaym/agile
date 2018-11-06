@@ -17,7 +17,7 @@ public class Controller {
     
     private State state;
     protected static final StateDefault stateDefault = new StateDefault();
-    public static final StateInit stateInit = new StateInit();
+    protected static final StateInit stateInit = new StateInit();
     protected static final StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
     protected static final StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
     protected static final StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
