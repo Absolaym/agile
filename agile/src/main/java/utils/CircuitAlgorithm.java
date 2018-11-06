@@ -8,6 +8,7 @@ import java.util.Queue;
 import model.CityMap;
 import model.Delivery;
 import model.DeliveryRequest;
+import model.Geolocation;
 import model.Intersection;
 import model.Section;
 import model.Trip;
@@ -171,100 +172,15 @@ public class CircuitAlgorithm {
 		return inter;
 	}
 	
-	public void executen() {
-		this.circuits = new LinkedList<Circuit>();
-		
-		IntermediateResult[][] shortestTripBetweenDeliveryPoints = new IntermediateResult[numberOfDeliveries + 1][numberOfDeliveries +1];
-		
-		//Arrays for provided TSP algorithm
-		int[][] tripLength = new int[numberOfDeliveries + 1][numberOfDeliveries +1];
-		int[] deliveryDuration = new int[numberOfDeliveries + 1];
-		
-		//LinkedList<IntermediateResult> shortestBetweenDeliveries = new LinkedList<>();
-		
-		LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
-
-		int targetIndex = 0;
-		for(Delivery delivery : deliveries) {
-			
-			// Establish the shortest paths between warehouse and deliveries
-			//System.out.println( "Target delivery" + delivery );
-			Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
-			Node target = this.nodes.get( delivery.getAddress() );
-			
-			IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
-			
-			inter.computeLength();
-			shortestTripBetweenDeliveryPoints[numberOfDeliveries][targetIndex] = inter;
-			tripLength[numberOfDeliveries][targetIndex] = (int) Math.ceil(inter.length);
-			deliveryDuration[targetIndex] = delivery.getDuration();
-			
-			// Establish the shortest paths between deliveries and warehouse
-			inter = this.cleanCosts().dijkstra( target ).resolveDijkstra( target, origin );
-			
-			inter.computeLength();
-			shortestTripBetweenDeliveryPoints[targetIndex][numberOfDeliveries] = inter;
-			tripLength[targetIndex][numberOfDeliveries] = (int) Math.ceil(inter.length);
-			
-			// Establish the shortest paths between deliveries
-			int originIndex = 0;
-			for(Delivery delivery2 : deliveries) {
-				
-				if(delivery == delivery2) {
-					originIndex++;
-					continue;
-				}
-				
-				origin = this.nodes.get( delivery2.getAddress() );
-				inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
-				inter.computeLength();
-				shortestTripBetweenDeliveryPoints[originIndex][targetIndex] = inter;				
-				tripLength[originIndex][targetIndex] = (int) Math.ceil(inter.length);				
-
-				originIndex++;
-				
-			}
-			targetIndex++;
-
-		}
-		
-		System.out.println("synch");
-
-		TSP1 tsp = new TSP1();
-		tsp.chercheSolution(60000, numberOfDeliveries + 1, tripLength , deliveryDuration);
-		System.out.println("synch");
-		
-		
-		//Circuit object creation
-		Circuit circuit = new Circuit();
-                circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
-                
-		for(int i = 0; i < numberOfDeliveries+1; i++) {
-			int i2 = Math.floorMod(i+1, numberOfDeliveries + 1);
-			
-			int currentDeliveryStopIndex = tsp.getMeilleureSolution(i);
-			int nextDeliveryStopIndex = tsp.getMeilleureSolution(i2);
-			
-			
-			//trips are the business object equivalent to path
-			Trip nextTrip = new Trip();
-			nextTrip.setSections(shortestTripBetweenDeliveryPoints[currentDeliveryStopIndex][nextDeliveryStopIndex].path);
-			circuit.addTrip(nextTrip);
-			
-			//if next delivery is the warehouse, ignore
-			if(currentDeliveryStopIndex != numberOfDeliveries) circuit.addDelivery(deliveries.get(currentDeliveryStopIndex));
-		}
-		System.out.println("synch");
-		this.circuits.add(circuit);
-		
-		//add the closing trip
-
-	}
-	
 	public void execute(int numberOfCouriers) {
+		LinkedList<LinkedList<Delivery>> clusters = createClustersWithKMeans(numberOfCouriers);
+		
 		computeShortestPaths();
-		LinkedList<LinkedList<Delivery>> clusters = createClustersWithSweep(numberOfCouriers);
-		System.out.println(clusters);
+		
+		
+		
+		//LinkedList<LinkedList<Delivery>> clusters = createClustersWithSweep(numberOfCouriers);
+		//System.out.println(clusters);
 
 		this.circuits = new LinkedList<Circuit>();
 		for(LinkedList<Delivery> cluster : clusters) {
@@ -272,6 +188,131 @@ public class CircuitAlgorithm {
 		}
 		System.out.println("clusters end");
 		//call TSP
+	}
+	
+	//////////////////////////// A FAIRE //////////////////////////
+	// Faire la boucle pour avoir plus de deux itérations et converger le kmeans
+	// Réorganiser les clusters quand un est trop peuplé
+	// Calculer la qualité d'un cluster
+	// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
+	// choisir la meilleure solution
+	///////////////////////////////////////////////////////////////
+	
+	
+	private LinkedList<LinkedList<Delivery>> createClustersWithKMeans(int numberOfCouriers){
+		LinkedList<Delivery> deliveries = this.deliveryRequest.getDeliveries();
+		int totalDeliveries = deliveries.size();
+		
+		//Initalisation of centers with random delivery geolocations
+		Geolocation[] centers = new Geolocation[numberOfCouriers];
+		HashMap<Geolocation, LinkedList<Delivery>> correspondingCenter = new HashMap<Geolocation, LinkedList<Delivery>>();
+
+		for(int i = 0; i < numberOfCouriers; i++){
+			int index = 0;
+			boolean found = false;
+			while (!found){
+				index = getRandomIndex(totalDeliveries);
+				
+				if(correspondingCenter.get(deliveries.get(index).getGeolocation()) == null){
+					LinkedList<Delivery> list = new LinkedList<Delivery>();
+					correspondingCenter.put(deliveries.get(index).getGeolocation(), list);
+					found = true;
+				}
+			}
+			centers[i] = deliveries.get(index).getGeolocation();
+		}
+		
+		
+		//finding closest center for each delivery
+		double currentDistanceToCenter;
+		for(Delivery delivery : deliveries){
+			double minDistance = Double.MAX_VALUE;
+			int closestCenter = 0;
+			for(int i = 0; i < numberOfCouriers; i++){
+				currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
+				if(currentDistanceToCenter < minDistance){
+					closestCenter = i;
+					minDistance = currentDistanceToCenter;
+				}
+			}
+			
+			//add delivery to proper cluster
+			LinkedList<Delivery> list = correspondingCenter.get(centers[closestCenter]);
+			if(list == null) list = new LinkedList<Delivery>(); 
+			list.add(delivery);
+			correspondingCenter.put(centers[closestCenter],list);
+		}
+		System.out.println("hey");
+		
+		
+		//Compute new center geolocation
+		for(int i = 0; i<numberOfCouriers; i++){
+			double meanLatitude = 0;
+			double meanLongitude = 0;
+			
+			LinkedList <Delivery> deliveriesInCluster = correspondingCenter.get(centers[i]);
+			
+			for(Delivery delivery : deliveriesInCluster){
+				meanLatitude += delivery.getGeolocation().getLatitude();
+				meanLongitude += delivery.getGeolocation().getLongitude();
+			}
+			meanLatitude = meanLatitude / deliveriesInCluster.size();
+			meanLongitude = meanLongitude / deliveriesInCluster.size();
+
+			centers[i] = new Geolocation(meanLatitude, meanLongitude);
+			System.out.println("hey2");
+
+		}
+		//calcul des moyennes du centre entre les geolocation qui ont le meme centre
+		//nouveau calcul de centre
+		
+		
+		//once new center is defined, find closest center again. think of timeout. think of dynamic display
+		
+		
+		correspondingCenter = new HashMap<Geolocation, LinkedList<Delivery>>();
+		
+		//finding closest center for each delivery
+		for(Delivery delivery : deliveries){
+			double minDistance = Double.MAX_VALUE;
+			int closestCenter = 0;
+			for(int i = 0; i < numberOfCouriers; i++){
+				currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
+				if(currentDistanceToCenter < minDistance){
+					closestCenter = i;
+					minDistance = currentDistanceToCenter;
+				}
+			}
+			
+			//add delivery to proper cluster
+			LinkedList<Delivery> list = correspondingCenter.get(centers[closestCenter]);
+			if(list == null) list = new LinkedList<Delivery>(); 
+			list.add(delivery);
+			correspondingCenter.put(centers[closestCenter],list);
+		}
+		System.out.println("hey");
+		
+		
+		
+		
+		
+		
+		
+		//Return clusters
+		LinkedList<LinkedList<Delivery>> clusters = new LinkedList<LinkedList<Delivery>>();
+		for(Map.Entry<Geolocation, LinkedList<Delivery>> entry : correspondingCenter.entrySet()){
+			clusters.add(entry.getValue());
+		}
+		return clusters;
+		
+		
+		
+	}
+
+	private int getRandomIndex(int size){
+		double randomDouble = Math.random() * size;
+		int randomInt = (int) randomDouble;
+		return randomInt;
 	}
 	
 	private void computeShortestPaths() {
@@ -341,8 +382,6 @@ public class CircuitAlgorithm {
 		return clusters;
 	}
 	
-	
-	
  	private void bubbleSort(Delivery[] deliveries) 
   { 
       Delivery temp; 
@@ -354,16 +393,12 @@ public class CircuitAlgorithm {
           { 
               if ( computeAngle(deliveries[j])> computeAngle(deliveries[j + 1]))  
               { 
-                  // swap
                   temp = deliveries[j]; 
                   deliveries[j] = deliveries[j + 1]; 
                   deliveries[j + 1] = temp; 
                   swapped = true; 
               } 
-          } 
-
-          // IF no two elements were  
-          // swapped by inner loop, then break 
+          }  
           if (swapped == false) 
               break; 
       } 
@@ -455,43 +490,7 @@ public class CircuitAlgorithm {
 			System.out.println("synch");
 			this.circuits.add(circuit);
 	}
-	
-	private void TSP(int circuitSize, int[][] tripLength, int[] deliveryDuration) {
 		
-		TSP1 tsp = new TSP1();
-		tsp.chercheSolution(60000, numberOfDeliveries + 1, tripLength , deliveryDuration);
-		System.out.println("Tsp ended");
-		
-		
-		//Circuit object creation
-		this.circuits = new LinkedList<Circuit>();
-
-		Circuit circuit = new Circuit();
-                circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
-                
-		for(int i = 0; i < numberOfDeliveries+1; i++) {
-			int i2 = Math.floorMod(i+1, numberOfDeliveries + 1);
-			
-			int currentDeliveryStopIndex = tsp.getMeilleureSolution(i);
-			int nextDeliveryStopIndex = tsp.getMeilleureSolution(i2);
-			
-			
-			//trips are the business object equivalent to path
-			Trip nextTrip = new Trip();
-			//nextTrip.setSections(shortestTripBetweenDeliveryPoints[currentDeliveryStopIndex][nextDeliveryStopIndex].path);
-			circuit.addTrip(nextTrip);
-			
-			//if next delivery is the warehouse, ignore
-			//if(currentDeliveryStopIndex != numberOfDeliveries) circuit.addDelivery(deliveries.get(currentDeliveryStopIndex));
-		}
-		System.out.println("synch");
-		this.circuits.add(circuit);
-		
-		//add the closing trip
-
-	}
-	
-	
 	public LinkedList<Circuit> result() {
 		return this.circuits;
 	}
