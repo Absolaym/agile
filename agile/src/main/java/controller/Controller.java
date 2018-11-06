@@ -45,7 +45,8 @@ public class Controller {
         this.state.loadDeliveryRequest(path, this);
     }
 
-    public void computeCircuits() {
+    public void computeCircuits(int numberOfCouriers) {
+    		this.model.setNumberOfCouriers(numberOfCouriers);
         this.state.computeCircuits(this);
     }
     

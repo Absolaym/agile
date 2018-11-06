@@ -7,7 +7,6 @@ package controller;
 
 import model.DeliveryRequest;
 import model.CityMap;
-import model.Model;
 
 /**
  *

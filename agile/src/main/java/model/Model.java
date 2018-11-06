@@ -7,6 +7,8 @@ package model;
 
 import java.util.LinkedList;
 
+import utils.CircuitAlgorithm;
+
 /**
  *
  * @author Lucie
@@ -16,6 +18,8 @@ public class Model {
     private CityMap cityMap;
     private DeliveryRequest deliveryRequest;
     private LinkedList<Circuit> circuits;
+    private CircuitAlgorithm circuitAlgorithm;
+    private int numberOfCouriers;
     
     private static Model INSTANCE = null;
     
@@ -25,6 +29,7 @@ public class Model {
         cityMap = new CityMap();
         deliveryRequest = null;
         circuits = null;
+        numberOfCouriers = -1;
     }
     
     public static Model getInstance(){
@@ -56,5 +61,64 @@ public class Model {
     public void setDeliveryRequest(DeliveryRequest deliveryRequest) {
         this.deliveryRequest = deliveryRequest;
     }
+    
+    public void computeCircuits() {
+				if(this.cityMap == null) {
+					System.out.println("Error: cannot compute circuits without a city map");//error
+					return;
+				}
+				
+				if(this.deliveryRequest == null) {
+					System.out.println("Error: cannot compute circuits without a delivery request");//error
+					return;
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				///////////////////////////////////////////////////////////
+				//CHANGE THIS
+				if(this.numberOfCouriers == -1) {
+					//System.out.println("Error: cannot compute circuits without a set number of couriers");//error
+					//return;
+					this.numberOfCouriers = 5;
+				}
+				////////////////////////////////////////////////////
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				if(this.circuitAlgorithm == null) 
+					this.circuitAlgorithm = new CircuitAlgorithm();
+				
+				this.circuitAlgorithm.init(this.cityMap, this.deliveryRequest);
+				this.circuitAlgorithm.execute(this.numberOfCouriers); //ATTENTION CHANGER
+				this.circuits = this.circuitAlgorithm.result();
+
+    }
+
+		public int getNumberOfCouriers() {
+			return numberOfCouriers;
+		}
+
+		public void setNumberOfCouriers(int numberOfCouriers) {
+			this.numberOfCouriers = numberOfCouriers;
+		}
 
 }

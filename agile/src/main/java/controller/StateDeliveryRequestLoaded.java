@@ -37,10 +37,7 @@ public class StateDeliveryRequestLoaded extends StateDefault{
     
     public void computeCircuits(Controller c){
         Model model = c.getModel();
-        CircuitAlgorithm circuitAlgorithm = new CircuitAlgorithm();
-        circuitAlgorithm.init(model.getCityMap(), model.getDeliveryRequest());
-        circuitAlgorithm.execute();
-        model.setCircuits(circuitAlgorithm.result());
+        model.computeCircuits();
     }
     
     public void addDelivery(DeliveryRequest dr, Delivery d) {
