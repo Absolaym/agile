@@ -19,6 +19,7 @@ public class DeliveryRequest {
 
     private LinkedList<Delivery> deliveries;
     private String warehouseAddress = "";
+    private Intersection warehouseIntersection;
     private Time departureTime = new Time();
 
     public DeliveryRequest() {
@@ -84,14 +85,26 @@ public class DeliveryRequest {
         for (Delivery delivery : this.deliveries){
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if(geolocation == null){
-            System.out.println("The address " + delivery.getAddress() + " was not found");
+            System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
             this.deliveries.remove(delivery);
             continue;
             }
             delivery.setGeolocation(geolocation);
         }
-//        this.setDeliveries(deliveries);
+        
+        this.warehouseIntersection = cityMap.getIntersectionById(this.warehouseAddress);
+        //Error
+        if(this.warehouseIntersection == null)
+        	System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
     }
+
+		public Intersection getWarehouseIntersection() {
+			return warehouseIntersection;
+		}
+
+		public void setWarehouseIntersection(Intersection warehouseIntersection) {
+			this.warehouseIntersection = warehouseIntersection;
+		}
 
 }
 

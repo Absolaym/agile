@@ -41,4 +41,28 @@ public class StateDefault implements State{
     public void computeCircuits(Controller c){
         
     }
+    
+    public void addDelivery() {
+        
+    }
+    
+    public void addDeliveryToComputedCircuit() {
+        
+    }
+    
+    public void deleteDelivery() {
+        
+    }
+    
+    public void moveDelivery() {
+        
+    }
+    
+    public void undoCde() {
+        
+    }
+    
+    public void redoCde() {
+        
+    }
 }
