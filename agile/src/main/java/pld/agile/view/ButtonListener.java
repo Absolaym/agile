@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -60,11 +63,14 @@ public class ButtonListener implements ActionListener {
                         deliveryRequest = controller.getModel().getDeliveryRequest();
                         //get deliveries and send to JTable to be displayed
                         if(deliveryRequest!=null){
-                            window.getDeliveryRequestPanel().addDeliveries();
-//                            window.getDeliveryRequestPanel().addToTable();
+//                            window.getDeliveryRequestPanel().addDeliveries();
+                            window.getDeliveryRequestPanel().addToTable();
+                            window.getDeliveryRequestPanel().repaint();  
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
+                            window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
                         }
                         window.getCityMapContainerPanel().repaint();                   
+                                         
                     }
                 
             } catch (Exception e2) {
@@ -75,6 +81,18 @@ public class ButtonListener implements ActionListener {
             controller.computeCircuits(numberOfCouriers);
             window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
+            
+        }
+        else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
+            JPanel messages = window.getCityMapMenuPanel().getMessages();
+            JLabel text = new JLabel("");
+            text.setSize(100, 30);
+            text.setLocation(messages.getWidth()/2 - 50, 0);
+            
+            text.setVisible(true);
+            messages.add(text);
+            System.out.println("text" + text.getLocation().x + " " + text.getSize().getSize().height);
+            window.getCityMapMenuPanel().repaint();
             
         }
 
