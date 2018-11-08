@@ -44,8 +44,8 @@ public class XmlParser {
 		return this.extensionCheck(path, "xml");
 	}
 	private boolean extensionCheck(String path, String extension) {
-		String[] split = path.split(".");
-		return (split.length > 1 && split[split.length - 1] == extension);
+		String[] split = path.split("[.]");
+		return (split.length > 1 && split[split.length - 1].equals(extension));
 	}
 
 	public DeliveryRequest parseDeliveryRequest(String filePath) {
