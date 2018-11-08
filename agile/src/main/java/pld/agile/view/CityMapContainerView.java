@@ -2,12 +2,7 @@ package pld.agile.view;
 
 import controller.Controller;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.util.*;
@@ -252,6 +247,8 @@ public class CityMapContainerView extends JPanel implements Observer {
 
             g.setColor(Color.YELLOW);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+            
+            window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
 
         } else {
             g.setColor(c);
