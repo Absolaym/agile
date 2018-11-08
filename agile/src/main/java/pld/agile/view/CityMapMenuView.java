@@ -87,6 +87,15 @@ public class CityMapMenuView extends JPanel {
     public JButton getLoadDeliveryRequestButton() {
         return loadDeliveryRequestButton;
     }
+    
+    public JTextField getCourierNumberField() {
+    	return courierNumberField;
+    }
+    
+    public int getCourierNumber() {
+    	String numberString = this.courierNumberField.getText();
+    	return Integer.parseInt(numberString);
+    }
 
     public JButton getAddNewDeliveryButton() {
         return addNewDeliveryButton;

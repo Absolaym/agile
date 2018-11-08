@@ -5,6 +5,7 @@
  */
 package controller;
 
+import model.Delivery;
 import model.DeliveryRequest;
 import model.Model;
 import utils.XmlParser;
@@ -36,9 +37,12 @@ public class StateDeliveryRequestLoaded extends StateDefault{
     
     public void computeCircuits(Controller c){
         Model model = c.getModel();
-        CircuitAlgorithm circuitAlgorithm = new CircuitAlgorithm();
-        circuitAlgorithm.init(model.getCityMap(), model.getDeliveryRequest());
-        circuitAlgorithm.execute();
-        model.setCircuits(circuitAlgorithm.result());
+        model.computeCircuits();
+    }
+    
+    public void addDelivery(DeliveryRequest dr, Delivery d) {
+        // add code to add delivery to delivery request
+        
+        Controller.commandsList.addCommand(new CommandAddDelivery(dr, d));
     }
 }

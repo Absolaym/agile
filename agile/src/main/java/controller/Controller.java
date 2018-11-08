@@ -14,10 +14,11 @@ import model.Model;
 public class Controller {
 
     private Model model;
+    protected static CommandsList commandsList;
     
     private State state;
     protected static final StateDefault stateDefault = new StateDefault();
-    public static final StateInit stateInit = new StateInit();
+    protected static final StateInit stateInit = new StateInit();
     protected static final StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
     protected static final StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
     protected static final StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
@@ -44,9 +45,35 @@ public class Controller {
         this.state.loadDeliveryRequest(path, this);
     }
 
-    public void computeCircuits() {
+    public void computeCircuits(int numberOfCouriers) {
+    		this.model.setNumberOfCouriers(numberOfCouriers);
         this.state.computeCircuits(this);
     }
+    
+    public void addDelivery() {
+        this.state.addDelivery();
+    }
+    
+    public void addDeliveryToComputedCircuit() {
+        this.state.addDeliveryToComputedCircuit();
+    }
+    
+    public void deleteDelivery() {
+        this.state.deleteDelivery();
+    }
+    
+    public void moveDelivery() {
+        this.state.moveDelivery();
+    }
+    
+    public void undo() {
+        this.state.undoCde();
+    }
+    
+    public void redo() {
+        this.state.redoCde();
+    }
+    
 
     public Model getModel(){
         return model;
