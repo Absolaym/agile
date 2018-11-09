@@ -6,6 +6,9 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.TextArea;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -57,7 +60,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
             Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             
             if(row == selectedRow) setBackground(color);
-            else setBackground(null);
+            //else setBackground(null);
 //            System.out.println("in cell rend table" + row);
             return tableCellRendererComponent;
         }
@@ -67,13 +70,17 @@ public class DeliveryRequestView extends JPanel implements Observer {
     public DeliveryRequestView(Window w, Controller c) {
         super();
         controller = c;
+        
+        
 
-        setLayout(null);
+        setLayout(new BorderLayout());
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
-        createTable();
+        //createTable();
+        
         
         setBackground(Color.LIGHT_GRAY);
+        
         w.getContentPane().add(this);
 
     }
@@ -86,14 +93,22 @@ public class DeliveryRequestView extends JPanel implements Observer {
 //        for (int i = 0; i < dr.getDeliveries().size(); i++) {
 //            deliveries[i] = dr.getDeliveries().get(i).getAddress();
 //        }
-        for (Delivery d : deliveries) {
-            table.put(d,new JTextArea(2,20));
+        for (int i = 0; i<deliveries.size(); i++) {
+            System.out.println("deliveries:" + deliveries.size());
+            JTextArea textArea = new JTextArea("adress");
+            Delivery d = deliveries.get(i);
+            textArea.append("adr:" + d.getAddress());
+            table.put(d,textArea);
             table.get(d).append("adress");
             table.get(d).insert("time", 2);
-            this.add((JTextArea)table.get(d));
-            revalidate();
-            repaint();
+            textArea.setVisible(true);
+            textArea.setSize(10, 10);
+ //           this.add((JTextArea)table.get(d));
+            this.add(textArea,BorderLayout.NORTH);
+            
+           
         }
+        this.revalidate();
     }
 
     public void createTable() {
@@ -150,10 +165,12 @@ public class DeliveryRequestView extends JPanel implements Observer {
                 for (int row = 0; row < tabModel.getRowCount(); row++) {
                     if(deliv.getAddress().equals(tabModel.getValueAt(row, 0))) {
                         tabModel.setValueAt(i, row, 3);
-                        colorTable(row,new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100)) );
+                       // colorTable(row,new Color(180, Math.floorMod(50 + 40 * i, 100), Math.floorMod(120 + 40 * i, 100)) );
                         departureTimeSec += circuit.getTrips().get(j).getLength() / (Circuit.SPEED / 3.6);
                         tabModel.setValueAt(new Time((int)departureTimeSec).toString(), row, 1);
                         departureTimeSec += deliv.getDuration() * 60;
+                        
+                        colorTable(row, Color.red,deliv);
                     }
                 }
                 j++;
@@ -164,16 +181,21 @@ public class DeliveryRequestView extends JPanel implements Observer {
     }
    
     // this method doesn't work well :(
-    public void colorTable(int row, Color c){
+    public void colorTable(int row, Color c, Delivery d){
+        
         cellRenderer.setSelectedRow(row);
         cellRenderer.setColor(c);
+        //tabModel.setValueAt(d.getAddress(), row,0);
         System.out.println("in color table");
-        tabModel.setValueAt(1, row, 3);
-       
+        //tabModel.setValueAt(1, row, 3);
+       // deliveriesTable.getColumnModel().getColumn(0).setHeaderValue("Address");
         deliveriesTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
+        tabModel.setValueAt(d.getAddress(), row, 0);
+        this.repaint();
+        
     }
     
     public void paintComponent(Graphics g) {

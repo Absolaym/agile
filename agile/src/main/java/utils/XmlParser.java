@@ -20,125 +20,147 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import error.ErrorLogger;
+import error.PlacoError;
+
 /**
-* @author Johnny
-*/
+ * @author Johnny
+ */
 public class XmlParser {
-    private DocumentBuilderFactory docBuilderFactory;
-    private DocumentBuilder docBuilder;
+	private DocumentBuilderFactory docBuilderFactory;
+	private DocumentBuilder docBuilder;
 
-    public XmlParser() {
-        this.docBuilderFactory = DocumentBuilderFactory.newInstance();
-        try {
-            this.docBuilder = this.docBuilderFactory.newDocumentBuilder();
-        }
-        catch (final ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
+	public XmlParser() {
+		this.docBuilderFactory = DocumentBuilderFactory.newInstance();
+		try {
+			this.docBuilder = this.docBuilderFactory.newDocumentBuilder();
+		}
+		catch (final ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean extensionCheck(String path) {
+		return this.extensionCheck(path, "xml");
+	}
+	private boolean extensionCheck(String path, String extension) {
+		String[] split = path.split("[.]");
+		return (split.length > 1 && split[split.length - 1].equals(extension));
+	}
 
-    public DeliveryRequest parseDeliveryRequest(String filePath) {
-        DeliveryRequest delReq = new DeliveryRequest();
+	public DeliveryRequest parseDeliveryRequest(String filePath) {
+		DeliveryRequest delReq = new DeliveryRequest();
 
-        try {
-            final Document doc = this.docBuilder.parse( new File(filePath) );
-            System.out.println( "Parsing the file: " + filePath);
+		if(!extensionCheck(filePath)) {
+			ErrorLogger.getInstance().log( PlacoError.NON_XML_DR );
+			return delReq;
+		}
+		
+		try {
 
-            final Element root = doc.getDocumentElement();
+			final Document doc = this.docBuilder.parse( new File(filePath) );
+			System.out.println( "Parsing the file: " + filePath);
 
-            NodeList nodes = root.getChildNodes();
+			final Element root = doc.getDocumentElement();
 
-            for(int i = 0; i < nodes.getLength(); i++) {
-                if(nodes.item(i).getNodeType() != Node.ELEMENT_NODE)	continue;
+			NodeList nodes = root.getChildNodes();
 
-                Element elem = (Element) nodes.item(i);
-                switch( elem.getTagName() ) {
-                    case "livraison":
+			for(int i = 0; i < nodes.getLength(); i++) {
+				if(nodes.item(i).getNodeType() != Node.ELEMENT_NODE)	continue;
 
-                        Delivery del = new Delivery();
-                        del.setAddress(elem.getAttribute("adresse"));
-                        del.setDuration(Integer.parseInt(elem.getAttribute("duree")));
+				Element elem = (Element) nodes.item(i);
+				switch( elem.getTagName() ) {
+				case "livraison":
 
-                        delReq.addDelivery(del);
+					Delivery del = new Delivery();
+					del.setAddress(elem.getAttribute("adresse"));
+					del.setDuration(Integer.parseInt(elem.getAttribute("duree")));
 
-                        break;
-                        
-                    case "entrepot":
+					delReq.addDelivery(del);
 
-                        delReq.setWarehouseAddress( elem.getAttribute("adresse"));
+					break;
 
-                        String[] hdStr = elem.getAttribute("heureDepart").split(":");
-                        int sec = Integer.parseInt(hdStr[2]);
-                        int min = Integer.parseInt(hdStr[1]);
-                        int hour = Integer.parseInt(hdStr[0]);
-                        Time hd = new Time(hour, min, sec);		
-                        delReq.setDepartureTime(hd);
+				case "entrepot":
 
-                        break;
-                }
-            }
-        } catch (final SAXException e) {
-            e.printStackTrace();
-        }
-        catch (final IOException e) {
-            e.printStackTrace();
-        }
+					delReq.setWarehouseAddress( elem.getAttribute("adresse"));
 
-        return delReq;
-    }
+					String[] hdStr = elem.getAttribute("heureDepart").split(":");
+					int sec = Integer.parseInt(hdStr[2]);
+					int min = Integer.parseInt(hdStr[1]);
+					int hour = Integer.parseInt(hdStr[0]);
+					Time hd = new Time(hour, min, sec);		
+					delReq.setDepartureTime(hd);
 
-    /**
-     * 
-     * @param filePath the path to the xml file you want to convert in a Map
-     * @return the Map converted
-     */
-    public CityMap parseMap(String filePath) {
-        CityMap map = new CityMap();
+					break;
+				}
+			}
+		} catch (final SAXException e) {
+			e.printStackTrace();
+		}
+		catch (final IOException e) {
+			e.printStackTrace();
+		}
 
-        try {
-            final Document doc = this.docBuilder.parse( new File(filePath) );
-            System.out.println( "Parsing the file: " + filePath);
+		return delReq;
+	}
 
-            final Element root = doc.getDocumentElement();
+	/**
+	 * 
+	 * @param filePath the path to the xml file you want to convert in a Map
+	 * @return the Map converted
+	 */
+	public CityMap parseMap(String filePath) {
+		CityMap map = new CityMap();
+		
+		if(!extensionCheck(filePath)) {
+			ErrorLogger.getInstance().log( PlacoError.NON_XML_CM );
+			return map;
+		}
+		
+		try {
+			final Document doc = this.docBuilder.parse( new File(filePath) );
+			System.out.println( "Parsing the file: " + filePath);
 
-            NodeList nodes = root.getChildNodes();
-            // If we keep list in the Plan object, this will stay, tho, 
-            // this IMHO should be handled by the class Plan
+			final Element root = doc.getDocumentElement();
 
-            for(int i = 0; i < nodes.getLength(); i++) {
-                if(nodes.item(i).getNodeType() != Node.ELEMENT_NODE)	continue;
+			NodeList nodes = root.getChildNodes();
+			// If we keep list in the Plan object, this will stay, tho, 
+			// this IMHO should be handled by the class Plan
 
-                Element elem = (Element) nodes.item(i);
-                switch( elem.getTagName() ) {
-                case "noeud":
-                    Geolocation geoI = new Geolocation(
-                        Double.parseDouble(elem.getAttribute("latitude")),
-                        Double.parseDouble(elem.getAttribute("longitude"))
-                        );
-                    Intersection inter = new Intersection(geoI, elem.getAttribute("id"));
+			for(int i = 0; i < nodes.getLength(); i++) {
+				if(nodes.item(i).getNodeType() != Node.ELEMENT_NODE)	continue;
 
-                    map.AddIntersection(inter);
+				Element elem = (Element) nodes.item(i);
+				switch( elem.getTagName() ) {
+				case "noeud":
+					Geolocation geoI = new Geolocation(
+							Double.parseDouble(elem.getAttribute("latitude")),
+							Double.parseDouble(elem.getAttribute("longitude"))
+							);
+					Intersection inter = new Intersection(geoI, elem.getAttribute("id"));
 
-                    break;
-                case "troncon":
-                    Section sec = new Section();
-                    sec.setLength(Double.parseDouble(elem.getAttribute("longueur")));
-                    sec.setStreetName(elem.getAttribute("nomRue"));
-                    sec.setStartIntersection( map.getIntersectionById(elem.getAttribute("origine")) );
-                    sec.setEndIntersection( map.getIntersectionById(elem.getAttribute("destination")) );
+					map.AddIntersection(inter);
 
-                    map.AddSection(sec);
+					break;
+				case "troncon":
+					Section sec = new Section();
+					sec.setLength(Double.parseDouble(elem.getAttribute("longueur")));
+					sec.setStreetName(elem.getAttribute("nomRue"));
+					sec.setStartIntersection( map.getIntersectionById(elem.getAttribute("origine")) );
+					sec.setEndIntersection( map.getIntersectionById(elem.getAttribute("destination")) );
 
-                    break;
-                }
-            }
-        } catch (final SAXException e) {
-            e.printStackTrace();
-        }
-        catch (final IOException e) {
-            e.printStackTrace();
-        }
+					map.AddSection(sec);
 
-        return map;
-    }
+					break;
+				}
+			}
+		} catch (final SAXException e) {
+			e.printStackTrace();
+		}
+		catch (final IOException e) {
+			e.printStackTrace();
+		}
+
+		return map;
+	}
 }

@@ -17,9 +17,12 @@ public class Window extends JFrame {
     protected final static String COMPUTE_CIRCUITS = "Compute circuits";
     protected final static String LOAD_NEW_CITY_MAP = "Load a new city map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
+    protected final static String ADD_DELIVERY = "Add a delivery";
+    
     
     private int width;
     private int height;
+    private boolean waitingState = false;
 
     public Window() {
         this(new Controller());
@@ -74,5 +77,25 @@ public class Window extends JFrame {
 
     public ErrorAreaView getErrorAreaPanel() {
         return errorAreaPanel;
+    }
+    
+    public void setWaitingState(boolean ws) {
+        if (ws){
+            mapMenuPanel.getComputeCircuitsButton().setEnabled(false);
+            mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(false);
+            mapMenuPanel.getLoadNewCityMapButton().setEnabled(false);
+            
+        } else {
+            mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
+            mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(true);
+            mapMenuPanel.getLoadNewCityMapButton().setEnabled(true);
+            mapMenuPanel.addNewDelivery("time");
+        }
+        mapMenuPanel.repaint();
+        waitingState = ws;
+    }
+    
+    public boolean getWaitingState() {
+        return waitingState;
     }
 }

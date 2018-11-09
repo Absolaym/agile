@@ -14,8 +14,8 @@ import javax.swing.*;
  * @author olivi
  */
 public class ErrorAreaView extends JPanel {
-    private int height = 100;
-    private int width = 600;
+    private final int HEIGHT = 150;
+    private final int WIDTH = 1000;
     private JTextArea text;
     private Controller controller;
 
@@ -35,11 +35,11 @@ public class ErrorAreaView extends JPanel {
 
     // to change
     public int getHeight() {
-        return height;
+        return HEIGHT;
     }
 
     public int getWidth() {
-        return width;
+        return WIDTH;
     }
 
     
