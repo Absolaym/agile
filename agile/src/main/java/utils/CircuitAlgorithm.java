@@ -29,6 +29,7 @@ public class CircuitAlgorithm {
 	private HashMap<String, HashMap<String, IntermediateResult>> shortestPaths;	
 	
 	private final int KMEANS_TIMEOUT = 10;
+	private final int KMEANS_EXECUTION_NUMBER = 10;
 	
 	
 	private class Node {
@@ -175,7 +176,10 @@ public class CircuitAlgorithm {
 	}
 	
 	public void execute(int numberOfCouriers) {
-		LinkedList<LinkedList<Delivery>> clusters = createClustersWithKMeans(numberOfCouriers);
+		
+		LinkedList<LinkedList<Delivery>> clusters = findBestClusters(numberOfCouriers);
+		//LinkedList<LinkedList<Delivery>> clusters = createClustersWithKMeans(numberOfCouriers);
+		
 		
 		computeShortestPaths();
 		
@@ -192,18 +196,58 @@ public class CircuitAlgorithm {
 		//call TSP
 	}
 	
+	public LinkedList<LinkedList<Delivery>> findBestClusters(int numberOfCouriers) {
+
+		LinkedList<LinkedList<Delivery>> bestClusters = new LinkedList<LinkedList<Delivery>>(); 
+		double bestQuality = Double.MAX_VALUE;
+		
+		for (int i = 0 ; i < KMEANS_EXECUTION_NUMBER ; i++) {
+			
+			Pair<LinkedList<LinkedList<Delivery>>,Geolocation[]> clustersAndCenters = createClustersWithKMeans(numberOfCouriers);
+			
+			double quality = computeClustersQuality(clustersAndCenters);
+			System.out.println("Qualité = "+quality);
+			
+			if (quality<bestQuality) {
+				bestQuality = quality;
+				bestClusters = clustersAndCenters.getFirst();
+			}
+		}
+		
+		System.out.println("Best quality = "+bestQuality);
+		
+		return (bestClusters);
+	}
+	
+	public double computeClustersQuality(Pair<LinkedList<LinkedList<Delivery>>,Geolocation[]> clustersAndCenters) {
+		// The quality of a group of clusters equals to the sum of all of the distances between deliveries
+		double quality=0;
+		
+		LinkedList<LinkedList<Delivery>> clusters = clustersAndCenters.getFirst();
+		Geolocation[] centers = clustersAndCenters.getSecond();
+		
+	
+		for (int i = 0 ; i < clusters.size() ; i++) {
+			LinkedList<Delivery> cluster = clusters.get(i);
+			for (int j = 0 ; j<cluster.size() ; j++) {
+				quality += cluster.get(j).getGeolocation().distance(centers[i]);
+			}
+		}
+		
+		return (quality);
+	}
 	//////////////////////////// A FAIRE //////////////////////////
 	//X//  Faire la boucle pour avoir plus de deux itérations et converger le kmeans
 	// THINK OF TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
 	//X// Réorganiser les clusters quand un est trop peuplé
 	// Regarder bug les circuits ne sont pas ronds
-	// Calculer la qualité d'un cluster
-	// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
-	// choisir la meilleure solution
+	//X// Calculer la qualité d'un cluster
+	//X// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
+	//X// choisir la meilleure solution
 	///////////////////////////////////////////////////////////////
 	
 	
-	private LinkedList<LinkedList<Delivery>> createClustersWithKMeans(int numberOfCouriers){
+	private Pair<LinkedList<LinkedList<Delivery>>,Geolocation[]> createClustersWithKMeans(int numberOfCouriers){
 		LinkedList<Delivery> deliveries = this.deliveryRequest.getDeliveries();
 		int totalDeliveries = deliveries.size();
 		
@@ -250,7 +294,6 @@ public class CircuitAlgorithm {
 				list.add(delivery);
 				correspondingCenter.put(centers[closestCenter],list);
 			}
-			System.out.println("hey");
 			
 			//Compute new center geolocation
 			for(int i = 0; i<numberOfCouriers; i++){
@@ -267,12 +310,10 @@ public class CircuitAlgorithm {
 				meanLongitude = meanLongitude / deliveriesInCluster.size();
 
 				centers[i] = new Geolocation(meanLatitude, meanLongitude);
-				System.out.println("hey2");
 
 			}
 			
 		}
-		
 		
 		
 		
@@ -294,7 +335,30 @@ public class CircuitAlgorithm {
 		
 		
 		
-		return clusters;
+		
+		//Compute new centers geolocations (after equalization)
+		for(int i = 0; i<numberOfCouriers; i++){
+			double meanLatitude = 0;
+			double meanLongitude = 0;
+			
+			for(Delivery delivery : clusters.get(i)){
+				meanLatitude += delivery.getGeolocation().getLatitude();
+				meanLongitude += delivery.getGeolocation().getLongitude();
+			}
+			meanLatitude = meanLatitude / clusters.get(i).size();
+			meanLongitude = meanLongitude / clusters.get(i).size();
+
+			centers[i] = new Geolocation(meanLatitude, meanLongitude);
+		}
+		
+		
+		
+		
+		
+		
+		
+		Pair<LinkedList<LinkedList<Delivery>>,Geolocation[]> clustersAndCenters = new Pair<LinkedList<LinkedList<Delivery>>,Geolocation[]>(clusters,centers);
+		return (clustersAndCenters);
 		
 		
 		
