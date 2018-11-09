@@ -67,19 +67,14 @@ public class ButtonListener implements ActionListener {
                         DeliveryRequest deliveryRequest;
                         deliveryRequest = controller.getModel().getDeliveryRequest();
                         //get deliveries and send to JTable to be displayed
-//                        window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
-//                        window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
-                        System.out.println("dfsji " + (deliveryRequest==null));
-                        // PROBLEM HERE
                         if(deliveryRequest != null){
 //                            window.getDeliveryRequestPanel().addDeliveries();
-                            System.out.println("uiejwuw");
                             //window.getDeliveryRequestPanel().addToTable(); 
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                             window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
-                            System.out.println("dfej93wei");
                         }
-                        window.getCityMapContainerPanel().repaint();                   
+                        window.getCityMapContainerPanel().repaint();  
+                        window.getDeliveryRequestPanel().repaint();
                     }
             } catch (Exception e2) {
 

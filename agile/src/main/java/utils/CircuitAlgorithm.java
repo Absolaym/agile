@@ -258,7 +258,7 @@ public class CircuitAlgorithm {
 				list.add(delivery);
 				correspondingCenter.put(centers[closestCenter],list);
 			}
-			System.out.println("hey");
+			//System.out.println("hey");
 			
 			//Compute new center geolocation
 			for(int i = 0; i<numberOfCouriers; i++){
@@ -275,7 +275,7 @@ public class CircuitAlgorithm {
 				meanLongitude = meanLongitude / deliveriesInCluster.size();
 
 				centers[i] = new Geolocation(meanLatitude, meanLongitude);
-				System.out.println("hey2");
+				//System.out.println("hey2");
 
 			}
 			
