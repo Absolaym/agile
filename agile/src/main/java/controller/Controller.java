@@ -6,6 +6,7 @@
 package controller;
 
 import model.Model;
+import model.Delivery;
 
 /**
  *
@@ -46,8 +47,12 @@ public class Controller {
     }
 
     public void computeCircuits(int numberOfCouriers) {
-    		this.model.setNumberOfCouriers(numberOfCouriers);
+    	this.model.setNumberOfCouriers(numberOfCouriers);
         this.state.computeCircuits(this);
+    }
+    
+    public void setSelectDelivery(Delivery delivery){
+        model.setSelectedDelivery(delivery);
     }
     
     public void addDelivery() {

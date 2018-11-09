@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import error.ErrorLogger;
-import error.PlacoError;
+import error.Error;
 
 /**
  * @author Johnny
@@ -52,7 +52,7 @@ public class XmlParser {
 		DeliveryRequest delReq = new DeliveryRequest();
 
 		if(!extensionCheck(filePath)) {
-			ErrorLogger.getInstance().log( PlacoError.NON_XML_DR );
+			ErrorLogger.getInstance().log(Error.NON_XML_DR );
 			return delReq;
 		}
 		
@@ -113,7 +113,7 @@ public class XmlParser {
 		CityMap map = new CityMap();
 		
 		if(!extensionCheck(filePath)) {
-			ErrorLogger.getInstance().log( PlacoError.NON_XML_CM );
+			ErrorLogger.getInstance().log(Error.NON_XML_CM );
 			return map;
 		}
 		

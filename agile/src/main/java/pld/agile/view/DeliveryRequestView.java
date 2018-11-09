@@ -27,7 +27,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JTable deliveriesTable;
     private DefaultTableModel tabModel;
     
-    private Controller controller;
+    private static Controller controller;
     private final int buttonLocationY = 50;
     private final int spaceElements = 30;
     private final int height = 800;
@@ -60,6 +60,8 @@ public class DeliveryRequestView extends JPanel implements Observer {
             Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             
             if(row == selectedRow) setBackground(color);
+            if(controller.getModel().getDeliveryRequest().getDeliveries().get(row).getIsSelected())
+                setBackground(color);
             //else setBackground(null);
 //            System.out.println("in cell rend table" + row);
             return tableCellRendererComponent;

@@ -8,7 +8,7 @@ package pld.agile.view;
 import controller.Controller;
 import error.ErrorLogger;
 import error.ErrorObserver;
-import error.PlacoError;
+import error.Error;
 
 import java.awt.*;
 import javax.swing.*;
@@ -39,7 +39,7 @@ public class ErrorAreaView extends JPanel implements ErrorObserver {
         w.getContentPane().add(this);
     }
     
-    public void update(PlacoError error) {
+    public void update(Error error) {
     		this.text.setText(error.toString());
     		this.repaint();
     }

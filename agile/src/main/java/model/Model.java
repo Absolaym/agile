@@ -63,62 +63,48 @@ public class Model {
     }
     
     public void computeCircuits() {
-				if(this.cityMap == null) {
-					System.out.println("Error: cannot compute circuits without a city map");//error
-					return;
-				}
-				
-				if(this.deliveryRequest == null) {
-					System.out.println("Error: cannot compute circuits without a delivery request");//error
-					return;
-				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				///////////////////////////////////////////////////////////
-				//CHANGE THIS
-				if(this.numberOfCouriers == -1) {
-					//System.out.println("Error: cannot compute circuits without a set number of couriers");//error
-					//return;
-					this.numberOfCouriers = 5;
-				}
-				////////////////////////////////////////////////////
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				if(this.circuitAlgorithm == null) 
-					this.circuitAlgorithm = new CircuitAlgorithm();
-				
-				this.circuitAlgorithm.init(this.cityMap, this.deliveryRequest);
-				this.circuitAlgorithm.execute(this.numberOfCouriers); //ATTENTION CHANGER
-				this.circuits = this.circuitAlgorithm.result();
+        if(this.cityMap == null) {
+            System.out.println("Error: cannot compute circuits without a city map");//error
+            return;
+        }
+        if(this.deliveryRequest == null) {
+            System.out.println("Error: cannot compute circuits without a delivery request");//error
+            return;
+        }
+	///////////////////////////////////////////////////////////
+	//CHANGE THIS
+	if(this.numberOfCouriers == -1) {
+	//System.out.println("Error: cannot compute circuits without a set number of couriers");//error
+	//return;
+            this.numberOfCouriers = 5;
+	}
+	////////////////////////////////////////////////////
+        
+	if(this.circuitAlgorithm == null) 
+            this.circuitAlgorithm = new CircuitAlgorithm();
+	
+	this.circuitAlgorithm.init(this.cityMap, this.deliveryRequest);
+	this.circuitAlgorithm.execute(this.numberOfCouriers); //ATTENTION CHANGER
+	this.circuits = this.circuitAlgorithm.result();
 
     }
+    public int getNumberOfCouriers() {
+        return numberOfCouriers;
+    }
+    
+    public void setNumberOfCouriers(int numberOfCouriers) {
+        this.numberOfCouriers = numberOfCouriers;
+    }
 
-		public int getNumberOfCouriers() {
-			return numberOfCouriers;
-		}
-
-		public void setNumberOfCouriers(int numberOfCouriers) {
-			this.numberOfCouriers = numberOfCouriers;
-		}
-
+    public void setSelectedDelivery(Delivery delivery){
+        LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
+        for(int i =0; i < deliveries.size(); i++){
+            if(deliveries.get(i) == delivery)
+                deliveries.get(i).setIsSelected(true);
+        }
+        
+        //OU : peut-être qu'on a pas besoin d'aller la chercher dans la liste :
+        //elle semble venir de cette liste
+        delivery.setIsSelected(true);
+    }
 }

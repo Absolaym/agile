@@ -1,5 +1,5 @@
 package error;
 
 public interface ErrorObserver {
-	public void update(PlacoError error);
+	public void update(Error error);
 }
