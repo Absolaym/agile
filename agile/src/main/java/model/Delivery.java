@@ -18,8 +18,7 @@ public class Delivery extends Observable {
      */
     private String address = "";
     private Geolocation geolocation;
-    
-    //for testing
+    private Circuit circuit; 
     private boolean isSelected = false;
 
     /**
@@ -64,7 +63,14 @@ public class Delivery extends Observable {
         this.geolocation = geolocation;
     }
 
-    // testing
+    public Circuit getCircuit() {
+        return circuit;
+    }
+
+    public void setCircuit(Circuit circuit) {
+        this.circuit = circuit;
+    }
+    
     public boolean getIsSelected() {
         return isSelected;
     }
