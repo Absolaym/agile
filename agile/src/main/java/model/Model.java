@@ -44,7 +44,7 @@ public class Model {
     public LinkedList<Circuit> getCircuits() {
         return circuits;
     }
-
+    
     public void setCircuits(LinkedList<Circuit> circuits) {
         this.circuits = circuits;
     }
