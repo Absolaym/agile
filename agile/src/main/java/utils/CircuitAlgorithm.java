@@ -75,7 +75,6 @@ public class CircuitAlgorithm {
 		public LinkTrip(Section aSection, Node aStartNode, Node anEndNode, IntermediateResult ir) {
 			super(aSection, aStartNode, anEndNode);
 			this.intermediateResult = ir;
-			
 		}
 	}
 	
@@ -194,12 +193,13 @@ public class CircuitAlgorithm {
 	
 	//////////////////////////// A FAIRE //////////////////////////
 	//X//  Faire la boucle pour avoir plus de deux itérations et converger le kmeans
-	// THINK OF TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
+	// TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
 	//X// Réorganiser les clusters quand un est trop peuplé
 	// Regarder bug les circuits ne sont pas ronds
 	// Calculer la qualité d'un cluster
 	// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
 	// choisir la meilleure solution
+	//ameliorer tsp
 	///////////////////////////////////////////////////////////////
 	
 	
@@ -357,11 +357,7 @@ public class CircuitAlgorithm {
 			}
 			
 			
-		}
-		
-		
-		
-		
+		}		
 		return clusters;
 	}
 
