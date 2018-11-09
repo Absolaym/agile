@@ -120,9 +120,11 @@ public class CityMapContainerView extends JPanel implements Observer {
                         selectedDelivery.setIsSelected(true);
                         //appeler le controleur pour mettre la delivery à selected dans le modèle
                         controller.setSelectDelivery(selectedDelivery);
+                        
                     } else {
                         d.setIsSelected(false);
                     }
+                    window.getDeliveryRequestPanel().repaint();
                 }
                 /////////////////////////////////////////////////
                 if(window.getWaitingState()) {
@@ -269,7 +271,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         } else if (selectedDelivery == delivery) {
             g.setColor(Color.YELLOW);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-            window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
+           // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
         } 
         
         else {

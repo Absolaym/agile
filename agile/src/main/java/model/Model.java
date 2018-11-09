@@ -102,9 +102,6 @@ public class Model {
             if(deliveries.get(i) == delivery)
                 deliveries.get(i).setIsSelected(true);
         }
-        
-        //OU : peut-être qu'on a pas besoin d'aller la chercher dans la liste :
-        //elle semble venir de cette liste
-        delivery.setIsSelected(true);
+       
     }
 }

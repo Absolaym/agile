@@ -67,7 +67,6 @@ public class ButtonListener implements ActionListener {
                         DeliveryRequest deliveryRequest;
                         deliveryRequest = controller.getModel().getDeliveryRequest();
                         //get deliveries and send to JTable to be displayed
-                        // PROBLEM HERE
                         if(deliveryRequest != null){
 //                            window.getDeliveryRequestPanel().addDeliveries();
                             //window.getDeliveryRequestPanel().addToTable(); 

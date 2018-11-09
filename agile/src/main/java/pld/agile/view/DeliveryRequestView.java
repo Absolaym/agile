@@ -24,7 +24,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private final int height = 800;
     private final int width = 400;
     private int selectedRow = -1;
-    private Renderer cellRenderer = new Renderer(-1, null);
+    private Renderer cellRenderer = new Renderer(tabModel);
     private HashMap<Delivery,JTextArea> table;
 
     
@@ -34,9 +34,13 @@ public class DeliveryRequestView extends JPanel implements Observer {
     static class Renderer extends DefaultTableCellRenderer {
         private int selectedRow;
         private Color color;
+        private DefaultTableModel model;
         public Renderer(int row, Color c) {
             selectedRow = row;
             color = c;
+        }
+        public Renderer(DefaultTableModel model) {
+            this.model = model;
         }
         public void setSelectedRow(int row) {
             selectedRow = row;
@@ -48,12 +52,12 @@ public class DeliveryRequestView extends JPanel implements Observer {
         
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            setBackground(color);
-//            if(row == selectedRow) setBackground(Color.yellow);
-//            else setBackground(color);
-//            System.out.println("in cell rend table" + row);
-            return tableCellRendererComponent;
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            //if (model != null)
+               // c.setBackground(model.getRowColour(row));
+            return c;
+    
         }
   
     }
@@ -129,6 +133,8 @@ public class DeliveryRequestView extends JPanel implements Observer {
 //            deliveries[i] = dr.getDeliveries().get(i).getAddress();
 //        }
         emptyTable();
+        System.out.println("in addDeliveries " + tabModel.getRowCount());
+        
         int i=0;
         LinkedList<Delivery> deliv = dr.getDeliveries();
         //for (int i = 0; i < deliveries.length; i++) {
@@ -142,11 +148,35 @@ public class DeliveryRequestView extends JPanel implements Observer {
                 colorTable(i, Color.yellow, d);
             else colorTable(i, Color.red, d);
             i++;
+            System.out.println("slected" + d.getAddress() + " " + d.getIsSelected());
         }
 
       
     }
 
+//    
+//        public void addDeliveries() {
+//        JPanel panel = new JPanel(new BorderLayout());
+//        DeliveryRequest dr = controller.getModel().getDeliveryRequest();
+//        int i=0;
+//        LinkedList<Delivery> deliv = dr.getDeliveries();
+//        for (Delivery d : deliv ) {
+//            JTextField 
+//            //tabModel.addRow(new String[]{deliveries[i], "unknown", "unknown", "unknown"});
+//            String duration = (d.getDuration())+"";
+//            //int departureTimeSec = d.getDepartureTime().time;
+//            
+//            tabModel.addRow(new String[] {d.getAddress(), "unknown", duration, "unknown"});
+//            if (d.getIsSelected())
+//                colorTable(i, Color.yellow, d);
+//            else colorTable(i, Color.red, d);
+//            i++;
+//            System.out.println("slected" + d.getAddress() + " " + d.getIsSelected());
+//        }
+//
+//      
+//    }
+    
     public void emptyTable() {
         tabModel.setRowCount(0);
     }
@@ -182,12 +212,17 @@ public class DeliveryRequestView extends JPanel implements Observer {
         }
         
     }
+    
+    public Color getRowColour(int row){
+        if (row == 1 ) return Color.YELLOW;
+        return Color.RED;
+    }
    
     // this method doesn't work well :(
     public void colorTable(int row, Color c, Delivery d){
         
         cellRenderer.setSelectedRow(row);
-        cellRenderer.setColor(c);
+        //cellRenderer.setColor(c);
         //tabModel.setValueAt(d.getAddress(), row,0);
         System.out.println("in color table");
         //tabModel.setValueAt(1, row, 3);
@@ -205,6 +240,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         super.paintComponent(g);
         if (controller.getModel().getDeliveryRequest() != null)
             addDeliveries();
+        System.out.println("in paint component");
     }
 
     public int getHeight() {
