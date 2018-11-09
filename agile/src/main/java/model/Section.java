@@ -6,6 +6,7 @@ public class Section {
     private double length;
     private Intersection startIntersection;
     private Intersection endIntersection;
+    private Circuit circuit;
 
     public Section() {
         this.streetName         = "";
@@ -45,6 +46,15 @@ public class Section {
     public void setEndIntersection(Intersection endIntersection) {
         this.endIntersection = endIntersection;
     }
+
+    public Circuit getCircuit() {
+        return circuit;
+    }
+
+    public void setCircuit(Circuit circuit) {
+        this.circuit = circuit;
+    }
+    
 
     @Override
     public String toString() {

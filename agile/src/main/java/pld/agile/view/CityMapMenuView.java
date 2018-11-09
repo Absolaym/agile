@@ -72,9 +72,9 @@ public class CityMapMenuView extends JPanel {
         JLabel text = new JLabel();
         JTextField deliveryTime = null;
         if (step.equals("select")) 
-            text.setText("Select the delivery address on map");
+            text.setText("Please select the delivery address on map.");
         else if (step.equals("time")) {
-            text.setText("Delivery time : ");
+            text.setText("Please choose a circuit on the map.  Delivery duration : ");
             deliveryTime = new JTextField("5");
         }
         text.setSize(text.getPreferredSize().width, 30);

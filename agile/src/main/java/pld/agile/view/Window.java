@@ -22,7 +22,7 @@ public class Window extends JFrame {
     
     private int width;
     private int height;
-    private boolean waitingState = false;
+    private int waitingState = 0;
 
     public Window() {
         this(new Controller());
@@ -79,23 +79,27 @@ public class Window extends JFrame {
         return errorAreaPanel;
     }
     
-    public void setWaitingState(boolean ws) {
-        if (ws){
+    public void setWaitingState(int ws) {
+        if (ws == 0){
             mapMenuPanel.getComputeCircuitsButton().setEnabled(false);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(false);
             mapMenuPanel.getLoadNewCityMapButton().setEnabled(false);
+            mapMenuPanel.getAddNewDeliveryButton().setEnabled(false);
             
-        } else {
+        } else if (ws == 1){
+            mapMenuPanel.addNewDelivery("time");
+            
+        } else if (ws == 2){
             mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(true);
             mapMenuPanel.getLoadNewCityMapButton().setEnabled(true);
-            mapMenuPanel.addNewDelivery("time");
+            mapMenuPanel.getAddNewDeliveryButton().setEnabled(true);
         }
         mapMenuPanel.repaint();
         waitingState = ws;
     }
     
-    public boolean getWaitingState() {
+    public int getWaitingState() {
         return waitingState;
     }
 }
