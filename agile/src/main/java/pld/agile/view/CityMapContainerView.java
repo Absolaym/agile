@@ -120,11 +120,13 @@ public class CityMapContainerView extends JPanel implements Observer {
                         selectedDelivery.setIsSelected(true);
                         //appeler le controleur pour mettre la delivery à selected dans le modèle
                         controller.setSelectDelivery(selectedDelivery);
+                        System.out.println("the selected delivery is selected"+selectedDelivery.getIsSelected());
                         
                     } else {
                         d.setIsSelected(false);
                     }
                     window.getDeliveryRequestPanel().repaint();
+                    window.repaint();
                 }
                 /////////////////////////////////////////////////
                 if(window.getWaitingState()) {

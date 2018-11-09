@@ -26,7 +26,7 @@ public class StateCityMapLoaded extends StateDefault{
                 deliveryRequest.computeDeliveryRequestGeolocation(model.getCityMap());
                 model.setDeliveryRequest(deliveryRequest);
                 model.setCircuits(null);
-                c.setState(c.stateDeliveryRequestLoaded);
+                c.setState(c.STATE_DELIVERYREQUEST_LOADED);
             }
         }catch (Exception e){
             

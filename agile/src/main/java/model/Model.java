@@ -98,9 +98,12 @@ public class Model {
 
     public void setSelectedDelivery(Delivery delivery){
         LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
+        
         for(int i =0; i < deliveries.size(); i++){
             if(deliveries.get(i) == delivery)
                 deliveries.get(i).setIsSelected(true);
+            else 
+                deliveries.get(i).setIsSelected(false);
         }
        
     }

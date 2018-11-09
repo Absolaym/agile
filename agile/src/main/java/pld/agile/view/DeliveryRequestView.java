@@ -148,7 +148,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
                 colorTable(i, Color.yellow, d);
             else colorTable(i, Color.red, d);
             i++;
-            System.out.println("slected" + d.getAddress() + " " + d.getIsSelected());
+            System.out.println("selected" +" "+ d.getAddress() + " " + d.getIsSelected());
         }
 
       
@@ -222,7 +222,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     public void colorTable(int row, Color c, Delivery d){
         
         cellRenderer.setSelectedRow(row);
-        //cellRenderer.setColor(c);
+        cellRenderer.setColor(c);
         //tabModel.setValueAt(d.getAddress(), row,0);
         System.out.println("in color table");
         //tabModel.setValueAt(1, row, 3);
@@ -231,8 +231,10 @@ public class DeliveryRequestView extends JPanel implements Observer {
         deliveriesTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
+        System.out.println(cellRenderer.color);
+        deliveriesTable.repaint();
         //tabModel.setValueAt(d.getAddress(), row, 0);
-       // this.repaint();
+        this.repaint();
         
     }
     
