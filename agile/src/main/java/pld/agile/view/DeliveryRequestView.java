@@ -89,7 +89,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
 //            deliveries[i] = dr.getDeliveries().get(i).getAddress();
 //        }
         for (int i = 0; i<deliveries.size(); i++) {
-            System.out.println("deliveries:" + deliveries.size());
+//            System.out.println("deliveries:" + deliveries.size());
             JTextArea textArea = new JTextArea("adress");
             Delivery d = deliveries.get(i);
             textArea.append("adr:" + d.getAddress());
@@ -133,7 +133,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
 //            deliveries[i] = dr.getDeliveries().get(i).getAddress();
 //        }
         emptyTable();
-        System.out.println("in addDeliveries " + tabModel.getRowCount());
+//        System.out.println("in addDeliveries " + tabModel.getRowCount());
         
         int i=0;
         LinkedList<Delivery> deliv = dr.getDeliveries();
@@ -148,7 +148,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
                 colorTable(i, Color.yellow, d);
             else colorTable(i, Color.red, d);
             i++;
-            System.out.println("selected" +" "+ d.getAddress() + " " + d.getIsSelected());
+//            System.out.println("slected" + d.getAddress() + " " + d.getIsSelected());
         }
 
       
@@ -224,7 +224,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         cellRenderer.setSelectedRow(row);
         cellRenderer.setColor(c);
         //tabModel.setValueAt(d.getAddress(), row,0);
-        System.out.println("in color table");
+//        System.out.println("in color table");
         //tabModel.setValueAt(1, row, 3);
        // deliveriesTable.getColumnModel().getColumn(0).setHeaderValue("Address");
         deliveriesTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
@@ -240,9 +240,9 @@ public class DeliveryRequestView extends JPanel implements Observer {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (controller.getModel().getDeliveryRequest() != null)
-            addDeliveries();
-        System.out.println("in paint component");
+//        if (controller.getModel().getDeliveryRequest() != null)
+//            addDeliveries();
+//        System.out.println("in paint component");
     }
 
     public int getHeight() {
