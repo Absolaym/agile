@@ -3,6 +3,7 @@ package pld.agile.view;
 import controller.Controller;
 
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.util.*;
@@ -16,8 +17,8 @@ public class CityMapContainerView extends JPanel implements Observer {
     private JButton loadCityMapButton;
     private JSlider zoomSlider;
 
-    private final int HEIGHT = 600;
-    private final int WIDTH = 600;
+    private final int HEIGHT = 750;
+    private final int WIDTH = 1000;
     private Controller controller;
     private Window window;
 
@@ -29,6 +30,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     private int originY = 0;
 
     private Intersection hoveredInter = null;
+    private Intersection newDelivery = null;
     private Section hoveredSection = null;
 
     // Map elements
@@ -61,7 +63,6 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     private void createSlider() {
         this.zoomSlider = new JSlider();
-        this.zoomSlider.setInverted(true);
         this.zoomSlider.setMinimum(0);
         this.zoomSlider.setMaximum(80);
         this.zoomSlider.setValue(50);
@@ -121,6 +122,25 @@ public class CityMapContainerView extends JPanel implements Observer {
                         d.setIsSelected(false);
                     }
                 }
+                /////////////////////////////////////////////////
+                if(window.getWaitingState()) {
+                   
+                    //getClosestLocation()
+                    int x = (int) (e.getX());
+                    int y = (int) (e.getY());
+                    CityMap cityMap = controller.getModel().getCityMap();
+                 
+                    for (Intersection inter : cityMap.getIntersections().values()) {
+                        Geolocation geo = geolocationToPixels(origin, inter.getGeolocation());
+
+                        if (Math.abs(e.getX() - geo.getLongitude()) <= delivDotSize
+                                && Math.abs(e.getY() - geo.getLatitude()) <= delivDotSize) 
+                            newDelivery = inter;   
+                    }
+                    
+                    window.setWaitingState(false);
+                }
+                /////////////////////////////////////////////
                 repaint();
             }
         });
@@ -245,13 +265,12 @@ public class CityMapContainerView extends JPanel implements Observer {
             g.setColor(new Color(140, 100, 100));
             g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
         } else if (selectedDelivery == delivery) {
-
             g.setColor(Color.YELLOW);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-            
             window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
-
-        } else {
+        } 
+        
+        else {
             g.setColor(c);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
@@ -372,7 +391,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             g.fillArc((int) target.getLongitude() - dotSize / 2, (int) target.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
 
-        if (this.hoveredInter != null) {
+        if (hoveredInter != null) {
             g.setColor(new Color(180, 120, 160));
             Geolocation target = geolocationToPixels(origin, this.hoveredInter.getGeolocation());
             g.fillArc(
@@ -381,6 +400,11 @@ public class CityMapContainerView extends JPanel implements Observer {
                     (int) Math.round(dotSize * 2),
                     (int) Math.round(dotSize * 2),
                     0, 360);
+        }
+        if (newDelivery != null) {
+            g.setColor(Color.GREEN);
+            Geolocation target = geolocationToPixels(origin, newDelivery.getGeolocation());
+            g.fillArc((int) target.getLongitude() - delivDotSize / 2, (int) target.getLatitude() - delivDotSize / 2, delivDotSize, delivDotSize, 0, 360);
         }
 
         // Write the name of every sections if it's big enough

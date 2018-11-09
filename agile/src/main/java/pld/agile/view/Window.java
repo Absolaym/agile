@@ -22,6 +22,7 @@ public class Window extends JFrame {
     
     private int width;
     private int height;
+    private boolean waitingState = false;
 
     public Window() {
         this(new Controller());
@@ -37,10 +38,10 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
-        mapMenuPanel 					= new CityMapMenuView(this, controller);
-        mapContainerPanel 		= new CityMapContainerView(this, controller);
-        deliveryRequestPanel 	= new DeliveryRequestView(this, controller);
-        errorAreaPanel 				= new ErrorAreaView( this );
+        mapMenuPanel = new CityMapMenuView(this, controller);
+        mapContainerPanel = new CityMapContainerView(this, controller);
+        deliveryRequestPanel = new DeliveryRequestView(this, controller);
+        errorAreaPanel = new ErrorAreaView(this, controller);
 
         setWindowSize();
         setSize(width, height);
@@ -76,5 +77,25 @@ public class Window extends JFrame {
 
     public ErrorAreaView getErrorAreaPanel() {
         return errorAreaPanel;
+    }
+    
+    public void setWaitingState(boolean ws) {
+        if (ws){
+            mapMenuPanel.getComputeCircuitsButton().setEnabled(false);
+            mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(false);
+            mapMenuPanel.getLoadNewCityMapButton().setEnabled(false);
+            
+        } else {
+            mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
+            mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(true);
+            mapMenuPanel.getLoadNewCityMapButton().setEnabled(true);
+            mapMenuPanel.addNewDelivery("time");
+        }
+        mapMenuPanel.repaint();
+        waitingState = ws;
+    }
+    
+    public boolean getWaitingState() {
+        return waitingState;
     }
 }
