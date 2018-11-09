@@ -186,8 +186,16 @@ public class CircuitAlgorithm {
 
 		this.circuits = new LinkedList<Circuit>();
 		for(LinkedList<Delivery> cluster : clusters) {
-			runTSP(cluster, cluster.size());
+                    runTSP(cluster, cluster.size());
 		}
+                for(int i = 0; i < circuits.size(); i++){
+                    Circuit circuit = circuits.get(i);
+                    LinkedList<Delivery> deliveries = circuit.getDeliveries();
+                    for(int j = 0; j < deliveries.size(); j++){
+                        Delivery delivery =  deliveries.get(j);
+                        delivery.setCircuit(circuit);
+                    }
+                }
 		System.out.println("clusters end");
 		//call TSP
 	}

@@ -14,7 +14,7 @@ public enum Error {
 	NON_XML_DR("UC2_NX","This file is not an XML file"),
 	NON_STD_DR("UC2_NS", "The object described in the file does not respect the standard description of a DR, thus the object cannot be created"),
 	DEL_ADDRESS_NOT_IN_MAP("UC2-DANIM", "The address of one of deliveries is not in the map"),
-	NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
+	//NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
 	
         //Circuits Errors
 	NO_COURRIER_ASSIGNED("UC3-NCA", "You didn't provide the number of courriers you want to assign circuits"),
