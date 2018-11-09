@@ -29,8 +29,8 @@ public class Model {
 //        deliveryRequest = new DeliveryRequest();
 //        circuits = new LinkedList<Circuit>();
         cityMap = new CityMap();
-        deliveryRequest = new DeliveryRequest();
-        circuits = new LinkedList<Circuit>();
+        deliveryRequest = null;
+        circuits = null;
         numberOfCouriers = -1;
     }
     
@@ -62,14 +62,10 @@ public class Model {
 
     public void setDeliveryRequest(DeliveryRequest deliveryRequest) {
         this.deliveryRequest = deliveryRequest;
-        computeShortestPaths();
     }
     
     public void computeCircuits() {
-        if(this.cityMap == null) {
-            System.out.println("Error: cannot compute circuits without a city map");//error
-            return;
-        }
+
         if(this.deliveryRequest == null) {
             System.out.println("Error: cannot compute circuits without a delivery request");//error
             return;
@@ -113,10 +109,22 @@ public class Model {
        
     }
     
-    private void computeShortestPaths(){
+    public void computeShortestPaths(){
+    	if(this.cityMap == null) {
+            System.out.println("Error: cannot compute shortest path without a city map");//error
+            return;
+        }
+        if(this.deliveryRequest == null) {
+            System.out.println("Error: cannot compute shortest path without a delivery request");//error
+            return;
+        }
     	ShortestPathComputer shortestPathComputer = new ShortestPathComputer();
         shortestPathComputer.init(cityMap, deliveryRequest);
         shortestPathComputer.computeAllShortestPaths();
         this.shortestPaths = shortestPathComputer.result();
+    }
+    
+    public void resetShortestPaths(){
+    	this.shortestPaths = null;
     }
 }
