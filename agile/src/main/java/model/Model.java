@@ -5,9 +5,11 @@
  */
 package model;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
-import utils.CircuitAlgorithm;
+import utils.CircuitComputer;
+import utils.ShortestPathComputer;
 
 /**
  *
@@ -17,8 +19,8 @@ public class Model {
     
     private CityMap cityMap;
     private DeliveryRequest deliveryRequest;
+	private HashMap<String,HashMap<String,Trip>> shortestPaths;		
     private LinkedList<Circuit> circuits;
-    private CircuitAlgorithm circuitAlgorithm;
     private int numberOfCouriers;
     
     private static Model INSTANCE = null;
@@ -63,31 +65,30 @@ public class Model {
     }
     
     public void computeCircuits() {
-        if(this.cityMap == null) {
-            System.out.println("Error: cannot compute circuits without a city map");//error
-            return;
-        }
+
         if(this.deliveryRequest == null) {
             System.out.println("Error: cannot compute circuits without a delivery request");//error
             return;
         }
-	///////////////////////////////////////////////////////////
-	//CHANGE THIS
-	if(this.numberOfCouriers == -1) {
-	//System.out.println("Error: cannot compute circuits without a set number of couriers");//error
-	//return;
-            this.numberOfCouriers = 5;
-	}
-	////////////////////////////////////////////////////
-        
-	if(this.circuitAlgorithm == null) 
-            this.circuitAlgorithm = new CircuitAlgorithm();
+
+		if(this.numberOfCouriers == -1) {
+			System.out.println("Error: cannot compute circuits without a set number of couriers");//error
+			return;
+		}
+	        
+		if(this.shortestPaths == null) {
+			System.out.println("Error: shortest paths have not yet been computed");//error
+			return;
+		}
 	
-	this.circuitAlgorithm.init(this.cityMap, this.deliveryRequest);
-	this.circuitAlgorithm.execute(this.numberOfCouriers); //ATTENTION CHANGER
-	this.circuits = this.circuitAlgorithm.result();
+	    CircuitComputer circuitComputer = new CircuitComputer();
+		
+		circuitComputer.init(this.deliveryRequest, this.shortestPaths);
+		circuitComputer.execute(this.numberOfCouriers); //ATTENTION CHANGER
+		this.circuits = circuitComputer.result();
 
     }
+    
     public int getNumberOfCouriers() {
         return numberOfCouriers;
     }
@@ -106,5 +107,24 @@ public class Model {
                 deliveries.get(i).setIsSelected(false);
         }
        
+    }
+    
+    public void computeShortestPaths(){
+    	if(this.cityMap == null) {
+            System.out.println("Error: cannot compute shortest path without a city map");//error
+            return;
+        }
+        if(this.deliveryRequest == null) {
+            System.out.println("Error: cannot compute shortest path without a delivery request");//error
+            return;
+        }
+    	ShortestPathComputer shortestPathComputer = new ShortestPathComputer();
+        shortestPathComputer.init(cityMap, deliveryRequest);
+        shortestPathComputer.computeAllShortestPaths();
+        this.shortestPaths = shortestPathComputer.result();
+    }
+    
+    public void resetShortestPaths(){
+    	this.shortestPaths = null;
     }
 }

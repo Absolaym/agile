@@ -26,6 +26,7 @@ public class StateDefault implements State{
             if (cityMap != null){
                 model.setCityMap(cityMap);
                 model.setDeliveryRequest(null);
+                model.resetShortestPaths();
                 model.setCircuits(null);
                 c.setState(c.STATE_CITYMAP_LOADED);
             }
