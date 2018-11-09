@@ -118,6 +118,7 @@ public class CityMapContainerView extends JPanel implements Observer {
                         selectedDelivery = d;
                         //for test purpose
                         selectedDelivery.setIsSelected(true);
+                        
                     } else {
                         d.setIsSelected(false);
                     }

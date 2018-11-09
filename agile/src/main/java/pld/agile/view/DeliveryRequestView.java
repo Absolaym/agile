@@ -1,19 +1,10 @@
 package pld.agile.view;
 
 import controller.Controller;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.TextArea;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -58,9 +49,9 @@ public class DeliveryRequestView extends JPanel implements Observer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            
-            if(row == selectedRow) setBackground(color);
-            //else setBackground(null);
+            setBackground(color);
+//            if(row == selectedRow) setBackground(Color.yellow);
+//            else setBackground(color);
 //            System.out.println("in cell rend table" + row);
             return tableCellRendererComponent;
         }
@@ -76,7 +67,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         setLayout(new BorderLayout());
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
-        //createTable();
+        createTable();
         
         
         setBackground(Color.LIGHT_GRAY);
@@ -121,7 +112,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         };
         tabModel.addColumn("Address");
         tabModel.addColumn("Arrival time");
-        tabModel.addColumn("Departure time");
+        tabModel.addColumn("Duration");
         tabModel.addColumn("Circuit");
 
         deliveriesTable.setAutoCreateRowSorter(true);
@@ -133,14 +124,26 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
     public void addDeliveries() {
         DeliveryRequest dr = controller.getModel().getDeliveryRequest();
-        String[] deliveries = new String[dr.getDeliveries().size()];
-        for (int i = 0; i < dr.getDeliveries().size(); i++) {
-            deliveries[i] = dr.getDeliveries().get(i).getAddress();
-        }
+//        String[] deliveries = new String[dr.getDeliveries().size()];
+//        for (int i = 0; i < dr.getDeliveries().size(); i++) {
+//            deliveries[i] = dr.getDeliveries().get(i).getAddress();
+//        }
         emptyTable();
-        for (int i = 0; i < deliveries.length; i++) {
-            tabModel.addRow(new String[]{deliveries[i], "unknown", "unknown", "unknown"});
+        int i=0;
+        LinkedList<Delivery> deliv = dr.getDeliveries();
+        //for (int i = 0; i < deliveries.length; i++) {
+        for (Delivery d : deliv ) {
+            //tabModel.addRow(new String[]{deliveries[i], "unknown", "unknown", "unknown"});
+            String duration = (d.getDuration())+"";
+            //int departureTimeSec = d.getDepartureTime().time;
+            
+            tabModel.addRow(new String[] {d.getAddress(), "unknown", duration, "unknown"});
+            if (d.getIsSelected())
+                colorTable(i, Color.yellow, d);
+            else colorTable(i, Color.red, d);
+            i++;
         }
+
       
     }
 
@@ -193,13 +196,15 @@ public class DeliveryRequestView extends JPanel implements Observer {
         deliveriesTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         deliveriesTable.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
-        tabModel.setValueAt(d.getAddress(), row, 0);
-        this.repaint();
+        //tabModel.setValueAt(d.getAddress(), row, 0);
+       // this.repaint();
         
     }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (controller.getModel().getDeliveryRequest() != null)
+            addDeliveries();
     }
 
     public int getHeight() {
