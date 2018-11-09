@@ -61,6 +61,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     private void createSlider() {
         this.zoomSlider = new JSlider();
+        this.zoomSlider.setInverted(true);
         this.zoomSlider.setMinimum(0);
         this.zoomSlider.setMaximum(80);
         this.zoomSlider.setValue(50);
