@@ -21,7 +21,6 @@ public class Section {
         setEndIntersection(anEndIntersection);
     }
 
-
     public String getStreetName() {
         return streetName;
     }
