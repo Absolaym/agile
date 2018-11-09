@@ -1,6 +1,6 @@
 package pld.agile;
 import controller.Controller;
-import pld.agile.view.*;
+import view.Window;
 /**
  * Hello world!
  *

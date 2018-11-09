@@ -1,4 +1,4 @@
-package pld.agile.view;
+package view;
 
 import controller.Controller;
 
