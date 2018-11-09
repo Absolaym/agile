@@ -53,11 +53,47 @@ public class ShortestPathComputer {
 		return;
 	}
 
+	public void setShortestPathsForDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
+		// Establish the shortest paths between warehouse and deliveries
+		Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
+		Node target = this.nodes.get( delivery.getAddress() );
+		
+		IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
+		inter.computeLength();
+		addShortestPath(origin, target, inter);
+		
+		// Establish the shortest paths between deliveries and warehouse
+		inter = this.cleanCosts().dijkstra( target ).resolveDijkstra( target, origin );
+		inter.computeLength();
+		addShortestPath(target, origin, inter);
+		
+		// Establish the shortest paths between deliveries
+		for(Delivery delivery2 : deliveries) {
+			
+			if(delivery == delivery2) {
+				continue;
+			}
+			
+			origin = this.nodes.get( delivery2.getAddress() );
+			inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
+			inter.computeLength();
+			addShortestPath(target, origin, inter);				
+		}
+	}
+	
 	public HashMap<String, HashMap<String, Trip>> result() {
 		return this.shortestPaths;
 	}
 	
-	
+	private void addShortestPath(Node origin, Node target, IntermediateResult inter) {
+		HashMap<String, Trip> innerMap= this.shortestPaths.get(origin.intersection.getId());
+		if(innerMap == null)
+			innerMap = new HashMap<String, Trip>();
+		Trip trip = new Trip();
+		trip.setSections(inter.path);
+		innerMap.put(target.intersection.getId(), trip);
+		this.shortestPaths.put(origin.intersection.getId(), innerMap);
+	}
 	//-------------Dijkstra section---------------
 	
 	private ShortestPathComputer cleanCosts(Map<String,Node> nodes) {
@@ -104,45 +140,6 @@ public class ShortestPathComputer {
 		return inter;
 	}
 	
-	
-	private void addShortestPath(Node origin, Node target, IntermediateResult inter) {
-		HashMap<String, Trip> innerMap= this.shortestPaths.get(origin.intersection.getId());
-		if(innerMap == null)
-			innerMap = new HashMap<String, Trip>();
-		Trip trip = new Trip();
-		trip.setSections(inter.path);
-		innerMap.put(target.intersection.getId(), trip);
-		this.shortestPaths.put(origin.intersection.getId(), innerMap);
-	}
-	private void setShortestPathsForDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
-		// Establish the shortest paths between warehouse and deliveries
-		Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
-		Node target = this.nodes.get( delivery.getAddress() );
-		
-		IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
-		inter.computeLength();
-		addShortestPath(origin, target, inter);
-		
-		// Establish the shortest paths between deliveries and warehouse
-		inter = this.cleanCosts().dijkstra( target ).resolveDijkstra( target, origin );
-		inter.computeLength();
-		addShortestPath(target, origin, inter);
-		
-		// Establish the shortest paths between deliveries
-		for(Delivery delivery2 : deliveries) {
-			
-			if(delivery == delivery2) {
-				continue;
-			}
-			
-			origin = this.nodes.get( delivery2.getAddress() );
-			inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
-			inter.computeLength();
-			addShortestPath(target, origin, inter);				
-		}
-	}
-
-
 	
 
 //------------------------------Inner classes --------------------------
