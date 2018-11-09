@@ -17,25 +17,19 @@ import javax.swing.*;
  *
  * @author olivi
  */
-public class ErrorAreaView extends JPanel implements ErrorObserver {
-	
-    private int height = 100;
-    private int width = 600;
+public class ErrorAreaView extends JPanel {
+    private final int HEIGHT = 150;
+    private final int WIDTH = 1000;
     private JTextArea text;
     private Controller controller;
 
-    public ErrorAreaView( Window w ) {
+    public ErrorAreaView(Window w, Controller controller) {
         this.controller = controller;
+        text = new JTextArea(20, 90);
+        add(text);
         
-        ErrorLogger.getInstance().addObserver(this);
-        
-        setBackground( new Color(255, 240, 240) );
+        setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Error area :"));
-        
-        text = new JTextArea("If anything goes wrong, check nearby");
-        text.setBounds(0, 0, this.width, this.height);
-        this.add(text);
-        
         w.getContentPane().add(this);
     }
     
@@ -50,11 +44,11 @@ public class ErrorAreaView extends JPanel implements ErrorObserver {
 
     // to change
     public int getHeight() {
-        return height;
+        return HEIGHT;
     }
 
     public int getWidth() {
-        return width;
+        return WIDTH;
     }
 
     
