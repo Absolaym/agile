@@ -185,8 +185,16 @@ public class CircuitAlgorithm {
 
 		this.circuits = new LinkedList<Circuit>();
 		for(LinkedList<Delivery> cluster : clusters) {
-			runTSP(cluster, cluster.size());
+                    runTSP(cluster, cluster.size());
 		}
+                for(int i = 0; i < circuits.size(); i++){
+                    Circuit circuit = circuits.get(i);
+                    LinkedList<Delivery> deliveries = circuit.getDeliveries();
+                    for(int j = 0; j < deliveries.size(); j++){
+                        Delivery delivery =  deliveries.get(j);
+                        delivery.setCircuit(circuit);
+                    }
+                }
 		System.out.println("clusters end");
 		//call TSP
 	}
@@ -250,7 +258,7 @@ public class CircuitAlgorithm {
 				list.add(delivery);
 				correspondingCenter.put(centers[closestCenter],list);
 			}
-			System.out.println("hey");
+			//System.out.println("hey");
 			
 			//Compute new center geolocation
 			for(int i = 0; i<numberOfCouriers; i++){
@@ -267,7 +275,7 @@ public class CircuitAlgorithm {
 				meanLongitude = meanLongitude / deliveriesInCluster.size();
 
 				centers[i] = new Geolocation(meanLatitude, meanLongitude);
-				System.out.println("hey2");
+				//System.out.println("hey2");
 
 			}
 			

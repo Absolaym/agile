@@ -24,12 +24,24 @@ public class CommandAddDeliveryToComputedCircuit implements Command {
     
     @Override
     public void doCde() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Trip trip1 = 
+        // Trip trip2 = 
+        // créer 2 trips via hashmap
+        circuit.getDeliveries().addLast(delivery);
+        // circuit.getTrips().removeLast();
+        // circuit.getTrips().addLast(trip1);
+        // circuit.getTrips().addLast(trip2);
+        
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void undoCde() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        circuit.getDeliveries().removeLast();
+        // remove last 2 trips + recreate last trip
+        
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

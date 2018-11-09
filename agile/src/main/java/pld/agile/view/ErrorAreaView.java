@@ -6,6 +6,10 @@
 package pld.agile.view;
 
 import controller.Controller;
+import error.ErrorLogger;
+import error.ErrorObserver;
+import error.Error;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -14,8 +18,8 @@ import javax.swing.*;
  * @author olivi
  */
 public class ErrorAreaView extends JPanel {
-    private int height = 100;
-    private int width = 600;
+    private final int HEIGHT = 150;
+    private final int WIDTH = 1000;
     private JTextArea text;
     private Controller controller;
 
@@ -28,6 +32,11 @@ public class ErrorAreaView extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Error area :"));
         w.getContentPane().add(this);
     }
+    
+    public void update(Error error) {
+    	this.text.setText(error.toString());
+    	this.repaint();
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -35,11 +44,11 @@ public class ErrorAreaView extends JPanel {
 
     // to change
     public int getHeight() {
-        return height;
+        return HEIGHT;
     }
 
     public int getWidth() {
-        return width;
+        return WIDTH;
     }
 
     
