@@ -18,7 +18,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JTable deliveriesTable;
     private DefaultTableModel tabModel;
     
-    private Controller controller;
+    private static Controller controller;
     private final int buttonLocationY = 50;
     private final int spaceElements = 30;
     private final int height = 800;

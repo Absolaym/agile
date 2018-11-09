@@ -7,35 +7,37 @@ public class ErrorLogger {
 	
 	// Singleton part
 	private static ErrorLogger INSTANCE;
+        
 	public static ErrorLogger getInstance() {
-		if(ErrorLogger.INSTANCE == null)	ErrorLogger.INSTANCE = new ErrorLogger();
-		return ErrorLogger.INSTANCE;
+            if(ErrorLogger.INSTANCE == null)	
+                ErrorLogger.INSTANCE = new ErrorLogger();
+            return ErrorLogger.INSTANCE;
 	}
 	
 	// Class part
-	private LinkedBlockingQueue<PlacoError> errors;
+	private LinkedBlockingQueue<Error> errors;
 	private LinkedList<ErrorObserver> observers;
 	
 	private ErrorLogger() {
-		this.errors = new LinkedBlockingQueue<PlacoError>(30);
-		this.observers = new LinkedList<ErrorObserver>();
+            this.errors = new LinkedBlockingQueue<Error>(30);
+            this.observers = new LinkedList<ErrorObserver>();
 	}
 	
 	/**
 	 * Logs an error and notifies it to every registered observer
 	 * @param error
-	 * @param verbose Wether it's written in the error stream or not
+	 * @param verbose Whether it's written in the error stream or not
 	 */
-	public void log(PlacoError error, boolean verbose) {
-		if(verbose) errors.add(error);
-		System.err.println(error);
-		for(ErrorObserver obs : observers) {
-			obs.update( error );
-		}
+	public void log(Error error, boolean verbose) {
+            if(verbose) errors.add(error);
+            System.err.println(error);
+            for(ErrorObserver obs : observers) {
+		obs.update( error );
+            }
 	}
 	
-	public void log(PlacoError error) {
-		log(error, true);
+	public void log(Error error) {
+            log(error, true);
 	}
 	
 	/**
@@ -58,7 +60,7 @@ public class ErrorLogger {
 	 * Retrieve the oldest error
 	 * @return
 	 */
-	public PlacoError pollError() {
+	public Error pollError() {
 		return this.errors.poll();
 	}
 

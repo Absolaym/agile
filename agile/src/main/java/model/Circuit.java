@@ -29,7 +29,7 @@ public class Circuit {
     }
     
     public void addDelivery(Delivery delivery) {
-		this.deliveries.add(delivery);
+	this.deliveries.add(delivery);
 }
     
     public LinkedList<Trip> getTrips() {

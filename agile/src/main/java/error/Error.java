@@ -1,12 +1,14 @@
 package error;
 
-public enum PlacoError {
-	
+public enum Error {
+    
+	//CityMap Errors
 	UNCONNECTED_INTERSECTION("UC1-UI", "One intersection is not connected to the reste of the map making it impossible to reach"),
 	CORRUPTED_XML_CM("UC1-CX", "This file is not well formatted as an xml"),
 	EMPTY_XML_CM("UC1-EX", "This file is empty"),
 	NON_XML_CM("UC1_NX","This file is not an XML file"),
 	
+        //DeliveryRequest Errors
 	CORRUPTED_XML_DR("UC2-CX", "This file is not well formatted as an xml"),
 	EMPTY_XML_DR("UC2-EX", "This file is empty"),
 	NON_XML_DR("UC2_NX","This file is not an XML file"),
@@ -14,6 +16,7 @@ public enum PlacoError {
 	DEL_ADDRESS_NOT_IN_MAP("UC2-DANIM", "The address of one of deliveries is not in the map"),
 	NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
 	
+        //Circuits Errors
 	NO_COURRIER_ASSIGNED("UC3-NCA", "You didn't provide the number of courriers you want to assign circuits"),
 	NO_DR_BEF_CIRCUIT("UC3-NDBC", "You have no delivery request so the circuit is already the best by its absence"),
 	TIMEOUT("UC3-TO", "Your request is killin' it, the program is not designed to support such a huge file"),
@@ -26,7 +29,7 @@ public enum PlacoError {
 	public String code = "-";
 	public String message = "";
 	
-	PlacoError(String code, String msg) {
+	Error(String code, String msg) {
 		this.code = code;
 		this.message = msg;
 	}

@@ -101,5 +101,4 @@ public class ButtonListener implements ActionListener {
     public Window getWindow() {
         return window;
     }
-    
 }

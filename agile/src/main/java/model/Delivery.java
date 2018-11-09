@@ -10,7 +10,7 @@ import utils.Time;
 
 /**
  *
- * @author olivi & Johnny
+ * @author olivia & Johnny
  */
 public class Delivery extends Observable {
     /**
