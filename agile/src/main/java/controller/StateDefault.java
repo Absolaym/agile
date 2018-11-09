@@ -27,7 +27,7 @@ public class StateDefault implements State{
                 model.setCityMap(cityMap);
                 model.setDeliveryRequest(null);
                 model.setCircuits(null);
-                c.setState(c.stateCityMapLoaded);
+                c.setState(c.STATE_CITYMAP_LOADED);
             }
     	}catch(Exception e) {
             //display exception in a pop up

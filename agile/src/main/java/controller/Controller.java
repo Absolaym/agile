@@ -18,16 +18,16 @@ public class Controller {
     protected static CommandsList commandsList;
     
     private State state;
-    protected static final StateDefault stateDefault = new StateDefault();
-    protected static final StateInit stateInit = new StateInit();
-    protected static final StateCityMapLoaded stateCityMapLoaded = new StateCityMapLoaded();
-    protected static final StateDeliveryRequestLoaded stateDeliveryRequestLoaded = new StateDeliveryRequestLoaded();
-    protected static final StateCircuitsComputed stateCircuitsComputed = new StateCircuitsComputed();
+    protected static final StateDefault STATE_DEFAULT = new StateDefault();
+    protected static final StateInit STATE_INIT = new StateInit();
+    protected static final StateCityMapLoaded STATE_CITYMAP_LOADED = new StateCityMapLoaded();
+    protected static final StateDeliveryRequestLoaded STATE_DELIVERYREQUEST_LOADED = new StateDeliveryRequestLoaded();
+    protected static final StateCircuitsComputed STATE_CIRCUITS_COMPUTED = new StateCircuitsComputed();
 
     public Controller() {
         this.model = Model.getInstance();
         //this.setCityMap(new CityMap());
-        this.setState(stateInit);
+        this.setState(STATE_INIT);
         //this.preload();
     }
 

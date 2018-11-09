@@ -34,8 +34,8 @@ public class ErrorAreaView extends JPanel {
     }
     
     public void update(Error error) {
-    		this.text.setText(error.toString());
-    		this.repaint();
+    	this.text.setText(error.toString());
+    	this.repaint();
     }
 
     public void paintComponent(Graphics g) {

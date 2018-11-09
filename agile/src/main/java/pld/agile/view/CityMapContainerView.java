@@ -121,6 +121,7 @@ public class CityMapContainerView extends JPanel implements Observer {
                         d.setIsSelected(false);
                     }
                     window.getDeliveryRequestPanel().repaint();
+                    window.repaint();
                 }
                 if (window.getWaitingState() == 0) {
                     //getClosestLocation
