@@ -186,28 +186,21 @@ public class CircuitAlgorithm {
 
 		this.circuits = new LinkedList<Circuit>();
 		for(LinkedList<Delivery> cluster : clusters) {
-                    runTSP(cluster, cluster.size());
+			runTSP(cluster, cluster.size());
 		}
-                for(int i = 0; i < circuits.size(); i++){
-                    Circuit circuit = circuits.get(i);
-                    LinkedList<Delivery> deliveries = circuit.getDeliveries();
-                    for(int j = 0; j < deliveries.size(); j++){
-                        Delivery delivery =  deliveries.get(j);
-                        delivery.setCircuit(circuit);
-                    }
-                }
 		System.out.println("clusters end");
 		//call TSP
 	}
 	
 	//////////////////////////// A FAIRE //////////////////////////
 	//X//  Faire la boucle pour avoir plus de deux itérations et converger le kmeans
-	// THINK OF TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
+	// TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
 	//X// Réorganiser les clusters quand un est trop peuplé
 	// Regarder bug les circuits ne sont pas ronds
 	// Calculer la qualité d'un cluster
 	// faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
 	// choisir la meilleure solution
+	//ameliorer tsp
 	///////////////////////////////////////////////////////////////
 	
 	
@@ -258,7 +251,7 @@ public class CircuitAlgorithm {
 				list.add(delivery);
 				correspondingCenter.put(centers[closestCenter],list);
 			}
-			//System.out.println("hey");
+			System.out.println("hey");
 			
 			//Compute new center geolocation
 			for(int i = 0; i<numberOfCouriers; i++){
@@ -275,7 +268,7 @@ public class CircuitAlgorithm {
 				meanLongitude = meanLongitude / deliveriesInCluster.size();
 
 				centers[i] = new Geolocation(meanLatitude, meanLongitude);
-				//System.out.println("hey2");
+				System.out.println("hey2");
 
 			}
 			
@@ -365,11 +358,7 @@ public class CircuitAlgorithm {
 			}
 			
 			
-		}
-		
-		
-		
-		
+		}		
 		return clusters;
 	}
 
@@ -413,75 +402,6 @@ public class CircuitAlgorithm {
 			}
 		}
 		return;
-	}
-	
-	private LinkedList<LinkedList<Delivery>> createClustersWithSweep(int numberOfCouriers){
-		
-		Delivery[] deliveries = deliveryRequest.getDeliveries().toArray(new Delivery[deliveryRequest.getDeliveries().size()]);
-		bubbleSort(deliveries);
-		
-		//for testing purposes
-		double[] angles = new double[deliveries.length];
-		for(int i = 0; i < deliveries.length; i++) {
-			angles[i] = computeAngle(deliveries[i]);
-		}
-		
-		int[] circuitsSizes = computeCircuitsSizes(numberOfCouriers);
-		
-		
-		LinkedList<LinkedList<Delivery>> clusters = new LinkedList<LinkedList<Delivery>>();
-		int deliveriesIndex = 0;
-		for(int i = 0; i< numberOfCouriers; i++) {
-			LinkedList<Delivery> cluster = new LinkedList<Delivery>();
-			
-			int clusterSize = circuitsSizes[i];
-			for(int j = 0; j<clusterSize; j++) {
-				if(deliveriesIndex>=deliveries.length)
-					break;//error
-				cluster.add(deliveries[deliveriesIndex++]);
-			}
-			clusters.add(cluster);
-		}
-		
-		return clusters;
-	}
-	
- 	private void bubbleSort(Delivery[] deliveries) 
-  { 
-      Delivery temp; 
-      boolean swapped; 
-      for (int i = 0; i < deliveries.length - 1; i++)  
-      { 
-          swapped = false; 
-          for (int j = 0; j < deliveries.length - i - 1; j++)  
-          { 
-              if ( computeAngle(deliveries[j])> computeAngle(deliveries[j + 1]))  
-              { 
-                  temp = deliveries[j]; 
-                  deliveries[j] = deliveries[j + 1]; 
-                  deliveries[j + 1] = temp; 
-                  swapped = true; 
-              } 
-          }  
-          if (swapped == false) 
-              break; 
-      } 
-  } 
-	
-	private double computeAngle(Delivery delivery) {
-		double numerator = this.warehouse.intersection.getGeolocation().getLatitude()-delivery.getGeolocation().getLatitude();
-		double denominator = this.warehouse.intersection.getGeolocation().getLongitude()-delivery.getGeolocation().getLongitude();
-		return Math.atan(numerator / denominator);
-	}
-	
-	private int[] computeCircuitsSizes(int numberOfCouriers) {
-		int[] circuitSize = new int[numberOfCouriers];
-		for(int i = 0; i< numberOfCouriers; i++)
-			circuitSize[i] = numberOfDeliveries / numberOfCouriers ;
-
-		for(int i = 0; i< Math.floorMod(numberOfDeliveries, numberOfCouriers); i++)
-			++circuitSize[i];
-		return circuitSize;
 	}
 	
 	private void runTSP(LinkedList<Delivery> cluster, int clusterSize) {

@@ -32,6 +32,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     private Intersection hoveredInter = null;
     private Intersection newDelivery = null;
     private Section hoveredSection = null;
+    private Circuit circuitNewDelivery = null;
 
     // Map elements
     private int delivDotSize = 12;
@@ -72,7 +73,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         this.zoomSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 JSlider source = (JSlider) e.getSource();
-                dotSize = (int)source.getMaximum()/10 - (int)source.getValue()/10 + 4;
+                dotSize = (int) source.getMaximum() / 10 - (int) source.getValue() / 10 + 4;
                 source.getParent().repaint();
             }
         });
@@ -98,55 +99,47 @@ public class CityMapContainerView extends JPanel implements Observer {
             }
 
             public void mouseClicked(MouseEvent e) {
+                int x = (int) (e.getX());
+                int y = (int) (e.getY());
 
                 if (controller.getModel().getCityMap() == null) {
                     return;
                 }
-
-                if (CityMapContainerView.this.hoveredInter != null) {
-                    System.out.println("Do smthg on click on an intersection");
-                }
-
                 DeliveryRequest dr = controller.getModel().getDeliveryRequest();
                 LinkedList<Delivery> delivs = dr.getDeliveries();
                 Geolocation origin = getOrigin(controller.getModel().getCityMap());
                 for (Delivery d : delivs) {
                     Geolocation geo = geolocationToPixels(origin, d.getGeolocation());
 
-                    if (Math.abs(e.getX() - geo.getLongitude()) <= delivDotSize
-                            && Math.abs(e.getY() - geo.getLatitude()) <= delivDotSize) {
+                    if (Math.abs(x - geo.getLongitude()) <= delivDotSize
+                            && Math.abs(y - geo.getLatitude()) <= delivDotSize) {
                         selectedDelivery = d;
-                        //for test purpose
                         selectedDelivery.setIsSelected(true);
-                        //appeler le controleur pour mettre la delivery à selected dans le modèle
                         controller.setSelectDelivery(selectedDelivery);
-                        System.out.println("the selected delivery is selected"+selectedDelivery.getIsSelected());
-                        
+
                     } else {
                         d.setIsSelected(false);
                     }
                     window.getDeliveryRequestPanel().repaint();
                     window.repaint();
                 }
-                /////////////////////////////////////////////////
-                if(window.getWaitingState()) {
-                   
-                    //getClosestLocation()
-                    int x = (int) (e.getX());
-                    int y = (int) (e.getY());
-                    CityMap cityMap = controller.getModel().getCityMap();
-                 
-                    for (Intersection inter : cityMap.getIntersections().values()) {
-                        Geolocation geo = geolocationToPixels(origin, inter.getGeolocation());
+                if (window.getWaitingState() == 0) {
+                    //getClosestLocation
 
-                        if (Math.abs(e.getX() - geo.getLongitude()) <= delivDotSize
-                                && Math.abs(e.getY() - geo.getLatitude()) <= delivDotSize) 
-                            newDelivery = inter;   
+                    newDelivery = getIntersectionByCoordinates(x, y);
+                    if (newDelivery != null)
+                        window.setWaitingState(1);
+                } else if (window.getWaitingState() == 1) {
+                    Section sectionNewDelivery = getSectionByCoordinates(x, y);
+                    circuitNewDelivery = sectionNewDelivery.getCircuit();
+                    System.out.println("circuit:" + circuitNewDelivery);
+                    if (circuitNewDelivery == null) {
+                        //add an error: CHoose a valid circuit
+                        // window.getCityMapMenuPanel().add(new JTextField("Choose a valid circuit"));
+                    } else {
+                        window.setWaitingState(2);
                     }
-                    
-                    window.setWaitingState(false);
                 }
-                /////////////////////////////////////////////
                 repaint();
             }
         });
@@ -175,58 +168,61 @@ public class CityMapContainerView extends JPanel implements Observer {
                 int x = (int) (e.getX());
                 int y = (int) (e.getY());
 
-                CityMap cityMap = controller.getModel().getCityMap();
+                Section section = getSectionByCoordinates(x, y);
+                Intersection intersection = getIntersectionByCoordinates(x, y);
 
-                // Checkout the intersections hovered
-                Intersection bestIntersection = null;
-                double distance = 2e300;
-                Geolocation origin = CityMapContainerView.this.getOrigin(cityMap);
-
-                for (Intersection inter : cityMap.getIntersections().values()) {
-                    Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, inter.getGeolocation());
-                    double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
-
-                    if (dist > maxpx) {
-                        continue;
-                    }
-
-                    if (dist < distance) {
-                        bestIntersection = inter;
-                        distance = dist;
-                    }
-                }
-
-                // Checkout the sections hovered
-                double coeff = CityMapContainerView.this.kmToPixelCoeff();
-                Section bestSection = null;
-                double distanceSec = 2e300;
-
-                for (Section section : cityMap.getSections()) {
-                    Geolocation start = section.getStartIntersection().getGeolocation();
-                    Geolocation end = section.getEndIntersection().getGeolocation();
-                    Geolocation sectionCenter = Geolocation.center(start, end);
-                    Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, sectionCenter);
-
-                    double length = start.distance(end) * coeff / 2;
-                    double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
-
-                    if (dist > length) {
-                        continue;
-                    }
-
-                    if (dist < distanceSec) {
-                        bestSection = section;
-                        distanceSec = dist;
-                    }
-                }
-
-                if (CityMapContainerView.this.hoveredInter != bestIntersection || CityMapContainerView.this.hoveredSection != bestSection) {
+                if (CityMapContainerView.this.hoveredInter != intersection || CityMapContainerView.this.hoveredSection != section) {
                     CityMapContainerView.this.repaint();
                 }
-                CityMapContainerView.this.hoveredSection = bestSection;
-                CityMapContainerView.this.hoveredInter = bestIntersection;
+                CityMapContainerView.this.hoveredSection = section;
+                CityMapContainerView.this.hoveredInter = intersection;
             }
         });
+    }
+
+    public Intersection getIntersectionByCoordinates(int x, int y) {
+        Intersection intersection = null;
+        Geolocation origin = getOrigin(controller.getModel().getCityMap());
+        CityMap cityMap = controller.getModel().getCityMap();
+
+        for (Intersection inter : cityMap.getIntersections().values()) {
+            Geolocation geo = geolocationToPixels(origin, inter.getGeolocation());
+            if (Math.abs(x - geo.getLongitude()) <= delivDotSize
+                    && Math.abs(y - geo.getLatitude()) <= delivDotSize) {
+                intersection = inter;
+            }
+        }
+        return intersection;
+    }
+
+    public Section getSectionByCoordinates(int x, int y) {
+        Section sect = null;
+        Geolocation origin = getOrigin(controller.getModel().getCityMap());
+        CityMap cityMap = controller.getModel().getCityMap();
+
+        double coeff = CityMapContainerView.this.kmToPixelCoeff();
+        double distanceSec = 2e300;
+
+        for (Section section : cityMap.getSections()) {
+            Geolocation start = section.getStartIntersection().getGeolocation();
+            Geolocation end = section.getEndIntersection().getGeolocation();
+            Geolocation sectionCenter = Geolocation.center(start, end);
+            Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, sectionCenter);
+
+            double length = start.distance(end) * coeff / 2;
+            double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
+
+            if (dist > length) {
+                continue;
+            }
+
+            if (dist < distanceSec) {
+                sect = section;
+                distanceSec = dist;
+            }
+        }
+
+        return sect;
     }
 
     public void paintComponent(Graphics g) {
@@ -273,10 +269,8 @@ public class CityMapContainerView extends JPanel implements Observer {
         } else if (selectedDelivery == delivery) {
             g.setColor(Color.YELLOW);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
-           // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
-        } 
-        
-        else {
+            // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
+        } else {
             g.setColor(c);
             g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
         }
@@ -306,26 +300,43 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     }
 
-    private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin) {
+    private void colorSectionUtil(Graphics g, Section s, Color c, Geolocation origin, boolean hovered) {
         g.setColor(c);
         int lineThickness = 4;
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(lineThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
+        Geolocation start = s.getStartIntersection().getGeolocation();
+        Geolocation end = s.getEndIntersection().getGeolocation();
+
+        Geolocation pxStart = geolocationToPixels(origin, start);
+        Geolocation pxEnd = geolocationToPixels(origin, end);
+
+        if (hovered) {
+            g2.setStroke(new BasicStroke(lineThickness * 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
+            g2.setStroke(new BasicStroke(lineThickness));
+        } else {
+            g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
+        }
+
+    }
+
+    private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin) {
         for (Section sec : sections) {
-            Geolocation start = sec.getStartIntersection().getGeolocation();
-            Geolocation end = sec.getEndIntersection().getGeolocation();
-
-            Geolocation pxStart = this.geolocationToPixels(origin, start);
-            Geolocation pxEnd = this.geolocationToPixels(origin, end);
-
-            if (sec == this.hoveredSection) {
-                g2.setStroke(new BasicStroke(lineThickness * 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-                g2.setStroke(new BasicStroke(lineThickness));
-            } else {
-                g.drawLine((int) pxStart.getLongitude(), (int) pxStart.getLatitude(), (int) pxEnd.getLongitude(), (int) pxEnd.getLatitude());
-            }
+            if (sec == hoveredSection) {
+                colorSectionUtil(g, sec, c, origin, true);
+                // if section is part of circuit then hover the whole circuit 
+                if (sec.getCircuit() != null) {
+                    LinkedList<Trip> circuitTrips = sec.getCircuit().getTrips();
+                    for (Trip t : circuitTrips) {
+                        java.util.List<Section> circuitSections = t.getSections();
+                        for (Section s : circuitSections) {
+                            colorSectionUtil(g, s, c, origin, true);
+                        }
+                    }
+                }
+            } else colorSectionUtil(g, sec, c, origin, false);
         }
     }
 
@@ -360,19 +371,13 @@ public class CityMapContainerView extends JPanel implements Observer {
         if (cityMap == null || circuits == null) {
             return;
         }
-
         Geolocation origin = getOrigin(cityMap);
-
         int i = 0;
         for (Circuit circuit : circuits) {
             Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);
             }
-
-            //for (Delivery deliv : circuit.getDeliveries()) {
-              //  colorDelivery(g, c, deliv, origin, delivDotSize);
-            //}
             i++;
         }
     }
@@ -398,7 +403,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
 
         if (hoveredInter != null) {
-            g.setColor(new Color(180, 120, 160));
+            g.setColor(Color.CYAN);
             Geolocation target = geolocationToPixels(origin, this.hoveredInter.getGeolocation());
             g.fillArc(
                     (int) (target.getLongitude() - dotSize),
@@ -414,8 +419,8 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
 
         // Write the name of every sections if it's big enough
-        g2.setColor(Color.LIGHT_GRAY);
-        g2.setFont(new Font("Arial", Font.PLAIN, 8));
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.PLAIN, 12));
         FontMetrics fm = g2.getFontMetrics();
 
         for (Section section : cityMap.getSections()) {
