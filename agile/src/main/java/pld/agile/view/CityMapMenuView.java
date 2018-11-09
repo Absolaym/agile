@@ -69,6 +69,8 @@ public class CityMapMenuView extends JPanel {
 
     public void addNewDelivery(String step) {
         messages.removeAll();
+        if (step.equals("")) return;
+        
         JLabel text = new JLabel();
         JTextField deliveryTime = null;
         if (step.equals("select")) 

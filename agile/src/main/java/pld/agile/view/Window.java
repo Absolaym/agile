@@ -22,7 +22,7 @@ public class Window extends JFrame {
     
     private int width;
     private int height;
-    private int waitingState = 0;
+    private int waitingState = 2;
 
     public Window() {
         this(new Controller());
@@ -90,6 +90,7 @@ public class Window extends JFrame {
             mapMenuPanel.addNewDelivery("time");
             
         } else if (ws == 2){
+            mapMenuPanel.addNewDelivery("");
             mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(true);
             mapMenuPanel.getLoadNewCityMapButton().setEnabled(true);

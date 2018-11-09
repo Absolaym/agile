@@ -240,9 +240,9 @@ public class DeliveryRequestView extends JPanel implements Observer {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (controller.getModel().getDeliveryRequest() != null)
-            addDeliveries();
-        System.out.println("in paint component");
+//        if (controller.getModel().getDeliveryRequest() != null)
+//            addDeliveries();
+//        System.out.println("in paint component");
     }
 
     public int getHeight() {
