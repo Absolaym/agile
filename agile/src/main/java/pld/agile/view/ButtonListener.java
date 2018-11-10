@@ -71,13 +71,14 @@ public class ButtonListener implements ActionListener {
 //                            window.getDeliveryRequestPanel().addDeliveries();
                             //window.getDeliveryRequestPanel().addToTable(); 
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
-                            
+                            window.getDeliveryRequestPanel();
+                            window.getDeliveryRequestPanel().addDeliveries();
                         }
-                        window.getCityMapContainerPanel().repaint();  
+                        window.getCityMapContainerPanel().repaint();
                         window.getDeliveryRequestPanel().repaint();
                     }
             } catch (Exception e2) {
-
+                System.out.print(e2.toString());
            }
         }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             int numberOfCouriers = window.getCityMapMenuPanel().getCourierNumber();
