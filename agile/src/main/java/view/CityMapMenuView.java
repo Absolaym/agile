@@ -17,8 +17,8 @@ public class CityMapMenuView extends JPanel {
     private JButton loadDeliveryRequestButton;
     private JButton addNewDeliveryButton;
     private final int buttonHeight = 30;
-    private final int menuHeight = 120;
-    private final int menuWidth = 1000;
+    private final int HEIGHT = 100;
+    private final int WIDTH = 1000;
     private JLabel courierNumberLabel;
     private JTextField courierNumberField;
     private JPanel messages;
@@ -97,11 +97,11 @@ public class CityMapMenuView extends JPanel {
 
     // to change
     public int getHeight() {
-        return menuHeight;
+        return HEIGHT;
     }
 
     public int getWidth() {
-        return menuWidth;
+        return WIDTH;
     }
 
     public JButton getComputeCircuitsButton() {

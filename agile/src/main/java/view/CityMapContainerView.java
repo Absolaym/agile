@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -18,7 +19,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     private JButton loadCityMapButton;
     private JSlider zoomSlider;
 
-    private final int HEIGHT = 750;
+    private final int HEIGHT = 650;
     private final int WIDTH = 1000;
     private Controller controller;
     private Window window;
