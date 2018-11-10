@@ -273,13 +273,6 @@ public class CircuitAlgorithm {
 			}
 			
 		}
-		
-		
-		
-		
-		
-		
-		
 			
 		
 		
