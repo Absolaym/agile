@@ -198,63 +198,29 @@ public class CircuitComputer {
 	}
 
 	private LinkedList<LinkedList<Delivery>> equalizeClustersSize(LinkedList<LinkedList<Delivery>> clusters, double avgClusterSize){
-		LinkedList<Delivery> deliveriesToChange = new LinkedList<Delivery>();
 		
-		for (LinkedList<Delivery> myCluster : clusters) {
-			int clusterSize = myCluster.size();
-			
-			// If the cluster is bigger than expected
-			if (clusterSize>avgClusterSize+1) {
-			
-				for (int i = 0 ; i < clusterSize-avgClusterSize ; i++) {
-					deliveriesToChange.add(myCluster.getFirst());
-					myCluster.removeFirst();
-					
-					
-					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
+		 for(LinkedList<Delivery> cluster : clusters) {
+			 //if way too big, put deliveries elsewhere 
+			 while(cluster.size() > avgClusterSize + 1) {
+				 for(LinkedList<Delivery> targetCluster : clusters) {
+					 if(targetCluster.size() < avgClusterSize) {
+						 targetCluster.add(cluster.removeFirst());
+						 break;
+					 }
+				 }
+			 }
+			 
+			 	//if way too small, pick deliveries from elsewhere 
+				 while(cluster.size() < avgClusterSize - 1) {
+					 for(LinkedList<Delivery> targetCluster : clusters) {
+						 if(targetCluster.size() > avgClusterSize) {
+							 cluster.add(targetCluster.removeFirst());
+							 break;
+						 }
+					 }
 				}
-				
-			}
-		}
-		for (LinkedList<Delivery> myCluster : clusters) {
-			int clusterSize = myCluster.size();
-			
-			// If the cluster is smaller than expected
-			if (clusterSize<avgClusterSize-1) {
-				
-				for (int i = 0 ; i < clusterSize-avgClusterSize ; i++) {
-					myCluster.add(myCluster.getFirst());
-					deliveriesToChange.removeFirst();
-					
-
-					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
-				}
-				
-			}
-			
-		}
+		 }
 		
-		if (!deliveriesToChange.isEmpty()) {
-			for (LinkedList<Delivery> myCluster : clusters) {
-				int clusterSize = myCluster.size();
-				
-				// If the cluster is smaller than expected
-				if (clusterSize<avgClusterSize) {
-					myCluster.add(deliveriesToChange.get(0));
-					deliveriesToChange.removeFirst();		
-					
-
-					System.out.println("// deliveriesToChange.size() = "+deliveriesToChange.size());
-				}
-				
-				if(deliveriesToChange.isEmpty()) {
-					break;
-				}
-				
-			}
-			
-			
-		}		
 		return clusters;
 	}
 
@@ -293,20 +259,21 @@ public class CircuitComputer {
 			}
 		}
 		
-		
+		long startTime = System.currentTimeMillis();
 		TSP1 tsp = new TSP1();
 		tsp.chercheSolution(60000, clusterSize + 1, tripLength , deliveryDuration);
-		System.out.println("Tsp ended");
+		long tspDuration = System.currentTimeMillis() - startTime;
+		System.out.println("Tsp lasted " + tspDuration + " ms");
 		
 		
 	//Circuit object creation
 
-		Circuit circuit = new Circuit();
+			Circuit circuit = new Circuit();
 	    circuit.setDepartureTime( this.deliveryRequest.getDepartureTime() );
 	    
 	    //Add trip from warehouse to first delivery
 			//trips are the business object equivalent to path
-	    Delivery currentDelivery = cluster.get(tsp.getMeilleureSolution(1)-1); //because warehouse is not present in cluster
+	    Delivery currentDelivery = cluster.get(tsp.getMeilleureSolution(1)-1); //because warehouse is 0 and is not present in cluster
 	    Trip nextTrip = new Trip();
 			nextTrip.setSections(this.shortestPaths.get(this.deliveryRequest.getWarehouseAddress()).get(currentDelivery.getAddress()).getSections());
 			circuit.addTrip(nextTrip);
@@ -331,7 +298,6 @@ public class CircuitComputer {
 			circuit.addTrip(nextTrip);
 			circuit.addDelivery(currentDelivery);
 			
-			System.out.println("synch");
 			this.circuits.add(circuit);
 	}
 		
