@@ -85,7 +85,7 @@ public class Model {
 		
 			circuitComputer.init(this.deliveryRequest, this.shortestPaths);
 			circuitComputer.execute(this.numberOfCouriers);
-			this.circuits = circuitComputer.result();
+			this.setCircuits(circuitComputer.result());
 
     }
     
