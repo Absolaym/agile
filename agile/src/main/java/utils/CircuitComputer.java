@@ -3,16 +3,11 @@ package utils;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
-
-import model.CityMap;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Geolocation;
-import model.Intersection;
-import model.Section;
 import model.Trip;
-import tsp.TSP1;
+import tspImproved.TSP1;
 import model.Circuit;
 
 public class CircuitComputer {

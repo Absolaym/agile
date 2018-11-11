@@ -11,17 +11,13 @@ public abstract class TemplateTSP implements TSP {
 	private Integer[] meilleureSolution;
 	private int coutMeilleureSolution = 0;
 	private Boolean tempsLimiteAtteint;
-	private HashMap<Delivery, Integer> deliveriesIndex; 
-	private Delivery[] deliveriesArray;
 	
 	public Boolean getTempsLimiteAtteint(){
 		return tempsLimiteAtteint;
 	}
 	
-	public void chercheSolution(int tpsLimite, int nbSommets, Delivery[] deliveries, int[][] cout, int[] duree){
+	public void chercheSolution(int tpsLimite, int nbSommets, int[][] cout, int[] duree){
 		//memorize order of deliveries
-		this.deliveriesArray = deliveries;
-		for(int i=1; i<nbSommets; i++) deliveriesIndex.put(deliveriesArray[i], i);
 		
 		//initialize problem variables		
 		tempsLimiteAtteint = false;
