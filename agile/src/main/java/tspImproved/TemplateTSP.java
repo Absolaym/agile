@@ -84,6 +84,8 @@ public abstract class TemplateTSP implements TSP {
 	    	if (coutVus < coutMeilleureSolution){ // on a trouve une solution meilleure que meilleureSolution
 	    		vus.toArray(meilleureSolution);
 	    		coutMeilleureSolution = coutVus;
+	    		// a chaque fois qu'on a ça, afficher le nouveau chemin
+	    		//il faudrait que les tsp se fassent en parallèle (?)
 	    	}
 	    } else if (coutVus + bound(sommetCrt, nonVus, cout, duree) < coutMeilleureSolution){
 	        Iterator<Integer> it = iterator(sommetCrt, nonVus, cout, duree);
