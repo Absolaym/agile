@@ -1,4 +1,5 @@
-/*
+
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,9 +10,13 @@ import controller.Controller;
 import model.DeliveryRequest;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -32,14 +37,15 @@ public class ButtonListener implements ActionListener {
         
         String root = System.getProperty("user.dir");
         String assets = root + "/src/main/assets";
-        
+       
         if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
             
-            JFileChooser jfc = new JFileChooser( assets + "/maps" );
+            JFileChooser jfc = new JFileChooser( assets + "/maps/" );
             
-            int result = jfc.showOpenDialog(window);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
+           // int result = jfc.showOpenDialog(window);
+           // if (result == JFileChooser.APPROVE_OPTION) {
+                //controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
+                controller.loadCityMap(assets +"/maps/grandPlan.xml");
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
              
                 window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
@@ -47,35 +53,45 @@ public class ButtonListener implements ActionListener {
                 window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
                 
                 window.getCityMapContainerPanel().repaint();
-            }
+                
+          //  }
         }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                
                     JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
                     int result = jfc.showOpenDialog(window);
-                    DeliveryRequest deliveryRequest;
+                    
                     if (result == JFileChooser.APPROVE_OPTION) {
                         controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+                
+                        //controller.loadDeliveryRequest( assets + "/deliveries/dl-petit-3.xml" );
+                        DeliveryRequest deliveryRequest;
                         deliveryRequest = controller.getModel().getDeliveryRequest();
                         //get deliveries and send to JTable to be displayed
-                        if(deliveryRequest!=null){
-                            window.getDeliveryRequestPanel().addDeliveries();
-//                            window.getDeliveryRequestPanel().addToTable();
+                        if(deliveryRequest != null){
+//                            window.getDeliveryRequestPanel().addDeliveries();
+                            //window.getDeliveryRequestPanel().addToTable(); 
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
+                            window.getDeliveryRequestPanel();
+                            window.getDeliveryRequestPanel().addDeliveries();
                         }
-                        window.getCityMapContainerPanel().repaint();                   
+                        window.getCityMapContainerPanel().repaint();
+                        window.getDeliveryRequestPanel().repaint();
                     }
-                
             } catch (Exception e2) {
-
-            }
+                System.out.print(e2.toString());
+           }
         }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             int numberOfCouriers = window.getCityMapMenuPanel().getCourierNumber();
             controller.computeCircuits(numberOfCouriers);
-            window.getDeliveryRequestPanel().setCircuitNumber();
+            window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
+            //window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
             
+        }
+        else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
+            window.getCityMapMenuPanel().addNewDelivery("select");
+            window.setWaitingState(0);
         }
 
     }
@@ -87,5 +103,4 @@ public class ButtonListener implements ActionListener {
     public Window getWindow() {
         return window;
     }
-    
 }
