@@ -18,7 +18,9 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JTable deliveriesTable;
     private DefaultTableModel tabModel;
     private ButtonListener buttonListener;
-    JPanel deliveriesContainer = new JPanel();
+    private JPanel deliveriesContainer = new JPanel();
+    private JPanel deliveriesListContainer = new JPanel();
+    private JPanel DeliveryRequestView = new JPanel();
     
     private static Controller controller;
     private final int buttonLocationY = 50;
@@ -68,22 +70,30 @@ public class DeliveryRequestView extends JPanel implements Observer {
         super();
         controller = c;
         buttonListener = new ButtonListener(c,w);
-        deliveriesContainer.setLayout(new BoxLayout(deliveriesContainer, BoxLayout.Y_AXIS));
         
         setLayout(new BorderLayout());
         //set button
         setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
-        //createTable();
-        
-        createDeliveryView();
         setBackground(Color.LIGHT_GRAY);
         
+        //createTable();
+        createDeliveriesContainer();
+        add(deliveriesContainer);
+        
         w.getContentPane().add(this);
-
     }
     
+    private void createDeliveryRequestViewPanel(){
+        DeliveryRequestView = new JPanel();
+        DeliveryRequestView.setLayout(new BorderLayout());
+        DeliveryRequestView.setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
+        DeliveryRequestView.setBackground(Color.LIGHT_GRAY);
+    }
     
-    private void  createDeliveryView(){
+    private void  createDeliveriesContainer(){
+        
+        deliveriesContainer.removeAll();
+        deliveriesContainer.setLayout(new BoxLayout(deliveriesContainer, BoxLayout.Y_AXIS));
         
         JPanel head = new JPanel();
         
@@ -92,47 +102,18 @@ public class DeliveryRequestView extends JPanel implements Observer {
         JTextArea duration = new JTextArea("Duration");
         JTextArea circuit = new JTextArea("Circuit");
         
-        JButton btnMoveBefore = new JButton("");
-        JButton btnMoveAfter = new JButton("");
-        JButton btnDelete = new JButton("Delete");
-        
         address.setOpaque(false);
         arrivalTime.setOpaque(false);
         duration.setOpaque(false);
         circuit.setOpaque(false);
         
-        String root = System.getProperty("user.dir");
-        String img = root + "/src/main/assets/img/";
-        
-        String iconfilePath = img +"arrow-up.png";
-        btnMoveBefore.setIcon(new ImageIcon(iconfilePath));
-//        btnMoveBefore.setBounds(10, 438, 39, 31);
-        btnMoveBefore.setBorder(BorderFactory.createEmptyBorder());
-        btnMoveBefore.setContentAreaFilled(false);
-        btnMoveBefore.setFocusable(false);
-        
-        iconfilePath = img +"arrow-down.png";
-        btnMoveAfter.setIcon(new ImageIcon(iconfilePath));
-//        btnMoveAfter.setBounds(10, 438, 39, 31);
-        btnMoveAfter.setBorder(BorderFactory.createEmptyBorder());
-        btnMoveAfter.setContentAreaFilled(false);
-        btnMoveAfter.setFocusable(false);
-        
-//        contentPane.add(btnNewButton);
-        
-        btnMoveBefore.addActionListener(buttonListener);
-        btnMoveAfter.addActionListener(buttonListener);
-        btnDelete.addActionListener(buttonListener);
-        
-        
         head.add(address);
         head.add(arrivalTime);
         head.add(duration);
         head.add(circuit);
-        head.add(btnMoveBefore);
-        head.add(btnMoveAfter);
-        head.add(btnDelete);
         deliveriesContainer.add(head);
+        deliveriesContainer.revalidate();
+        
         add(deliveriesContainer);
     }
     
@@ -184,20 +165,21 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
     public void addDeliveries() {
         System.out.println("in addDeliveries");
-//        DeliveryRequest dr = controller.getModel().getDeliveryRequest();
 //        System.out.println("in addDeliveries - got the dr");
-//        String[] deliveries = new String[dr.getDeliveries().size()];
-//        for (int i = 0; i < dr.getDeliveries().size(); i++) {
-//            deliveries[i] = dr.getDeliveries().get(i).getAddress();
-//        }
-        emptyDeliveryView();
+        emptyDeliveriesContainer();
 //        System.out.println("in addDeliveries " + tabModel.getRowCount());
         
-        //int i=0;
+//        int i=0;
 //        LinkedList<Delivery> deliv = dr.getDeliveries();
+
         LinkedList<Delivery> deliveries = controller.getModel().getDeliveryRequest().getDeliveries();
         System.out.println("in addDeliveries - deliveries: "+deliveries.size());
         System.out.println("in addDeliveries - got the deliveries");
+        
+        deliveriesListContainer.removeAll();
+        //deliveriesListContainer = new JPanel();
+        deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
+        
         for (int i = 0; i < deliveries.size(); i++) {
             System.out.println("in addDeliveries - in the loop");
 //        for (Delivery d : deliv ) {
@@ -218,9 +200,10 @@ public class DeliveryRequestView extends JPanel implements Observer {
             System.out.println("selected" + d.getAddress() + " " + d.getIsSelected());
             //i++;
             
-           
+           //add(deliveriesContainer);
         }
-
+        deliveriesListContainer.revalidate();
+        deliveriesContainer.add(deliveriesListContainer);
     }
     
     private void addRow(String address, String arrivalTime, String duration, 
@@ -286,7 +269,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         
         System.out.println("in addRow - added all to the row");
 
-        deliveriesContainer.add(row);
+        deliveriesListContainer.add(row);
         
         System.out.println("in addRow - added the row");
 
@@ -315,9 +298,9 @@ public class DeliveryRequestView extends JPanel implements Observer {
 //      
 //    }
     
-    public void emptyDeliveryView() {
+    public void emptyDeliveriesContainer() {
         deliveriesContainer = new JPanel();
-        createDeliveryView();
+        createDeliveriesContainer();
     }
     
     public void setCircuitNumber(){
