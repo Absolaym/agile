@@ -116,9 +116,8 @@ public class CityMapContainerView extends JPanel implements Observer {
                     if (Math.abs(x - geo.getLongitude()) <= delivDotSize
                             && Math.abs(y - geo.getLatitude()) <= delivDotSize) {
                         selectedDelivery = d;
-                        selectedDelivery.setIsSelected(true);
                         controller.setSelectDelivery(selectedDelivery);
-
+                        window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                     } else {
                         d.setIsSelected(false);
                     }

@@ -148,6 +148,10 @@ public class DeliveryRequestView extends JPanel implements Observer {
         btnMoveBefore.addActionListener(buttonListener);
         btnMoveAfter.addActionListener(buttonListener);
         btnDelete.addActionListener(buttonListener);
+        
+        btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
+        btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);
+        btnDelete.setActionCommand(Window.DELETE_DELIVERY);
 
         row.add(txtAddress);
         row.add(txtArrivalTime);

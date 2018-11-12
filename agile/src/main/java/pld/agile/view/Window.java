@@ -18,6 +18,10 @@ public class Window extends JFrame {
     protected final static String LOAD_NEW_CITY_MAP = "Load a new city map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
     protected final static String ADD_DELIVERY = "Add a delivery";
+    protected final static String DELETE_DELIVERY = "Delete";
+    protected final static String MOVE_DELIVERY_BEFORE = "Move delivery before";
+    protected final static String MOVE_DELIVERY_AFTER = "Move delivery after";
+
     
     
     private int width;
