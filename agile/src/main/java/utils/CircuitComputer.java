@@ -38,6 +38,10 @@ public class CircuitComputer {
         for (LinkedList<Delivery> cluster : clusters) {
             runTSP(cluster, cluster.size());
         }
+        for(Circuit circuit : circuits){
+            for(Delivery delivery : circuit.getDeliveries())
+                delivery.setCircuit(circuit);
+        }
         System.out.println("clusters end");
     }
 
