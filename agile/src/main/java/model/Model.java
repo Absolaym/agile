@@ -124,6 +124,14 @@ public class Model {
         this.shortestPaths = shortestPathComputer.result();
     }
     
+    public void addDelivery(Delivery delivery) {
+    	deliveryRequest.addDelivery(delivery);
+    	ShortestPathComputer shortestPathComputer = new ShortestPathComputer();
+      shortestPathComputer.init(cityMap, deliveryRequest);
+      shortestPathComputer.setShortestPathsForNewDelivery(delivery, this.shortestPaths);
+      this.shortestPaths = shortestPathComputer.result();
+    }
+    
     public void resetShortestPaths(){
     	this.shortestPaths = null;
     }
