@@ -54,8 +54,8 @@ public class DeliveryRequestView extends JPanel{
     private static Controller controller;
     private ArrayList<TableRow> rows;
     private static Window window;
-    private final int height = 800;
-    private final int width = 400;
+    private final int width = 350;
+    private final int height = 700;
 
     
     public DeliveryRequestView(Window w, Controller c) {
@@ -68,7 +68,7 @@ public class DeliveryRequestView extends JPanel{
         deliveriesContainer = new JPanel();
         deliveriesListContainer = new JPanel();
         rows = new ArrayList<>();
-        
+        deliveriesListScrollPane = new JScrollPane(deliveriesListContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setLayout(new BorderLayout());
         
         w.getContentPane().add(this);
