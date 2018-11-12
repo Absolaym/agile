@@ -7,6 +7,7 @@ import javax.swing.*;
 public class Window extends JFrame {
 
     // Subcomponents of the view
+		private MainMenuBar menuBar;
     private CityMapMenuView mapMenuPanel;
     private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;
@@ -38,6 +39,9 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
+        
+        menuBar = new MainMenuBar( this, controller );
+        
         mapMenuPanel = new CityMapMenuView(this, controller);
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
