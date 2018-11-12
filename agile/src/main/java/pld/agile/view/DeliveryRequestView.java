@@ -20,10 +20,11 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JPanel deliveryRequestViewPanel /*= new JPanel()*/;
     private JPanel deliveriesContainer /*= new JPanel()*/;
     private JPanel deliveriesListContainer /*= new JPanel()*/;
+    private JScrollPane deliveriesListScrollPane;
     
     private static Controller controller;
-    private final int height = 800;
-    private final int width = 400;
+    private final int width = 350;
+    private final int height = 700;
 
     
     public DeliveryRequestView(Window w, Controller c) {
@@ -34,7 +35,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
         deliveriesListContainer = new JPanel();
-        
+        deliveriesListScrollPane = new JScrollPane(deliveriesListContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setLayout(new BorderLayout());
         
         w.getContentPane().add(this);
@@ -77,10 +78,12 @@ public class DeliveryRequestView extends JPanel implements Observer {
         createDeliveriesContainer();
         addDeliveries();
         
-        deliveriesContainer.add(deliveriesListContainer);
+//        deliveriesContainer.add(deliveriesListContainer);
+        deliveriesContainer.add(deliveriesListScrollPane);
         deliveryRequestViewPanel.add(deliveriesContainer/*, BorderLayout.CENTER*/);
         add(deliveryRequestViewPanel);
         window.getContentPane().add(this);
+        
         deliveriesListContainer.repaint();
         deliveriesContainer.repaint();
         deliveryRequestViewPanel.repaint();
@@ -95,8 +98,8 @@ public class DeliveryRequestView extends JPanel implements Observer {
         System.out.println("in addDeliveries - got the deliveries");
         
         deliveriesListContainer.removeAll();
-//        deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
-        deliveriesContainer.setLayout(new BorderLayout(10,10));
+        deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
+//        deliveriesContainer.setLayout(new BorderLayout(10,10));
         
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
