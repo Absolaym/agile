@@ -18,7 +18,7 @@ public class Delivery extends Observable {
      */
     private String address = "";
     private Geolocation geolocation;
-    private Circuit circuit; 
+    private Circuit circuit = null; 
     private boolean isSelected = false;
 
     /**

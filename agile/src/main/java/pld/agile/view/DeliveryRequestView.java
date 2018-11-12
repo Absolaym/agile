@@ -112,10 +112,12 @@ public class DeliveryRequestView extends JPanel{
         createDeliveriesContainer();
         addDeliveries();
         
-        deliveriesContainer.add(deliveriesListContainer);
+//        deliveriesContainer.add(deliveriesListContainer);
+        deliveriesContainer.add(deliveriesListScrollPane);
         deliveryRequestViewPanel.add(deliveriesContainer/*, BorderLayout.CENTER*/);
         add(deliveryRequestViewPanel);
         window.getContentPane().add(this);
+        
         deliveriesListContainer.repaint();
         deliveriesContainer.repaint();
         deliveryRequestViewPanel.repaint();
@@ -130,8 +132,8 @@ public class DeliveryRequestView extends JPanel{
         System.out.println("in addDeliveries - got the deliveries");
         
         deliveriesListContainer.removeAll();
-//        deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
-        deliveriesContainer.setLayout(new BorderLayout(10,10));
+        deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
+//        deliveriesContainer.setLayout(new BorderLayout(10,10));
         
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
