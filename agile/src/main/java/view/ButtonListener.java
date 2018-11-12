@@ -67,15 +67,13 @@ public class ButtonListener implements ActionListener {
                         DeliveryRequest deliveryRequest;
                         deliveryRequest = controller.getModel().getDeliveryRequest();
                         //get deliveries and send to JTable to be displayed
-                        if(deliveryRequest != null){
-//                            window.getDeliveryRequestPanel().addDeliveries();
-                            //window.getDeliveryRequestPanel().addToTable(); 
+                        if(deliveryRequest != null){ 
                             window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
-                            window.getDeliveryRequestPanel();
-                            window.getDeliveryRequestPanel().addDeliveries();
+                            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                         }
                         window.getCityMapContainerPanel().repaint();
                         window.getDeliveryRequestPanel().repaint();
+                        window.repaint();
                     }
             } catch (Exception e2) {
                 System.out.print(e2.toString());
@@ -91,6 +89,15 @@ public class ButtonListener implements ActionListener {
         else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("select");
             window.setWaitingState(0);
+        }
+        else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
+            System.out.println("delete delivery");
+        }
+        else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
+            System.out.println("move delivery before");
+        }
+        else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
+            System.out.println("move delivery after");
         }
 
     }

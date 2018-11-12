@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import java.awt.Dimension;
 
 import javax.swing.*;
 
@@ -19,6 +20,10 @@ public class Window extends JFrame {
     protected final static String LOAD_NEW_CITY_MAP = "Load a new city map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
     protected final static String ADD_DELIVERY = "Add a delivery";
+    protected final static String DELETE_DELIVERY = "Delete";
+    protected final static String MOVE_DELIVERY_BEFORE = "Move delivery before";
+    protected final static String MOVE_DELIVERY_AFTER = "Move delivery after";
+
     
     
     private int width;
@@ -46,16 +51,19 @@ public class Window extends JFrame {
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
         errorAreaPanel = new ErrorAreaView(this, controller);
+        
+        
 
         setWindowSize();
         setSize(width, height);
+        setPreferredSize(new Dimension(width, height));
         //setSize(1000,800);
         setVisible(true);
     }
 
     private void setWindowSize() {
         height = Math.max(mapMenuPanel.getHeight() + mapContainerPanel.getHeight() + errorAreaPanel.getHeight(), deliveryRequestPanel.getHeight()) + 30;
-        width = Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()) + deliveryRequestPanel.getWidth() + 10;
+        width = Math.max(mapMenuPanel.getWidth(), mapContainerPanel.getWidth()) + deliveryRequestPanel.getWidth() + 50;
 
         mapMenuPanel.setLocation(10, 10);
         mapContainerPanel.setLocation(10, 20 + mapMenuPanel.getHeight());

@@ -51,7 +51,7 @@ public class IteratorSeq implements Iterator<Integer> {
             swapped = false; 
             for (j = 0; j < candidats.length - i - 1; j++)  
             { 
-                if (couts[sommetCourant][j] > couts[sommetCourant][j + 1])  
+                if (couts[sommetCourant][candidats[j]] < couts[sommetCourant][candidats[j+1]])  
                 { 
                     temp = candidats[j]; 
                     candidats[j] = candidats[j + 1]; 

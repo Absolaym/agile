@@ -83,9 +83,9 @@ public class Model {
 	
 	    CircuitComputer circuitComputer = new CircuitComputer();
 		
-		circuitComputer.init(this.deliveryRequest, this.shortestPaths);
-		circuitComputer.execute(this.numberOfCouriers); //ATTENTION CHANGER
-		this.circuits = circuitComputer.result();
+			circuitComputer.init(this.deliveryRequest, this.shortestPaths);
+			circuitComputer.execute(this.numberOfCouriers);
+			this.setCircuits(circuitComputer.result());
 
     }
     
@@ -122,9 +122,41 @@ public class Model {
         shortestPathComputer.init(cityMap, deliveryRequest);
         shortestPathComputer.computeAllShortestPaths();
         this.shortestPaths = shortestPathComputer.result();
+        
+        /*
+        //TESTS
+        Delivery newDelivery = new Delivery();
+        newDelivery.setAddress("26316432");
+        newDelivery.setGeolocation(this.cityMap.getIntersectionGeolocation("26316432"));
+        this.addDelivery(newDelivery);
+        System.out.println("hey");
+        getTripBetweenIntersections(newDelivery.getAddress(), this.deliveryRequest.getWarehouseAddress());
+        */
     }
+
     
     public void resetShortestPaths(){
     	this.shortestPaths = null;
+    }
+    
+    public void addDelivery(Delivery delivery) {
+    	deliveryRequest.addDelivery(delivery);
+    	ShortestPathComputer shortestPathComputer = new ShortestPathComputer();
+      shortestPathComputer.init(cityMap, deliveryRequest);
+      shortestPathComputer.setShortestPathsForNewDelivery(delivery, this.shortestPaths);
+      this.shortestPaths = shortestPathComputer.result();
+    }
+    
+    public Trip getTripBetweenIntersections(String originAddress, String targetAddress) {
+    	if(this.shortestPaths == null) {
+    		System.out.println("Error: shortest paths have not yet been computed");//error
+  			return null;
+    	}
+    	HashMap<String, Trip> shortestPathsFromOrigin = this.shortestPaths.get(originAddress);
+    	if(shortestPathsFromOrigin == null) {
+    		System.out.println("Error: shortest paths from delivery " + originAddress +" were not found");//error
+  			return null;
+    	}
+    	return shortestPathsFromOrigin.get(targetAddress);
     }
 }

@@ -117,9 +117,8 @@ public class CityMapContainerView extends JPanel implements Observer {
                     if (Math.abs(x - geo.getLongitude()) <= delivDotSize
                             && Math.abs(y - geo.getLatitude()) <= delivDotSize) {
                         selectedDelivery = d;
-                        selectedDelivery.setIsSelected(true);
                         controller.setSelectDelivery(selectedDelivery);
-
+                        window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                     } else {
                         d.setIsSelected(false);
                     }
@@ -497,8 +496,17 @@ public class CityMapContainerView extends JPanel implements Observer {
         return WIDTH;
     }
 
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Observable o, Object deliverySelected) {     
+        LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
+        for(Delivery d : delivs) {
+            if(d.getAddress().equals(deliverySelected)){
+                selectedDelivery = d;
+                controller.setSelectDelivery(selectedDelivery);
+            } else {
+                d.setIsSelected(false);
+            }
+        }
+        repaint();
     }
 
     public JButton getLoadCityMapButton() {
