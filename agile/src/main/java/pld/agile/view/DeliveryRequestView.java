@@ -46,13 +46,13 @@ class TableRow extends Observable{
 
 public class DeliveryRequestView extends JPanel{
     private ButtonListener buttonListener;
-    private JPanel deliveryRequestViewPanel;
-    private JPanel deliveriesContainer;
-    private JPanel deliveriesListContainer;
-    private ArrayList<TableRow> rows;
-    private int idRow;
+    private JPanel deliveryRequestViewPanel /*= new JPanel()*/;
+    private JPanel deliveriesContainer /*= new JPanel()*/;
+    private JPanel deliveriesListContainer /*= new JPanel()*/;
+    private JScrollPane deliveriesListScrollPane;
     
     private static Controller controller;
+    private ArrayList<TableRow> rows;
     private static Window window;
     private final int height = 800;
     private final int width = 400;
@@ -258,10 +258,6 @@ public class DeliveryRequestView extends JPanel{
 
     public int getWidth() {
         return width;
-    }
-
-    public void update(Observable o, Object arg) {
-        System.out.println("state" + arg);
     }
 
 }
