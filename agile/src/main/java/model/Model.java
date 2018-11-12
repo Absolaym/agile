@@ -83,9 +83,9 @@ public class Model {
 	
 	    CircuitComputer circuitComputer = new CircuitComputer();
 		
-		circuitComputer.init(this.deliveryRequest, this.shortestPaths);
-		circuitComputer.execute(this.numberOfCouriers); //ATTENTION CHANGER
-		this.circuits = circuitComputer.result();
+			circuitComputer.init(this.deliveryRequest, this.shortestPaths);
+			circuitComputer.execute(this.numberOfCouriers);
+			this.setCircuits(circuitComputer.result());
 
     }
     
