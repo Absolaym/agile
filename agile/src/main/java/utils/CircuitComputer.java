@@ -39,8 +39,16 @@ public class CircuitComputer {
             runTSP(cluster, cluster.size());
         }
         for(Circuit circuit : circuits){
-            for(Delivery delivery : circuit.getDeliveries())
+            int arrivalTimeSeconds = circuit.getDepartureTime().time;
+            int i = 0;
+            for(Delivery delivery : circuit.getDeliveries()){
                 delivery.setCircuit(circuit);
+                int tripDurationSeconds = (int)(circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
+                arrivalTimeSeconds += tripDurationSeconds;
+                delivery.setArrivalTimeSeconds(arrivalTimeSeconds);
+                arrivalTimeSeconds += delivery.getDuration() * 60;
+                i++;
+            }
         }
         System.out.println("clusters end");
     }

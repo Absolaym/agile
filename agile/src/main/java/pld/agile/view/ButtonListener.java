@@ -84,6 +84,7 @@ public class ButtonListener implements ActionListener {
             window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
             //window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             
         }
         else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {

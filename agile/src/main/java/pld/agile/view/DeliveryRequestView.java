@@ -103,7 +103,15 @@ public class DeliveryRequestView extends JPanel implements Observer {
         
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
-            addRow(d.getAddress(), "", ""+d.getDuration(), ""/*+d.getCircuit().getCourierId()*/, d.getIsSelected());
+            
+            String circuit ="";
+            if(d.getCircuit()==null)
+                circuit += "unknown";
+            else
+                circuit = d.getCircuit().getCourierId();
+            
+            
+            addRow(d.getAddress(), ""+d.getArrivalTimeSeconds(), ""+d.getDuration(), circuit, d.getIsSelected());
         }
         deliveriesListContainer.revalidate();
     }
