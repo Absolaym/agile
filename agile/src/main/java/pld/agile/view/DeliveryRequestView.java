@@ -98,7 +98,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
         head.add(arrivalTime);
         head.add(duration);
         head.add(circuit);
-//        deliveriesContainer.add(head);
+        deliveriesContainer.add(head);
 //        deliveriesContainer.add(address);
 //        deliveriesContainer.setBackground(Color.red);
 
