@@ -216,7 +216,6 @@ public class CityMapContainerView extends JPanel implements Observer {
             if (dist > length) {
                 continue;
             }
-
             if (dist < distanceSec) {
                 sect = section;
                 distanceSec = dist;
@@ -490,7 +489,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         return HEIGHT;
     }
 
-    // to change
     public int getWidth() {
         return WIDTH;
     }
