@@ -93,9 +93,7 @@ public class ButtonListener implements ActionListener {
             window.setWaitingState(0);
         }
         else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
-            int confirmationPopUp = JOptionPane.showConfirmDialog(window, "Are you sure you want to delete this delivery ? ", null ,JOptionPane.YES_NO_OPTION);
-            if (confirmationPopUp == 0) 
-                System.out.println("delete delivery");
+            System.out.println("delete delivery");
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
             System.out.println("move delivery before");
