@@ -39,9 +39,18 @@ public class Circuit {
         trips.add(trip);
         updateSections();
     }
+    
+    public void addTrip(int index, Trip trip) {
+        trips.add(index, trip);
+        updateSections();
+    }
 
     public void addDelivery(Delivery delivery) {
-        this.deliveries.add(delivery);
+        deliveries.add(delivery);
+    }
+    
+    public void addDelivery(int index, Delivery delivery) {
+        deliveries.add(index, delivery);
     }
 
     public LinkedList<Trip> getTrips() {
@@ -74,6 +83,20 @@ public class Circuit {
 
     public void setCourierId(int courierId) {
         this.courierId = courierId;
+    }
+    
+    public void updateDeliveryInfos(){
+        int arrivalTimeSeconds = this.getDepartureTime().time;
+        System.out.println(this.getDepartureTime());
+        int i = 0;
+        for(Delivery delivery : this.getDeliveries()){
+            delivery.setCircuit(this);
+            int tripDurationSeconds = (int)(this.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
+            arrivalTimeSeconds += tripDurationSeconds;
+            delivery.setArrivalTime(new Time(arrivalTimeSeconds));
+            arrivalTimeSeconds += delivery.getDuration();
+            i++;
+        }
     }
 
     @Override
