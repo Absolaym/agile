@@ -28,6 +28,7 @@ public class CommandsList {
         }
         list.add(c);
         i++;
+        c.doCde();
     }
     
     public void undo() {

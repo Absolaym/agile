@@ -43,19 +43,19 @@ public class StateCircuitsComputed extends StateDefault{
     public void addDeliveryToComputedCircuit(Circuit c, Delivery d) {
         // add code to add delivery to chosen circuit
         
-        Controller.commandsList.addCommand(new CommandAddDeliveryToComputedCircuit(c, d));
+        Controller.commandsList.addCommand(new CommandAddDeliveryToDeliveryRequest(c, d));
     }
     
     public void deleteDelivery(Circuit c, Delivery d) {
         // add code to delete delivery from given circuit
         
-        Controller.commandsList.addCommand(new CommandDeleteDelivery(c, d));
+        Controller.commandsList.addCommand(new CommandDeleteDelivery(d, c));
     }
     
     public void moveDelivery(Delivery d, Circuit oc, Circuit tc) {
         // add code to move delivery from a circuit to another
         
-        Controller.commandsList.addCommand(new CommandMoveDelivery(d, oc, tc));
+        Controller.commandsList.addCommand(new CommandChangeDelivery(d, oc, tc));
     }
     
     public void undoCde() {

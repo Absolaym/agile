@@ -5,6 +5,7 @@
  */
 package controller;
 
+import model.Circuit;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.Model;
@@ -40,9 +41,9 @@ public class StateDeliveryRequestLoaded extends StateDefault{
         model.computeCircuits();
     }
     
-    public void addDelivery(DeliveryRequest dr, Delivery d) {
+    public void addDelivery(Delivery d, Circuit c) {
         // add code to add delivery to delivery request
         
-        Controller.commandsList.addCommand(new CommandAddDelivery(dr, d));
+        Controller.commandsList.addCommand(new CommandAddDelivery(d, c));
     }
 }
