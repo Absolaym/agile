@@ -140,7 +140,7 @@ public class CityMapContainerView extends JPanel implements Observer {
                         //add an error: CHoose a valid circuit
                         // window.getCityMapMenuPanel().add(new JTextField("Choose a valid circuit"));
                     } else {
-                    	controller.addDelivery(newDelivery, circuitNewDelivery);
+
                         window.setWaitingState(2);
                     }
                 }
