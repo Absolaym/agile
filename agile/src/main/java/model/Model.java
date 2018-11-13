@@ -95,7 +95,7 @@ public class Model {
     
     public void setNumberOfCouriers(int numberOfCouriers) {
     	if(this.deliveryRequest == null) {
-    		System.out.println("Error: Delivery request needed to set number of couriers");
+    		System.out.println("Error: Delivery request needed to set number of couriers"); //error
     		return;
     	}
     	if(this.deliveryRequest.getDeliveries().size() < numberOfCouriers) {
