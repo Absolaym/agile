@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -84,6 +85,7 @@ public class ButtonListener implements ActionListener {
             window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
             //window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             
         }
         else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
@@ -98,6 +100,12 @@ public class ButtonListener implements ActionListener {
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
             System.out.println("move delivery after");
+        }
+        else if (e.getActionCommand().equals(Window.UNDO)) {
+            System.out.println("undo");
+        }
+        else if (e.getActionCommand().equals(Window.REDO)) {
+            System.out.println("redo");
         }
 
     }

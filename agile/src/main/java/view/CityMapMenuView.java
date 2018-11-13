@@ -16,6 +16,8 @@ public class CityMapMenuView extends JPanel {
     private JButton loadNewCityMapButton;
     private JButton loadDeliveryRequestButton;
     private JButton addNewDeliveryButton;
+    private JButton undoButton;
+    private JButton redoButton;
     private final int buttonHeight = 30;
     private final int HEIGHT = 100;
     private final int WIDTH = 1000;
@@ -41,10 +43,20 @@ public class CityMapMenuView extends JPanel {
         addNewDeliveryButton = new JButton("Add a delivery");
         addNewDeliveryButton.addActionListener(buttonListener);
         addNewDeliveryButton.setEnabled(false);
+        
+        undoButton = new JButton("Undo");
+        undoButton.addActionListener(buttonListener);
+        undoButton.setEnabled(false);
+        
+        redoButton = new JButton("Redo");
+        redoButton.addActionListener(buttonListener);
+        redoButton.setEnabled(false);
 
-        courierNumberLabel = new JLabel("Couriers' number : ");
+        courierNumberLabel = new JLabel("Number of couriers: ");
         courierNumberField = new JTextField("1", 4);
         courierNumberField.setEditable(true);
+        
+        
 
         messages = new JPanel(new FlowLayout());
         messages.setBackground(Color.WHITE);
@@ -56,8 +68,13 @@ public class CityMapMenuView extends JPanel {
         this.add(addNewDeliveryButton);
         //this.add(courierNumberLabel);
         //this.add(courierNumberField);
+ 
+        this.add(addNewDeliveryButton);
+        
         this.add(messages);
-
+        this.add(undoButton);
+        this.add(redoButton);
+        
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Menu :"));
         w.getContentPane().add(this);

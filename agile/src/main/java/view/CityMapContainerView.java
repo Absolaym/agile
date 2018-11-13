@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.Controller;
 
 import java.awt.*;
@@ -68,7 +67,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 		this.zoomSlider = new JSlider();
 		this.zoomSlider.setInverted(true);
 		this.zoomSlider.setMinimum(0);
-		this.zoomSlider.setMaximum(80);
+		this.zoomSlider.setMaximum(90);
 		this.zoomSlider.setValue(50);
 		this.zoomSlider.setSize(100, 30);
 		this.zoomSlider.setAlignmentX(this.getWidth() - this.zoomSlider.getWidth() - 20);
@@ -190,8 +189,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 		for (Intersection inter : cityMap.getIntersections().values()) {
 			Geolocation geo = geolocationToPixels(origin, inter.getGeolocation());
-			if (Math.abs(x - geo.getLongitude()) <= delivDotSize
-					&& Math.abs(y - geo.getLatitude()) <= delivDotSize) {
+			if (Math.pow(x - geo.getLongitude(),2) + Math.pow(y - geo.getLatitude(), 2) <= delivDotSize * delivDotSize) {
 				intersection = inter;
 			}
 		}
@@ -213,15 +211,15 @@ public class CityMapContainerView extends JPanel implements Observer {
 			Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, sectionCenter);
 
 			double length = start.distance(end) * coeff / 2;
-			double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
+			double dist2 = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
 
-			if (dist > length) {
+			if (dist2 > length * length) {
 				continue;
 			}
 
-			if (dist < distanceSec) {
+			if (dist2 < distanceSec) {
 				sect = section;
-				distanceSec = dist;
+				distanceSec = dist2;
 			}
 		}
 
@@ -314,18 +312,18 @@ public class CityMapContainerView extends JPanel implements Observer {
 
 		Geolocation start = s.getStartIntersection().getGeolocation();
 		Geolocation end = s.getEndIntersection().getGeolocation();
-		
-		if(index % 3 == 1) { 
+
+		if(index % 3 == 1) {
 			Geolocation center = Geolocation.center(start, end);
 			Geolocation pxCenter = geolocationToPixels(origin, center);
 			double a = this.angleBetweenPositions(start, end, false) - Math.PI / 2;
 			g2.drawPolygon(
-					new int[] { 
+					new int[] {
 							(int) Math.round(Math.cos(a) * 6 + pxCenter.getLongitude()),
 							(int) Math.round(Math.sin(a) * 12 + pxCenter.getLongitude()),
 							(int) Math.round(Math.cos(a) * -6 + pxCenter.getLongitude())
-							}, 
-					new int[] { 
+							},
+					new int[] {
 							(int) Math.round(Math.sin(a) * -6 + pxCenter.getLatitude()),
 							(int) Math.round(Math.cos(a) * 12 + pxCenter.getLatitude()),
 							(int) Math.round(Math.sin(a) * 6 + pxCenter.getLatitude())
@@ -348,13 +346,13 @@ public class CityMapContainerView extends JPanel implements Observer {
 	private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin) {
 		colorSections(g,c,sections, origin, 0);
 	}
-	
+
 	private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin, int index) {
 		for (Section sec : sections) {
 			if (sec == hoveredSection) {
 				colorSectionUtil(g, sec, c, origin, true);
 
-				// if section is part of circuit then hover the whole circuit 
+				// if section is part of circuit then hover the whole circuit
 				if (sec.getCircuit() != null) {
 					LinkedList<Trip> circuitTrips = sec.getCircuit().getTrips();
 					for (Trip t : circuitTrips) {
@@ -511,7 +509,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 	private double angleBetweenPositions(Geolocation A, Geolocation B) {
 		return this.angleBetweenPositions(A, B, true);
 	}
-	
+
 	private double angleBetweenPositions(Geolocation A, Geolocation B, boolean halve) {
 		double a = Math.atan((A.getLatitude() - B.getLatitude()) / (A.getLongitude() - B.getLongitude()));
 		if (halve && a > Math.PI / 2) {
@@ -530,7 +528,7 @@ public class CityMapContainerView extends JPanel implements Observer {
 		return WIDTH;
 	}
 
-	public void update(Observable o, Object deliverySelected) {     
+	public void update(Observable o, Object deliverySelected) {
 		LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
 		for(Delivery d : delivs) {
 			if(d.getAddress().equals(deliverySelected)){
