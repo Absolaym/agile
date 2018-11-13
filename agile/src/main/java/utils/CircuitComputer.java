@@ -39,7 +39,7 @@ public class CircuitComputer {
             runTSP(cluster, cluster.size());
         }
         
-        int circuitNumber = 0;
+        int circuitNumber = 1;
         for(Circuit circuit : circuits){
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
             circuit.setCourierId(circuitNumber++);
