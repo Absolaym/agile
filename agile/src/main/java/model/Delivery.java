@@ -75,6 +75,14 @@ public class Delivery extends Observable {
     public void setGeolocation(Geolocation geolocation) {
         this.geolocation = geolocation;
     }
+    
+    public void computeDeliveryGeolocation(CityMap cityMap){
+        Geolocation geolocation = cityMap.getIntersectionGeolocation(this.getAddress());
+        if(geolocation == null){
+            System.out.println("The address " + this.getAddress() + " was not found"); //Error
+        }
+        this.setGeolocation(geolocation);
+    }
 
     public Circuit getCircuit() {
         return circuit;
