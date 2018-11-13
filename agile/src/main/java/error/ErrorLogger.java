@@ -15,11 +15,11 @@ public class ErrorLogger {
 	}
 	
 	// Class part
-	private LinkedBlockingQueue<Error> errors;
+	private LinkedBlockingQueue<ProjectError> errors;
 	private LinkedList<ErrorObserver> observers;
 	
 	private ErrorLogger() {
-            this.errors = new LinkedBlockingQueue<Error>(30);
+            this.errors = new LinkedBlockingQueue<ProjectError>(30);
             this.observers = new LinkedList<ErrorObserver>();
 	}
 	
@@ -28,7 +28,7 @@ public class ErrorLogger {
 	 * @param error
 	 * @param verbose Whether it's written in the error stream or not
 	 */
-	public void log(Error error, boolean verbose) {
+	public void log(ProjectError error, boolean verbose) {
             if(verbose) errors.add(error);
             System.err.println(error);
             for(ErrorObserver obs : observers) {
@@ -36,7 +36,7 @@ public class ErrorLogger {
             }
 	}
 	
-	public void log(Error error) {
+	public void log(ProjectError error) {
             log(error, true);
 	}
 	
@@ -60,7 +60,7 @@ public class ErrorLogger {
 	 * Retrieve the oldest error
 	 * @return
 	 */
-	public Error pollError() {
+	public ProjectError pollError() {
 		return this.errors.poll();
 	}
 

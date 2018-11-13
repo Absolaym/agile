@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class Window extends JFrame {
 
     // Subcomponents of the view
@@ -53,11 +54,11 @@ public class Window extends JFrame {
         errorAreaPanel = new ErrorAreaView(this, controller);
         
         
-
+        this.setJMenuBar( menuBar );
         setWindowSize();
         setSize(width, height);
         setPreferredSize(new Dimension(width, height));
-        //setSize(1000,800);
+        
         setVisible(true);
     }
 
@@ -75,6 +76,10 @@ public class Window extends JFrame {
         deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
+    public MainMenuBar getMenuBarPanel() {
+    		return this.menuBar;
+    }
+    
     public CityMapMenuView getCityMapMenuPanel() {
         return mapMenuPanel;
     }

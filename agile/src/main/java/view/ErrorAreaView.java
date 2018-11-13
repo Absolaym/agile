@@ -8,7 +8,7 @@ package view;
 import controller.Controller;
 import error.ErrorLogger;
 import error.ErrorObserver;
-import error.Error;
+import error.ProjectError;
 
 import java.awt.*;
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class ErrorAreaView extends JPanel {
         w.getContentPane().add(this);
     }
     
-    public void update(Error error) {
+    public void update(ProjectError error) {
     	this.text.setText(error.toString());
     	this.repaint();
     }

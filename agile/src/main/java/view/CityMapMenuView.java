@@ -50,12 +50,12 @@ public class CityMapMenuView extends JPanel {
         messages.setBackground(Color.WHITE);
         messages.setPreferredSize(new Dimension(600, 50));
 
-        this.add(loadNewCityMapButton);
-        this.add(loadDeliveryRequestButton);
-        this.add(computeCircuitsButton);
+        //this.add(loadNewCityMapButton);
+        //this.add(loadDeliveryRequestButton);
+        //this.add(computeCircuitsButton);
         this.add(addNewDeliveryButton);
-        this.add(courierNumberLabel);
-        this.add(courierNumberField);
+        //this.add(courierNumberLabel);
+        //this.add(courierNumberField);
         this.add(messages);
 
         setBackground(Color.WHITE);

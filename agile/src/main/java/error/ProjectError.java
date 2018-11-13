@@ -1,6 +1,6 @@
 package error;
 
-public enum Error {
+public enum ProjectError {
     
 	//CityMap Errors
 	UNCONNECTED_INTERSECTION("UC1-UI", "One intersection is not connected to the reste of the map making it impossible to reach"),
@@ -18,6 +18,7 @@ public enum Error {
 	
         //Circuits Errors
 	NO_COURRIER_ASSIGNED("UC3-NCA", "You didn't provide the number of courriers you want to assign circuits"),
+	TOO_MUCH_COURRIER("UC3-TMC", "A few of your courrier are idling because there is more courrier than deliveries."),
 	NO_DR_BEF_CIRCUIT("UC3-NDBC", "You have no delivery request so the circuit is already the best by its absence"),
 	TIMEOUT("UC3-TO", "Your request is killin' it, the program is not designed to support such a huge file"),
 	DEAD_END("UC3-DE", "One of the deliveries is accessible but the path is one sided and the courrier can't come back"),
@@ -29,7 +30,7 @@ public enum Error {
 	public String code = "-";
 	public String message = "";
 	
-	Error(String code, String msg) {
+	ProjectError(String code, String msg) {
 		this.code = code;
 		this.message = msg;
 	}
