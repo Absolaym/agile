@@ -16,6 +16,9 @@ public class MainMenuBar extends JMenuBar {
 	private Controller controller;
 	private Window window;
 	
+	private JMenuItem comUItem;
+	private JMenuItem comRItem;
+	
 	public MainMenuBar(Window window, Controller controller) {
 		
 		// Pre computed data
@@ -37,6 +40,11 @@ public class MainMenuBar extends JMenuBar {
 		final JMenu ccItem = new JMenu("Compute circuits");
 		final JMenuItem[] ccCourNumbItem = new JMenuItem[10];
 		final JMenuItem ccItemHead = new JMenuItem("Courrier's count");
+		
+		JMenu comMenu = new JMenu("Edit");
+		
+		comUItem = new JMenuItem("Undo (Ctrl + Z)");
+		comRItem = new JMenuItem("Redo (Ctrl + Y)");
 		
 		ccItemHead.setEnabled( false );
 		ccItem.add( ccItemHead );
@@ -113,6 +121,31 @@ public class MainMenuBar extends JMenuBar {
 				
 			});
 		}
+		
+		comUItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainMenuBar.this.controller.undo();
+				MainMenuBar.this.onUndo();
+			}
+		});
+		
+		comRItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainMenuBar.this.controller.redo();
+				MainMenuBar.this.onRedo();
+			}
+		});
+		
+		comMenu.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainMenuBar.this.onRedo();
+				MainMenuBar.this.onUndo();
+			}
+		});
+		
 		lMenu.add( lmItem );
 		lMenu.add( ldItem );
 		
@@ -121,6 +154,23 @@ public class MainMenuBar extends JMenuBar {
 		cMenu.add( ccItem );
 		
 		this.add( cMenu );
+		
+		comMenu.add( comUItem );
+		comMenu.add( comRItem );
+		
+		this.add( comMenu );
+	}
+	
+	public void onUndo() {
+		comUItem.setEnabled( MainMenuBar.this.controller.canUndo() );
+		comRItem.setEnabled( MainMenuBar.this.controller.canRedo() );
+		System.out.println("Trying to perform an undo");
+	}
+	
+	public void onRedo() {
+		comUItem.setEnabled( MainMenuBar.this.controller.canUndo() );
+		comRItem.setEnabled( MainMenuBar.this.controller.canRedo() );
+		System.out.println("Trying to perform an redo");
 	}
 	
 }

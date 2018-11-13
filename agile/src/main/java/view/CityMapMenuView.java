@@ -72,8 +72,8 @@ public class CityMapMenuView extends JPanel {
         this.add(addNewDeliveryButton);
         
         this.add(messages);
-        this.add(undoButton);
-        this.add(redoButton);
+        //this.add(undoButton);
+        //this.add(redoButton);
         
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Menu :"));

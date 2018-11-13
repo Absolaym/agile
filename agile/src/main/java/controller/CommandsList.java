@@ -38,9 +38,18 @@ public class CommandsList {
     }
     
     public void redo() {
-        if(i < list.size()-1){
-            list.get(++i).doCde();
-        }
+    		if(i + 1 >= list.size() ) return;
+    		if(i < 0) 						return;
+    		
+    		list.get(++i).doCde();
+
     }
     
+    public boolean canUndo() {
+    		return this.list.size() > 0;
+    }
+    
+    public boolean canRedo() {
+    		return this.list.size() > i+1;
+    }
 }

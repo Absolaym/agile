@@ -3,6 +3,8 @@ package view;
 import controller.Controller;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
@@ -35,16 +37,12 @@ public class Window extends JFrame {
     private int waitingState = 2;
 
     public Window() {
-        this(new Controller());
+        this( Controller.getInstance() );
     }
 
-    // It's not the responsibility of the window to keep track of the map and deliveryRequest
-    // This should be placed in the controller
     public Window(Controller controller) {
         super("Agility is the delivery");
-        //this.setLayout(new BorderLayout());
-        //Dimensions
-        //setSize(new Dimension(1000, 800)); // to do in a separate method
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
@@ -64,6 +62,39 @@ public class Window extends JFrame {
         setWindowSize();
         setSize(width, height);
         setPreferredSize(new Dimension(width, height));
+        
+        this.addKeyListener( new KeyListener() {
+
+					@Override
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+						if(e.isControlDown() || e.isMetaDown()) {
+							switch(e.getKeyCode()) {
+							case KeyEvent.VK_Z:
+								Controller.getInstance().undo();
+								Window.this.getMenuBarPanel().onUndo();
+							break;
+							case KeyEvent.VK_Y:
+								Controller.getInstance().redo();
+								Window.this.getMenuBarPanel().onRedo();
+								break;
+							}
+						}
+					}
+
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+        	
+        });
 
         setVisible(true);
     }

@@ -27,8 +27,5 @@ public interface State{
     public abstract void deleteDelivery();
     
     public abstract void moveDelivery();
-    
-    public abstract void undoCde();
-    
-    public abstract void redoCde();
+
 }

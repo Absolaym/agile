@@ -14,8 +14,10 @@ import model.Delivery;
  */
 public class Controller {
 
+	private static Controller controller;
+	
 	private Model model;
-	protected static CommandsList commandsList;
+	protected CommandsList commandsList;
 
 	private State state;
 	protected static final StateDefault STATE_DEFAULT = new StateDefault();
@@ -24,7 +26,14 @@ public class Controller {
 	protected static final StateDeliveryRequestLoaded STATE_DELIVERYREQUEST_LOADED = new StateDeliveryRequestLoaded();
 	protected static final StateCircuitsComputed STATE_CIRCUITS_COMPUTED = new StateCircuitsComputed();
 
-	public Controller() {
+	public static Controller getInstance() {
+		if(Controller.controller == null)	Controller.controller = new Controller();
+		return Controller.controller;
+	}
+	
+	private Controller() {
+		this.commandsList = new CommandsList();
+		
 		this.model = Model.getInstance();
 		//this.setCityMap(new CityMap());
 		this.setState(STATE_INIT);
@@ -74,13 +83,23 @@ public class Controller {
 	public void moveDelivery() {
 		this.state.moveDelivery();
 	}
+	
+	// These 4 methods aren't state dependent and thus aren't called in a state
+	
+	public boolean canUndo() {
+		return this.commandsList.canUndo();
+	}
+	
+	public boolean canRedo() {
+		return this.commandsList.canRedo();
+	}
 
 	public void undo() {
-		this.state.undoCde();
+		this.commandsList.undo();
 	}
 
 	public void redo() {
-		this.state.redoCde();
+		this.commandsList.redo();
 	}
 
 

@@ -108,6 +108,8 @@ public class CityMapContainerView extends JPanel implements Observer {
 					return;
 				}
 				DeliveryRequest dr = controller.getModel().getDeliveryRequest();
+				if(dr == null) return;
+				
 				LinkedList<Delivery> delivs = dr.getDeliveries();
 				Geolocation origin = getOrigin(controller.getModel().getCityMap());
 
