@@ -15,12 +15,12 @@ import utils.Time;
 
 class TableRow extends Observable{
     private JPanel row;
-    private String deliveryAddress;
+    private Delivery delivery;
     private boolean isSelected = false;
 
-    public TableRow(JPanel row, String address) {
+    public TableRow(JPanel row, Delivery delivery) {
         this.row = row;
-        this.deliveryAddress = address;
+        this.delivery = delivery;
     }
 
     public JPanel getRow() {
@@ -35,12 +35,12 @@ class TableRow extends Observable{
         this.isSelected = isSelected;
         if (isSelected) {
             setChanged();
-            notifyObservers(deliveryAddress);
+            notifyObservers(delivery);
         }
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public Delivery getDelivery() {
+        return delivery;
     } 
 }
 
@@ -204,7 +204,7 @@ public class DeliveryRequestView extends JPanel{
         row.add(btnMoveAfter);
         row.add(btnDelete);
         
-        TableRow tableRow = new TableRow(row,d.getAddress());
+        TableRow tableRow = new TableRow(row,d);
         //observable
         tableRow.addObserver(window.getCityMapContainerPanel());
         rows.add(tableRow);

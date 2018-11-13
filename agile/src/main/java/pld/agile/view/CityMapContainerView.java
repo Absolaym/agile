@@ -497,7 +497,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     public void update(Observable o, Object deliverySelected) {     
         LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
         for(Delivery d : delivs) {
-            if(d.getAddress().equals(deliverySelected)){
+            if(d == deliverySelected){
                 selectedDelivery = d;
                 controller.setSelectDelivery(selectedDelivery);
             } else {
