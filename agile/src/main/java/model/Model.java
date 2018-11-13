@@ -19,7 +19,7 @@ public class Model {
     
     private CityMap cityMap;
     private DeliveryRequest deliveryRequest;
-	private HashMap<String,HashMap<String,Trip>> shortestPaths;		
+    private HashMap<String,HashMap<String,Trip>> shortestPaths;		
     private LinkedList<Circuit> circuits;
     private int numberOfCouriers;
     
@@ -142,9 +142,9 @@ public class Model {
     public void addDelivery(Delivery delivery) {
     	deliveryRequest.addDelivery(delivery);
     	ShortestPathComputer shortestPathComputer = new ShortestPathComputer();
-      shortestPathComputer.init(cityMap, deliveryRequest);
-      shortestPathComputer.setShortestPathsForNewDelivery(delivery, this.shortestPaths);
-      this.shortestPaths = shortestPathComputer.result();
+        shortestPathComputer.init(cityMap, deliveryRequest);
+        shortestPathComputer.setShortestPathsForNewDelivery(delivery, this.shortestPaths);
+        this.shortestPaths = shortestPathComputer.result();
     }
     
     public Trip getTripBetweenIntersections(String originAddress, String targetAddress) {
