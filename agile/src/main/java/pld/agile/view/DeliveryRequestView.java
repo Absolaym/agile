@@ -137,14 +137,6 @@ public class DeliveryRequestView extends JPanel{
         
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
-            
-            String circuit ="";
-            if(d.getCircuit()==null)
-                circuit += "unknown";
-            else
-                circuit = d.getCircuit().getCourierId();
-            
-            
             addRow(d);
         }
         deliveriesListContainer.revalidate();
