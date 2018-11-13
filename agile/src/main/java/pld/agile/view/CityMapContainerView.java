@@ -133,7 +133,6 @@ public class CityMapContainerView extends JPanel implements Observer {
                 } else if (window.getWaitingState() == 1) {
                     Section sectionNewDelivery = getSectionByCoordinates(x, y);
                     circuitNewDelivery = sectionNewDelivery.getCircuit();
-                    System.out.println("circuit:" + circuitNewDelivery);
                     if (circuitNewDelivery == null) {
                         //add an error: CHoose a valid circuit
                         // window.getCityMapMenuPanel().add(new JTextField("Choose a valid circuit"));
@@ -268,7 +267,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
         } else if (selectedDelivery == delivery) {
             g.setColor(Color.YELLOW);
-            g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
+            g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize*2, dotSize*2, 0, 360);
             // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
         } else {
             g.setColor(c);
@@ -372,13 +371,12 @@ public class CityMapContainerView extends JPanel implements Observer {
             return;
         }
         Geolocation origin = getOrigin(cityMap);
-        int i = 0;
         for (Circuit circuit : circuits) {
+            int i = circuit.getCourierId();
             Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);
             }
-            i++;
         }
     }
 
@@ -496,7 +494,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     public void update(Observable o, Object deliverySelected) {     
         LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
         for(Delivery d : delivs) {
-            if(d.getAddress().equals(deliverySelected)){
+            if(d == deliverySelected){
                 selectedDelivery = d;
                 controller.setSelectDelivery(selectedDelivery);
             } else {

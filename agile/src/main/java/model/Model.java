@@ -94,6 +94,16 @@ public class Model {
     }
     
     public void setNumberOfCouriers(int numberOfCouriers) {
+    	if(this.deliveryRequest == null) {
+    		System.out.println("Error: Delivery request needed to set number of couriers");
+    		return;
+    	}
+    	if(this.deliveryRequest.getDeliveries().size() < numberOfCouriers) {
+    		System.out.println("Warning: number of courriers exceeds number of deliveries");//error
+    		this.numberOfCouriers = this.deliveryRequest.getDeliveries().size();
+    		return;
+    	}
+    		
         this.numberOfCouriers = numberOfCouriers;
     }
 
@@ -123,15 +133,6 @@ public class Model {
         shortestPathComputer.computeAllShortestPaths();
         this.shortestPaths = shortestPathComputer.result();
         
-        /*
-        //TESTS
-        Delivery newDelivery = new Delivery();
-        newDelivery.setAddress("26316432");
-        newDelivery.setGeolocation(this.cityMap.getIntersectionGeolocation("26316432"));
-        this.addDelivery(newDelivery);
-        System.out.println("hey");
-        getTripBetweenIntersections(newDelivery.getAddress(), this.deliveryRequest.getWarehouseAddress());
-        */
     }
 
     

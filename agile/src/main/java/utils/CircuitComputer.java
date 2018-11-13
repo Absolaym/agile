@@ -32,37 +32,30 @@ public class CircuitComputer {
 
     public void execute(int numberOfCouriers) {
         LinkedList<LinkedList<Delivery>> clusters = findBestClusters(numberOfCouriers);
-
-        //LinkedList<LinkedList<Delivery>> clusters = createClustersWithKMeans(numberOfCouriers);
+        
         this.circuits = new LinkedList<Circuit>();
         for (LinkedList<Delivery> cluster : clusters) {
             runTSP(cluster, cluster.size());
         }
+        
+        int circuitNumber = 1;
         for(Circuit circuit : circuits){
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
+            System.out.println(circuit.getDepartureTime());
+            circuit.setCourierId(circuitNumber++);
             int i = 0;
             for(Delivery delivery : circuit.getDeliveries()){
                 delivery.setCircuit(circuit);
                 int tripDurationSeconds = (int)(circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
                 arrivalTimeSeconds += tripDurationSeconds;
-                delivery.setArrivalTimeSeconds(arrivalTimeSeconds);
-                arrivalTimeSeconds += delivery.getDuration() * 60;
+                delivery.setArrivalTime(new Time(arrivalTimeSeconds));
+                arrivalTimeSeconds += delivery.getDuration();
                 i++;
             }
         }
-        System.out.println("clusters end");
     }
 
-    //////////////////////////// A FAIRE //////////////////////////
-    //X//  Faire la boucle pour avoir plus de deux itérations et converger le kmeans
-    // TIMEOUT & DYNAMIC DISPLAY (pas forcément à nous)
-    //X// Réorganiser les clusters quand un est trop peuplé
-    // Regarder bug les circuits ne sont pas ronds
-    // Calculer la qualité d'un cluster
-    // faire kmeans plusieurs fois et stocker les clusters et la qualité du truc total
-    // choisir la meilleure solution
-    //ameliorer tsp
-    ///////////////////////////////////////////////////////////////
+
     public LinkedList<LinkedList<Delivery>> findBestClusters(int numberOfCouriers) {
 
         LinkedList<LinkedList<Delivery>> bestClusters = new LinkedList<LinkedList<Delivery>>();
@@ -123,6 +116,8 @@ public class CircuitComputer {
             centers[i] = deliveries.get(index).getGeolocation();
         }
 
+        LinkedList<LinkedList<Delivery>> clusters = new LinkedList<LinkedList<Delivery>>();
+        
         for (int k = 0; k < KMEANS_TIMEOUT; k++) {
 
             //finding closest center for each delivery
@@ -133,7 +128,7 @@ public class CircuitComputer {
                 double minDistance = Double.MAX_VALUE;
                 int closestCenter = 0;
                 for (int i = 0; i < numberOfCouriers; i++) {
-                    currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());//distance ou plus court chemin entre delivery.getGeolocation() et centers[i]
+                    currentDistanceToCenter = centers[i].distance(delivery.getGeolocation());
                     if (currentDistanceToCenter < minDistance) {
                         closestCenter = i;
                         minDistance = currentDistanceToCenter;
@@ -149,36 +144,33 @@ public class CircuitComputer {
                 correspondingCenter.put(centers[closestCenter], list);
             }
 
-            //Compute new center geolocation
-            for (int i = 0; i < numberOfCouriers; i++) {
-                double meanLatitude = 0;
-                double meanLongitude = 0;
-
-                LinkedList<Delivery> deliveriesInCluster = correspondingCenter.get(centers[i]);
-
-                for (Delivery delivery : deliveriesInCluster) {
-                    meanLatitude += delivery.getGeolocation().getLatitude();
-                    meanLongitude += delivery.getGeolocation().getLongitude();
-                }
-                meanLatitude = meanLatitude / deliveriesInCluster.size();
-                meanLongitude = meanLongitude / deliveriesInCluster.size();
-
-                centers[i] = new Geolocation(meanLatitude, meanLongitude);
-
+            clusters = new LinkedList<LinkedList<Delivery>>();
+            for (Map.Entry<Geolocation, LinkedList<Delivery>> entry : correspondingCenter.entrySet()) {
+                clusters.add(entry.getValue());
             }
+            
+            centers = computeNewCentersGeolocations(numberOfCouriers, clusters);
 
         }
 
-        //Return clusters
-        LinkedList<LinkedList<Delivery>> clusters = new LinkedList<LinkedList<Delivery>>();
-        for (Map.Entry<Geolocation, LinkedList<Delivery>> entry : correspondingCenter.entrySet()) {
-            clusters.add(entry.getValue());
-        }
 
         double avgClusterSize = ((double) deliveries.size()) / ((double) numberOfCouriers);
+        
+        // Equalize sizes of clusters 
         clusters = equalizeClustersSize(clusters, avgClusterSize);
+        centers = computeNewCentersGeolocations(numberOfCouriers, clusters);
 
-        //Compute new centers geolocations (after equalization)
+
+        Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> clustersAndCenters = new Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]>(clusters, centers);
+        return (clustersAndCenters);
+    }
+    
+    
+    private Geolocation[] computeNewCentersGeolocations(int numberOfCouriers, LinkedList<LinkedList<Delivery>> clusters) {
+    	
+    	Geolocation[] centers = new Geolocation[numberOfCouriers]; 
+    	
+       
         for (int i = 0; i < numberOfCouriers; i++) {
             double meanLatitude = 0;
             double meanLongitude = 0;
@@ -192,9 +184,8 @@ public class CircuitComputer {
 
             centers[i] = new Geolocation(meanLatitude, meanLongitude);
         }
-
-        Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> clustersAndCenters = new Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]>(clusters, centers);
-        return (clustersAndCenters);
+        
+        return (centers);
     }
 
     private LinkedList<LinkedList<Delivery>> equalizeClustersSize(LinkedList<LinkedList<Delivery>> clusters, double avgClusterSize) {
