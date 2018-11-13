@@ -42,19 +42,19 @@ public class ButtonListener implements ActionListener {
             
             JFileChooser jfc = new JFileChooser( assets + "/maps/" );
             
-           // int result = jfc.showOpenDialog(window);
-           // if (result == JFileChooser.APPROVE_OPTION) {
-                //controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
-                controller.loadCityMap(assets +"/maps/grandPlan.xml");
+            int result = jfc.showOpenDialog(window);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
+//                controller.loadCityMap(assets +"/maps/grandPlan.xml");
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
              
                 window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
                 window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
                 window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
-                
+                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                 window.getCityMapContainerPanel().repaint();
                 
-          //  }
+            }
         }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
