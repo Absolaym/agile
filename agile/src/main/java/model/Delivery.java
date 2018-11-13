@@ -29,7 +29,7 @@ public class Delivery extends Observable {
     /**
      * The time the courier shall arrive at the delivery address
      */
-    private int arrivalTimeSeconds = 0;
+    private Time arrivalTime = new Time();
 
     public Delivery() {
 
@@ -51,12 +51,12 @@ public class Delivery extends Observable {
         this.duration = duration;
     }
     
-    public int getArrivalTimeSeconds() {
-        return this.arrivalTimeSeconds;
+    public Time getArrivalTime() {
+        return this.arrivalTime;
     }
 
-    public void setArrivalTimeSeconds(int time) {
-        this.arrivalTimeSeconds = time;
+    public void setArrivalTime(Time time) {
+        this.arrivalTime = time;
     }
 
     public String toString() {

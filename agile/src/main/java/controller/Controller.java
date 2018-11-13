@@ -59,8 +59,8 @@ public class Controller {
         this.state.addDelivery();
     }
     
-    public void addDeliveryToComputedCircuit() {
-        this.state.addDeliveryToComputedCircuit();
+    public void addDeliveryToDeliveryRequest() {
+        this.state.addDeliveryToDeliveryRequest();
     }
     
     public void deleteDelivery() {

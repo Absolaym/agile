@@ -47,7 +47,7 @@ public class StateDefault implements State{
         
     }
     
-    public void addDeliveryToComputedCircuit() {
+    public void addDeliveryToDeliveryRequest() {
         
     }
     
@@ -60,10 +60,10 @@ public class StateDefault implements State{
     }
     
     public void undoCde() {
-        
+        Controller.commandsList.undo();
     }
     
     public void redoCde() {
-        
+        Controller.commandsList.redo();
     }
 }

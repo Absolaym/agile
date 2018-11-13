@@ -7,39 +7,37 @@ package controller;
 
 import model.Circuit;
 import model.Delivery;
+import model.Model;
 
 /**
  *
  * @author pagilles
  */
-public class CommandAddDeliveryToComputedCircuit implements Command {
-
-    private Delivery delivery;
-    private Circuit circuit;
+public class CommandChangeDelivery implements Command {
+        
+    private CommandDeleteDelivery comDelDel;
+    private CommandAddDelivery comAddDel;  
     
-    public CommandAddDeliveryToComputedCircuit(Circuit c, Delivery d){
-        this.delivery = d;
-        this.circuit = c;
+    public CommandChangeDelivery(Delivery d, Circuit oc, Circuit tc){
+
+        comDelDel = new CommandDeleteDelivery(d, oc);
+        comAddDel = new CommandAddDelivery(d, tc);
     }
     
     @Override
     public void doCde() {
-        // Trip trip1 = 
-        // Trip trip2 = 
-        // créer 2 trips via hashmap
-        circuit.getDeliveries().addLast(delivery);
-        // circuit.getTrips().removeLast();
-        // circuit.getTrips().addLast(trip1);
-        // circuit.getTrips().addLast(trip2);
         
+        comDelDel.doCde();
+        comAddDel.doCde();        
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void undoCde() {
-        circuit.getDeliveries().removeLast();
-        // remove last 2 trips + recreate last trip
+        
+        comAddDel.undoCde();
+        comDelDel.undoCde();
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

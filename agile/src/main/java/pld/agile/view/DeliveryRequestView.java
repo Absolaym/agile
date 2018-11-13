@@ -4,6 +4,7 @@ import controller.Controller;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -12,16 +13,20 @@ import model.Circuit;
 import model.Delivery;
 import model.DeliveryRequest;
 import utils.Time;
+import java.time.*;
+import java.time.format.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 class TableRow extends Observable {
 
     private JPanel row;
-    private String deliveryAddress;
+    private Delivery delivery;
     private boolean isSelected = false;
 
-    public TableRow(JPanel row, String address) {
+    public TableRow(JPanel row, Delivery delivery) {
         this.row = row;
-        this.deliveryAddress = address;
+        this.delivery = delivery;
     }
 
     public JPanel getRow() {
@@ -36,12 +41,12 @@ class TableRow extends Observable {
         this.isSelected = isSelected;
         if (isSelected) {
             setChanged();
-            notifyObservers(deliveryAddress);
+            notifyObservers(delivery);
         }
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public Delivery getDelivery() {
+        return delivery;
     }
 }
 
@@ -151,11 +156,13 @@ public class DeliveryRequestView extends JPanel {
             circuit += d.getCircuit().getCourierId();
         }
 
+        Time time = d.getArrivalTime();
+        String strArrivalTime = time.getHours()+":"+time.getMinutes();
         
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtArrivalTime = new JTextArea("" + d.getArrivalTimeSeconds());
+        JTextArea txtArrivalTime = new JTextArea(strArrivalTime);
         JTextArea txtDuration = new JTextArea("" + d.getDuration());
         JTextArea txtCircuit = new JTextArea(circuit);
 
@@ -163,9 +170,6 @@ public class DeliveryRequestView extends JPanel {
         JButton btnMoveAfter = new JButton("");
         JButton btnDelete = new JButton("Delete");
 
-        if (d.getIsSelected()) {
-            row.setBackground(Color.yellow);
-        }
         txtAddress.setOpaque(false);
         txtArrivalTime.setOpaque(false);
         txtDuration.setOpaque(false);
@@ -206,11 +210,16 @@ public class DeliveryRequestView extends JPanel {
         row.add(btnMoveBefore);
         row.add(btnMoveAfter);
         row.add(btnDelete);
+        setRowColor(row, d.getCircuit());
 
-        TableRow tableRow = new TableRow(row, d.getAddress());
+        TableRow tableRow = new TableRow(row, d);
         //observable
         tableRow.addObserver(window.getCityMapContainerPanel());
         rows.add(tableRow);
+
+        if (d.getIsSelected()) {
+            row.setBackground(Color.yellow);
+        }
 
         row.addMouseListener(new java.awt.event.MouseListener() {
             @Override
@@ -222,7 +231,8 @@ public class DeliveryRequestView extends JPanel {
                         e.getComponent().setBackground(Color.yellow);
                     } else {
                         r.setIsSelected(false);
-                        r.getRow().setBackground(null);
+                        setRowColor(r.getRow(), r.getDelivery().getCircuit());
+//                        r.getRow().setBackground(null);
                     }
                 }
             }
@@ -239,7 +249,7 @@ public class DeliveryRequestView extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
-                    if (r.getRow() == row && !r.getIsSelected()) {
+                    if (r.getRow() == row && !r.getIsSelected() && !r.getDelivery().getIsSelected()) {
                         e.getComponent().setBackground(Color.green);
                     }
                 }
@@ -249,14 +259,26 @@ public class DeliveryRequestView extends JPanel {
             public void mouseExited(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
-                    if (r.getRow() == row && !r.getIsSelected()) {
-                        e.getComponent().setBackground(null);
+                    if (r.getRow() == row && !r.getIsSelected() && !r.getDelivery().getIsSelected()) {
+                        setRowColor(r.getRow(), r.getDelivery().getCircuit());
                     }
                 }
             }
         });
 
         deliveriesListContainer.add(row);
+    }
+
+    public void setRowColor(Component comp, Circuit circuit) {
+        int i = 0;
+        if (circuit != null) i = circuit.getCourierId();
+        Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
+        //Color c = new Color ((int)(255*0.5),0, 0);
+        if (i == 0) {
+            comp.setBackground(null);
+        } else {
+            comp.setBackground(c);
+        }
     }
 
     public void paintComponent(Graphics g) {

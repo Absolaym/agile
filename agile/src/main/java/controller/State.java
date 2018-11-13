@@ -22,7 +22,7 @@ public interface State{
     
     public abstract void addDelivery();
     
-    public abstract void addDeliveryToComputedCircuit();
+    public abstract void addDeliveryToDeliveryRequest();
     
     public abstract void deleteDelivery();
     
