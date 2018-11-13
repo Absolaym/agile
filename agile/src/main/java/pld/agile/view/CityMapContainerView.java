@@ -124,19 +124,23 @@ public class CityMapContainerView extends JPanel implements Observer {
                     window.getDeliveryRequestPanel().repaint();
                     window.repaint();
                 }
+                //waiting for delivery
                 if (window.getWaitingState() == 0) {
                     //getClosestLocation
-
                     newDelivery = getIntersectionByCoordinates(x, y);
-                    if (newDelivery != null)
+                    if (newDelivery != null) {
                         window.setWaitingState(1);
+                    }
+                 //waiting for circuit to add delivery into
                 } else if (window.getWaitingState() == 1) {
                     Section sectionNewDelivery = getSectionByCoordinates(x, y);
                     circuitNewDelivery = sectionNewDelivery.getCircuit();
+                    System.out.println("circuit:" + circuitNewDelivery);
                     if (circuitNewDelivery == null) {
                         //add an error: CHoose a valid circuit
                         // window.getCityMapMenuPanel().add(new JTextField("Choose a valid circuit"));
                     } else {
+                    	controller.addDelivery(newDelivery, circuitNewDelivery);
                         window.setWaitingState(2);
                     }
                 }
@@ -267,7 +271,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
         } else if (selectedDelivery == delivery) {
             g.setColor(Color.YELLOW);
-            g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize*2, dotSize*2, 0, 360);
+            g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
             // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
         } else {
             g.setColor(c);
@@ -371,17 +375,21 @@ public class CityMapContainerView extends JPanel implements Observer {
             return;
         }
         Geolocation origin = getOrigin(cityMap);
+        int i = 0;
         for (Circuit circuit : circuits) {
-            int i = circuit.getCourierId();
+            System.out.println("circuit real nb: " + circuit.getCourierId() + "circ i: " + i);
             Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);
             }
+            i++;
         }
     }
 
     private void drawCityMap(Graphics g, int dotSize) {
+
         Graphics2D g2 = (Graphics2D) g;
+
         CityMap cityMap = this.controller.getModel().getCityMap();
         if (cityMap.getIntersections().size() == 0) {
             return;
@@ -492,7 +500,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     public void update(Observable o, Object deliverySelected) {     
         LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
         for(Delivery d : delivs) {
-            if(d == deliverySelected){
+            if(d.getAddress().equals(deliverySelected)){
                 selectedDelivery = d;
                 controller.setSelectDelivery(selectedDelivery);
             } else {
@@ -506,7 +514,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         return loadCityMapButton;
     }
 
-    
     public JSlider getZoomSlider() {
         return zoomSlider;
     }
