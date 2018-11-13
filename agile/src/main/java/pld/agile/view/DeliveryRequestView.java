@@ -13,7 +13,8 @@ import model.Delivery;
 import model.DeliveryRequest;
 import utils.Time;
 
-class TableRow extends Observable{
+class TableRow extends Observable {
+
     private JPanel row;
     private String deliveryAddress;
     private boolean isSelected = false;
@@ -41,64 +42,64 @@ class TableRow extends Observable{
 
     public String getDeliveryAddress() {
         return deliveryAddress;
-    } 
+    }
 }
 
-public class DeliveryRequestView extends JPanel{
+public class DeliveryRequestView extends JPanel {
+
     private ButtonListener buttonListener;
     private JPanel deliveryRequestViewPanel /*= new JPanel()*/;
     private JPanel deliveriesContainer /*= new JPanel()*/;
     private JPanel deliveriesListContainer /*= new JPanel()*/;
     private JScrollPane deliveriesListScrollPane;
-    
+
     private static Controller controller;
     private ArrayList<TableRow> rows;
     private static Window window;
     private final int width = 350;
     private final int height = 700;
 
-    
     public DeliveryRequestView(Window w, Controller c) {
         super();
         controller = c;
         window = w;
-        buttonListener = new ButtonListener(c,w);
-        
+        buttonListener = new ButtonListener(c, w);
+
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
         deliveriesListContainer = new JPanel();
         rows = new ArrayList<>();
         deliveriesListScrollPane = new JScrollPane(deliveriesListContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setLayout(new BorderLayout());
-        
+
         w.getContentPane().add(this);
     }
-    
-    private void createDeliveryRequestViewPanel(){
+
+    private void createDeliveryRequestViewPanel() {
         deliveryRequestViewPanel.removeAll();
         rows.clear();
         deliveryRequestViewPanel.setLayout(new BorderLayout());
         deliveryRequestViewPanel.setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         deliveryRequestViewPanel.setBackground(Color.LIGHT_GRAY);
     }
-    
-    private void  createDeliveriesContainer(){
-        
+
+    private void createDeliveriesContainer() {
+
         deliveriesContainer.removeAll();
         deliveriesContainer.setLayout(new BoxLayout(deliveriesContainer, BoxLayout.Y_AXIS));
-        
+
         JPanel head = new JPanel();
-        
+
         JTextArea address = new JTextArea("Address");
         JTextArea arrivalTime = new JTextArea("Arrival time");
         JTextArea duration = new JTextArea("Duration");
         JTextArea circuit = new JTextArea("Circuit");
-        
+
         address.setOpaque(false);
         arrivalTime.setOpaque(false);
         duration.setOpaque(false);
         circuit.setOpaque(false);
-        
+
         head.add(address);
         head.add(arrivalTime);
         head.add(duration);
@@ -106,92 +107,94 @@ public class DeliveryRequestView extends JPanel{
         deliveriesContainer.add(head);
         deliveryRequestViewPanel.add(deliveriesContainer);
     }
-    
-    public void loadDeliveryRequest(Window window){
+
+    public void loadDeliveryRequest(Window window) {
         createDeliveryRequestViewPanel();
         createDeliveriesContainer();
         addDeliveries();
-        
+
 //        deliveriesContainer.add(deliveriesListContainer);
         deliveriesContainer.add(deliveriesListScrollPane);
         deliveryRequestViewPanel.add(deliveriesContainer/*, BorderLayout.CENTER*/);
         add(deliveryRequestViewPanel);
         window.getContentPane().add(this);
-        
+
         deliveriesListContainer.repaint();
         deliveriesContainer.repaint();
         deliveryRequestViewPanel.repaint();
         window.revalidate();
         window.repaint();
     }
-    
-  
+
     public void addDeliveries() {
         LinkedList<Delivery> deliveries = controller.getModel().getDeliveryRequest().getDeliveries();
         //System.out.println("in addDeliveries - deliveries: "+deliveries.size());
         //System.out.println("in addDeliveries - got the deliveries");
-        
+
         deliveriesListContainer.removeAll();
         deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
 //        deliveriesContainer.setLayout(new BorderLayout(10,10));
-        
+
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
             addRow(d);
         }
         deliveriesListContainer.revalidate();
     }
-    
-    private void addRow(Delivery d){
-        
-        String circuit ="";
-            if(d.getCircuit()==null)
-                circuit += "unknown";
-            else
-                circuit += d.getCircuit().getCourierId();
+
+    private void addRow(Delivery d) {
+
+        String circuit = "";
+        if (d.getCircuit() == null) {
+            circuit += "unknown";
+        } else {
+            circuit += d.getCircuit().getCourierId();
+        }
+
         
         JPanel row = new JPanel();
-        
+
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtArrivalTime = new JTextArea(""+d.getArrivalTimeSeconds());
-        JTextArea txtDuration = new JTextArea(""+d.getDuration());
+        JTextArea txtArrivalTime = new JTextArea("" + d.getArrivalTimeSeconds());
+        JTextArea txtDuration = new JTextArea("" + d.getDuration());
         JTextArea txtCircuit = new JTextArea(circuit);
-        
+
         JButton btnMoveBefore = new JButton("");
         JButton btnMoveAfter = new JButton("");
         JButton btnDelete = new JButton("Delete");
-        
-        if(d.getIsSelected())
+
+        if (d.getIsSelected()) {
             row.setBackground(Color.yellow);
+        }
         txtAddress.setOpaque(false);
         txtArrivalTime.setOpaque(false);
         txtDuration.setOpaque(false);
         txtCircuit.setOpaque(false);
-        
+
         txtAddress.setEditable(false);
         txtArrivalTime.setEditable(false);
         txtDuration.setEditable(false);
         txtCircuit.setEditable(false);
-        
+
         String root = System.getProperty("user.dir");
         String img = root + "/src/main/assets/img/";
-        
-        String iconfilePath = img +"arrow-up.png";
+
+        String iconfilePath = img + "arrow-up.png";
         btnMoveBefore.setIcon(new ImageIcon(iconfilePath));
         btnMoveBefore.setBorder(BorderFactory.createEmptyBorder());
         btnMoveBefore.setContentAreaFilled(false);
         btnMoveBefore.setFocusable(false);
-        
-        iconfilePath = img +"arrow-down.png";
+
+        iconfilePath = img + "arrow-down.png";
         btnMoveAfter.setIcon(new ImageIcon(iconfilePath));
         btnMoveAfter.setBorder(BorderFactory.createEmptyBorder());
         btnMoveAfter.setContentAreaFilled(false);
         btnMoveAfter.setFocusable(false);
-        
+
         btnMoveBefore.addActionListener(buttonListener);
         btnMoveAfter.addActionListener(buttonListener);
         btnDelete.addActionListener(buttonListener);
-        
+
         btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
         btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);
         btnDelete.setActionCommand(Window.DELETE_DELIVERY);
@@ -203,18 +206,18 @@ public class DeliveryRequestView extends JPanel{
         row.add(btnMoveBefore);
         row.add(btnMoveAfter);
         row.add(btnDelete);
-        
-        TableRow tableRow = new TableRow(row,d.getAddress());
+
+        TableRow tableRow = new TableRow(row, d.getAddress());
         //observable
         tableRow.addObserver(window.getCityMapContainerPanel());
         rows.add(tableRow);
-                       
+
         row.addMouseListener(new java.awt.event.MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
-                    if(r.getRow() == row) {
+                    if (r.getRow() == row) {
                         r.setIsSelected(true);
                         e.getComponent().setBackground(Color.yellow);
                     } else {
@@ -225,16 +228,18 @@ public class DeliveryRequestView extends JPanel{
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
 
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
-                    if(r.getRow() == row && !r.getIsSelected()) {
+                    if (r.getRow() == row && !r.getIsSelected()) {
                         e.getComponent().setBackground(Color.green);
                     }
                 }
@@ -244,16 +249,16 @@ public class DeliveryRequestView extends JPanel{
             public void mouseExited(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
-                    if(r.getRow() == row && !r.getIsSelected()) {
+                    if (r.getRow() == row && !r.getIsSelected()) {
                         e.getComponent().setBackground(null);
                     }
                 }
             }
         });
-        
+
         deliveriesListContainer.add(row);
     }
-    
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
     }
