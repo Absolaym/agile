@@ -128,8 +128,8 @@ public class DeliveryRequestView extends JPanel{
   
     public void addDeliveries() {
         LinkedList<Delivery> deliveries = controller.getModel().getDeliveryRequest().getDeliveries();
-        System.out.println("in addDeliveries - deliveries: "+deliveries.size());
-        System.out.println("in addDeliveries - got the deliveries");
+        //System.out.println("in addDeliveries - deliveries: "+deliveries.size());
+        //System.out.println("in addDeliveries - got the deliveries");
         
         deliveriesListContainer.removeAll();
         deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
@@ -139,10 +139,10 @@ public class DeliveryRequestView extends JPanel{
             Delivery d = deliveries.get(i);
             
             String circuit ="";
-            if(d.getCircuit()==null)
+            if(d.getCircuit()== null)
                 circuit += "unknown";
             else
-                circuit = d.getCircuit().getCourierId();
+                circuit += d.getCircuit().getCourierId();
             
             
             addRow(d.getAddress(), ""+d.getArrivalTimeSeconds(), ""+d.getDuration(), circuit, d.getIsSelected());
