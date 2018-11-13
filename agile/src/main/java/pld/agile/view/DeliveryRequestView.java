@@ -272,10 +272,8 @@ public class DeliveryRequestView extends JPanel {
 
     public void setRowColor(Component comp, Circuit circuit) {
         int i = 0;
-        if (circuit != null) {
-            i = circuit.getCourierId();
-        }
-        Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
+        if (circuit != null) i = circuit.getCourierId();
+        Color c = window.colors[i];
         //Color c = new Color ((int)(255*0.5),0, 0);
         if (i == 0) {
             comp.setBackground(null);

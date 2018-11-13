@@ -1,6 +1,7 @@
 package pld.agile.view;
 
 import controller.Controller;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class Window extends JFrame {
     protected final static String UNDO = "Undo";
     protected final static String REDO = "Redo";
 
-    
+    public Color[] colors;    
     
     private int width;
     private int height;
@@ -50,7 +51,9 @@ public class Window extends JFrame {
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
         errorAreaPanel = new ErrorAreaView(this, controller);
         
-        
+        //add colors
+        colors = new Color[20];
+        setColors(colors);
 
         setWindowSize();
         setSize(width, height);
@@ -73,6 +76,22 @@ public class Window extends JFrame {
         deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
+    public void setColors(Color[] colors){
+        colors[1] = new Color(205, 0, 0);
+        colors[2] = new Color(0, 155, 0);
+        colors[3] = new Color(0, 155, 216);
+        colors[4] = new Color(168, 0, 216);
+        colors[5] = new Color(250, 210, 197);
+        colors[6] = new Color(252, 144, 241);
+        colors[7] = new Color(113, 59, 241);
+        colors[8] = new Color(162, 164, 70);
+        colors[9] = new Color(245, 164, 70);
+        colors[10] = new Color(244, 88, 101);
+        colors[11] = new Color(138, 252, 235);
+        colors[12] = new Color(251, 1, 161);
+
+    }
+    
     public CityMapMenuView getCityMapMenuPanel() {
         return mapMenuPanel;
     }
