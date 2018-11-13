@@ -137,33 +137,31 @@ public class DeliveryRequestView extends JPanel{
         
         for (int i = 0; i < deliveries.size(); i++) {
             Delivery d = deliveries.get(i);
-            
-            String circuit ="";
-            if(d.getCircuit()== null)
-                circuit += "unknown";
-            else
-                circuit += d.getCircuit().getCourierId();
-            
-            
-            addRow(d.getAddress(), ""+d.getArrivalTimeSeconds(), ""+d.getDuration(), circuit, d.getIsSelected());
+            addRow(d);
         }
         deliveriesListContainer.revalidate();
     }
     
-    private void addRow(String address, String arrivalTime, String duration, 
-                        String circuit, boolean isSelected){
+    private void addRow(Delivery d){
+        
+        String circuit ="";
+            if(d.getCircuit()==null)
+                circuit += "unknown";
+            else
+                circuit += d.getCircuit().getCourierId();
+        
         JPanel row = new JPanel();
         
-        JTextArea txtAddress = new JTextArea(address);
-        JTextArea txtArrivalTime = new JTextArea(arrivalTime);
-        JTextArea txtDuration = new JTextArea(duration);
+        JTextArea txtAddress = new JTextArea(d.getAddress());
+        JTextArea txtArrivalTime = new JTextArea(""+d.getArrivalTimeSeconds());
+        JTextArea txtDuration = new JTextArea(""+d.getDuration());
         JTextArea txtCircuit = new JTextArea(circuit);
         
         JButton btnMoveBefore = new JButton("");
         JButton btnMoveAfter = new JButton("");
         JButton btnDelete = new JButton("Delete");
         
-        if(isSelected)
+        if(d.getIsSelected())
             row.setBackground(Color.yellow);
         txtAddress.setOpaque(false);
         txtArrivalTime.setOpaque(false);
@@ -206,7 +204,7 @@ public class DeliveryRequestView extends JPanel{
         row.add(btnMoveAfter);
         row.add(btnDelete);
         
-        TableRow tableRow = new TableRow(row,address);
+        TableRow tableRow = new TableRow(row,d.getAddress());
         //observable
         tableRow.addObserver(window.getCityMapContainerPanel());
         rows.add(tableRow);
