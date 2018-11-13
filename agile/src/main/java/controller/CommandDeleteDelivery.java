@@ -59,7 +59,9 @@ public class CommandDeleteDelivery implements Command {
         Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
         
         Trip trip = Model.getInstance().getTripBetweenIntersections(tripOrigin, tripTarget);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().add(deliveryIndex, trip);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip);
+        
+        Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

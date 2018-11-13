@@ -17,7 +17,7 @@ public class CommandAddDeliveryToDeliveryRequest implements Command {
     private Delivery delivery;
     private Circuit circuit;
     
-    public CommandAddDeliveryToDeliveryRequest(Circuit c, Delivery d){
+    public CommandAddDeliveryToDeliveryRequest(Delivery d, Circuit c){
         this.delivery = d;
         this.circuit = c;
     }
@@ -29,10 +29,10 @@ public class CommandAddDeliveryToDeliveryRequest implements Command {
 
     @Override
     public void undoCde() {
-        circuit.getDeliveries().removeLast();
+        //circuit.getDeliveries().removeLast();
         // remove last 2 trips + recreate last trip
         
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

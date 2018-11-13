@@ -47,9 +47,12 @@ public class CommandAddDelivery implements Command {
         String trip2Origin = trip1Target;
         String trip2Target = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
         Trip trip2 = Model.getInstance().getTripBetweenIntersections(trip2Origin, trip2Target);
+
         
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().add(trip1);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().add(trip2);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(trip1);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(trip2);
+        
+        Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

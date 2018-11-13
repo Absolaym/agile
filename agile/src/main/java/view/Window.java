@@ -12,7 +12,7 @@ import javax.swing.*;
 public class Window extends JFrame {
 
     // Subcomponents of the view
-		private MainMenuBar menuBar;
+    private MainMenuBar menuBar;
     private CityMapMenuView mapMenuPanel;
     private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;
@@ -35,13 +35,17 @@ public class Window extends JFrame {
     private int width;
     private int height;
     private int waitingState = 2;
+    
+    private Controller controller;
 
     public Window() {
-        this( Controller.getInstance() );
+        this(new Controller());
     }
 
     public Window(Controller controller) {
         super("Agility is the delivery");
+        
+        this.controller = controller;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -65,35 +69,35 @@ public class Window extends JFrame {
         
         this.addKeyListener( new KeyListener() {
 
-					@Override
-					public void keyTyped(KeyEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // TODO Auto-generated method stub
 
-					@Override
-					public void keyPressed(KeyEvent e) {
-						// TODO Auto-generated method stub
-						if(e.isControlDown() || e.isMetaDown()) {
-							switch(e.getKeyCode()) {
-							case KeyEvent.VK_Z:
-								Controller.getInstance().undo();
-								Window.this.getMenuBarPanel().onUndo();
-							break;
-							case KeyEvent.VK_Y:
-								Controller.getInstance().redo();
-								Window.this.getMenuBarPanel().onRedo();
-								break;
-							}
-						}
-					}
+            }
 
-					@Override
-					public void keyReleased(KeyEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-        	
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO Auto-generated method stub
+                if(e.isControlDown() || e.isMetaDown()) {
+                    switch(e.getKeyCode()) {
+                    case KeyEvent.VK_Z:
+                            Window.this.controller.undo();
+                            Window.this.getMenuBarPanel().onUndo();
+                    break;
+                    case KeyEvent.VK_Y:
+                            Window.this.controller.redo();
+                            Window.this.getMenuBarPanel().onRedo();
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                    // TODO Auto-generated method stub
+
+            }
+
         });
 
         setVisible(true);

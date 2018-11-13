@@ -14,7 +14,7 @@ import model.Trip;
  *
  * @author pagilles
  */
-public class CommandMoveDeliveryBefore implements Command {
+public class CommandMoveDeliveryAfter implements Command {
 
     private Delivery delivery;
     private int deliveryIndex;
@@ -22,7 +22,7 @@ public class CommandMoveDeliveryBefore implements Command {
     private Circuit circuit;
     private int circuitIndex;
     
-    public CommandMoveDeliveryBefore(Delivery d, Circuit c){
+    public CommandMoveDeliveryAfter(Delivery d, Circuit c){
         this.delivery = d;
                 
         this.circuit = c;
@@ -37,27 +37,27 @@ public class CommandMoveDeliveryBefore implements Command {
         String trip2Origin, trip2Target;
         String trip3Origin, trip3Target;
         
-        if(deliveryIndex == 0) {
+        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-1) {
             return;
         }
         
-        if(deliveryIndex == 1) {
+        if(deliveryIndex == 0) {
             trip1Origin = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
         } else {
-            trip1Origin = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex-2).getAddress();
+            trip1Origin = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex-1).getAddress();
         }
         
-        trip1Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex).getAddress();
+        trip1Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+1).getAddress();
         
         trip2Origin = trip1Target;
-        trip2Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex-1).getAddress();
+        trip2Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex).getAddress();
         
         trip3Origin = trip2Target;
         
-        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-1){
+        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-2){
             trip3Target = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
         } else {
-            trip3Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+1).getAddress();
+            trip3Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+2).getAddress();
         }
         
         Trip trip1 = Model.getInstance().getTripBetweenIntersections(trip1Origin, trip1Target);
@@ -66,14 +66,14 @@ public class CommandMoveDeliveryBefore implements Command {
         
         
         Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).addDelivery(deliveryIndex-1,delivery);
+        Model.getInstance().getCircuits().get(circuitIndex).addDelivery(deliveryIndex+1,delivery);
         
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex-1);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex-1);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex-1);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex-1, trip3);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex-1, trip2);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex-1, trip1);
+        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
+        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
+        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip3);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip2);
+        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip1);
         
         Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
         

@@ -13,12 +13,12 @@ import model.Model;
  *
  * @author pagilles
  */
-public class CommandChangeDelivery implements Command {
+public class CommandChangeCircuit implements Command {
         
     private CommandDeleteDelivery comDelDel;
     private CommandAddDelivery comAddDel;  
     
-    public CommandChangeDelivery(Delivery d, Circuit oc, Circuit tc){
+    public CommandChangeCircuit(Delivery d, Circuit oc, Circuit tc){
 
         comDelDel = new CommandDeleteDelivery(d, oc);
         comAddDel = new CommandAddDelivery(d, tc);

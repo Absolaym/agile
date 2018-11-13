@@ -5,7 +5,9 @@
  */
 package controller;
 
+import model.Circuit;
 import model.CityMap;
+import model.Delivery;
 import model.DeliveryRequest;
 import model.Model;
 import utils.XmlParser;
@@ -43,19 +45,35 @@ public class StateDefault implements State{
         
     }
     
-    public void addDelivery() {
+    public void addDelivery(Delivery d, Circuit c) {
         
     }
     
-    public void addDeliveryToDeliveryRequest() {
+    public void deleteDelivery(Delivery d, Circuit c) {
         
     }
     
-    public void deleteDelivery() {
+    public void changeCircuit(Delivery d, Circuit oc, Circuit tc) {
         
     }
     
-    public void moveDelivery() {
+    public void moveDeliveryBefore(Delivery d, Circuit c) {
+        
+    }
+    
+    public void moveDeliveryAfter(Delivery d, Circuit c) {
+        
+    }
+    
+    public void addDeliveryToDeliveryRequest(Delivery d, Circuit c) {
+        
+    }
+    
+    public void undoCde() {
+        
+    }
+    
+    public void redoCde() {
         
     }
 }

@@ -9,6 +9,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        Window window = new Window( );
+        Controller c = new Controller();
+        Window window = new Window( c );
     }
 }

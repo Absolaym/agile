@@ -5,8 +5,10 @@
  */
 package controller;
 
+import model.Circuit;
 import model.DeliveryRequest;
 import model.CityMap;
+import model.Delivery;
 
 /**
  *
@@ -20,12 +22,19 @@ public interface State{
     
     public abstract void computeCircuits(Controller c);
     
-    public abstract void addDelivery();
+    public abstract void addDelivery(Delivery d, Circuit c);
+        
+    public abstract void deleteDelivery(Delivery d, Circuit c);
     
-    public abstract void addDeliveryToDeliveryRequest();
+    public abstract void changeCircuit(Delivery d, Circuit oc, Circuit tc);
     
-    public abstract void deleteDelivery();
+    public abstract void moveDeliveryBefore(Delivery d, Circuit c);
     
-    public abstract void moveDelivery();
-
+    public abstract void moveDeliveryAfter(Delivery d, Circuit c);
+    
+    public abstract void addDeliveryToDeliveryRequest(Delivery d, Circuit c);
+    
+    public abstract void undoCde();
+    
+    public abstract void redoCde();
 }

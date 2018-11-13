@@ -23,6 +23,7 @@ public class CityMapMenuView extends JPanel {
     private final int WIDTH = 1000;
     private JLabel courierNumberLabel;
     private JTextField courierNumberField;
+    private JTextField deliveryDurationField;
     private JPanel messages;
 
     public CityMapMenuView(Window w, Controller controller) {
@@ -90,12 +91,12 @@ public class CityMapMenuView extends JPanel {
         if (step.equals("")) return;
         
         JLabel text = new JLabel();
-        JTextField deliveryTime = null;
+        deliveryDurationField = null;
         if (step.equals("select")) 
             text.setText("Please select the delivery address on map.");
         else if (step.equals("time")) {
             text.setText("Please choose a circuit on the map.  Delivery duration : ");
-            deliveryTime = new JTextField("5");
+            deliveryDurationField = new JTextField("5", 4);
         }
         text.setSize(text.getPreferredSize().width, 30);
         int textLocationX = messages.getWidth() / 2 - text.getSize().width/2;
@@ -103,11 +104,11 @@ public class CityMapMenuView extends JPanel {
         text.setVisible(true);
         messages.add(text);
         
-        if(deliveryTime != null) {
-            deliveryTime.setSize(50, 20);
-            deliveryTime.setLocation(textLocationX + text.getSize().width + 10 , 0);
-            deliveryTime.setVisible(true);
-            messages.add(deliveryTime);
+        if(deliveryDurationField != null) {
+            deliveryDurationField.setSize(50, 20);
+            deliveryDurationField.setLocation(textLocationX + text.getSize().width + 10 , 0);
+            deliveryDurationField.setVisible(true);
+            messages.add(deliveryDurationField);
         }
         
     }
@@ -139,6 +140,11 @@ public class CityMapMenuView extends JPanel {
 
     public int getCourierNumber() {
         String numberString = this.courierNumberField.getText();
+        return Integer.parseInt(numberString);
+    }
+    
+    public int getDeliveryDuration() {
+        String numberString = this.deliveryDurationField.getText();
         return Integer.parseInt(numberString);
     }
 
