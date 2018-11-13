@@ -128,8 +128,9 @@ public class CityMapContainerView extends JPanel implements Observer {
                     //getClosestLocation
 
                     newDelivery = getIntersectionByCoordinates(x, y);
-                    if (newDelivery != null)
+                    if (newDelivery != null) {
                         window.setWaitingState(1);
+                    }
                 } else if (window.getWaitingState() == 1) {
                     Section sectionNewDelivery = getSectionByCoordinates(x, y);
                     circuitNewDelivery = sectionNewDelivery.getCircuit();
@@ -204,21 +205,45 @@ public class CityMapContainerView extends JPanel implements Observer {
         double distanceSec = 2e300;
 
         for (Section section : cityMap.getSections()) {
+
             Geolocation start = section.getStartIntersection().getGeolocation();
             Geolocation end = section.getEndIntersection().getGeolocation();
+
             Geolocation sectionCenter = Geolocation.center(start, end);
-            Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, sectionCenter);
+            Geolocation sectionCenter1 = Geolocation.center(start, sectionCenter);
+            Geolocation sectionCenter2 = Geolocation.center(sectionCenter, end);
 
-            double length = start.distance(end) * coeff / 2;
-            double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
+            LinkedList<Geolocation> geolocations = new LinkedList<>();
+            geolocations.add(start);
+            geolocations.add(end);
+            geolocations.add(sectionCenter);
+            geolocations.add(sectionCenter1);
+            geolocations.add(sectionCenter2);
+            
+            boolean IsClickValid = false;
+            for (Geolocation geolocation : geolocations) {
 
-            if (dist > length) {
-                continue;
+                Geolocation px = CityMapContainerView.this.geolocationToPixels(origin, geolocation);
+
+                double length = start.distance(end) * coeff / 2;
+                double dist = Math.pow(x - px.getLongitude(), 2) + Math.pow(y - px.getLatitude(), 2);
+
+                if (dist > (/*length/5*/10)) {
+                    continue;
+                }
+                else
+                {
+                    IsClickValid = true;
+                    break;
+                }
+//                if (dist < distanceSec) {
+//                    sect = section;
+//                    distanceSec = dist;
+//                }
+
             }
-            if (dist < distanceSec) {
+            if(IsClickValid)
                 sect = section;
-                distanceSec = dist;
-            }
         }
 
         return sect;
@@ -267,7 +292,7 @@ public class CityMapContainerView extends JPanel implements Observer {
             g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
         } else if (selectedDelivery == delivery) {
             g.setColor(Color.YELLOW);
-            g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize*2, dotSize*2, 0, 360);
+            g.fillArc((int) geo.getLongitude() - dotSize, (int) geo.getLatitude() - dotSize, dotSize * 2, dotSize * 2, 0, 360);
             // window.getDeliveryRequestPanel().colorTable(2, Color.YELLOW,delivery);
         } else {
             g.setColor(c);
@@ -335,7 +360,9 @@ public class CityMapContainerView extends JPanel implements Observer {
                         }
                     }
                 }
-            } else colorSectionUtil(g, sec, c, origin, false);
+            } else {
+                colorSectionUtil(g, sec, c, origin, false);
+            }
         }
     }
 
@@ -373,7 +400,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation origin = getOrigin(cityMap);
         for (Circuit circuit : circuits) {
             int i = circuit.getCourierId();
-           // Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
+            // Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             Color c = window.colors[i];
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);
@@ -490,10 +517,10 @@ public class CityMapContainerView extends JPanel implements Observer {
         return WIDTH;
     }
 
-    public void update(Observable o, Object deliverySelected) {     
+    public void update(Observable o, Object deliverySelected) {
         LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
-        for(Delivery d : delivs) {
-            if(d == deliverySelected){
+        for (Delivery d : delivs) {
+            if (d == deliverySelected) {
                 selectedDelivery = d;
                 controller.setSelectDelivery(selectedDelivery);
             } else {
@@ -507,7 +534,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         return loadCityMapButton;
     }
 
-    
     public JSlider getZoomSlider() {
         return zoomSlider;
     }
