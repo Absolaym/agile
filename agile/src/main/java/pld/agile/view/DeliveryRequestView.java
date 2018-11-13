@@ -95,19 +95,19 @@ public class DeliveryRequestView extends JPanel {
 
         JPanel head = new JPanel();
 
-        JTextArea address = new JTextArea("Address");
-        JTextArea arrivalTime = new JTextArea("Arrival time");
-        JTextArea duration = new JTextArea("Duration");
+        JTextArea address = new JTextArea("Address |");
+        JTextArea duration = new JTextArea("Duration |");
+        JTextArea arrivalTime = new JTextArea("Arrival time |");
         JTextArea circuit = new JTextArea("Circuit");
 
         address.setOpaque(false);
-        arrivalTime.setOpaque(false);
         duration.setOpaque(false);
+        arrivalTime.setOpaque(false);
         circuit.setOpaque(false);
 
         head.add(address);
-        head.add(arrivalTime);
         head.add(duration);
+        head.add(arrivalTime);
         head.add(circuit);
         deliveriesContainer.add(head);
         deliveryRequestViewPanel.add(deliveriesContainer);
@@ -149,67 +149,69 @@ public class DeliveryRequestView extends JPanel {
 
     private void addRow(Delivery d) {
 
-        String circuit = "";
-        if (d.getCircuit() == null) {
-            circuit += "unknown";
-        } else {
-            circuit += d.getCircuit().getCourierId();
-        }
-
         Time time = d.getArrivalTime();
-        String strArrivalTime = time.getHours()+":"+time.getMinutes();
-        
+        String strArrivalTime = time.getHours() + ":" + time.getMinutes();
+
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtArrivalTime = new JTextArea(strArrivalTime);
-        JTextArea txtDuration = new JTextArea("" + d.getDuration());
-        JTextArea txtCircuit = new JTextArea(circuit);
-
-        JButton btnMoveBefore = new JButton("");
-        JButton btnMoveAfter = new JButton("");
-        JButton btnDelete = new JButton("Delete");
+        JTextArea txtDuration = new JTextArea("" + (d.getDuration()/60)+" min");
 
         txtAddress.setOpaque(false);
-        txtArrivalTime.setOpaque(false);
         txtDuration.setOpaque(false);
-        txtCircuit.setOpaque(false);
 
         txtAddress.setEditable(false);
-        txtArrivalTime.setEditable(false);
         txtDuration.setEditable(false);
-        txtCircuit.setEditable(false);
-
-        String root = System.getProperty("user.dir");
-        String img = root + "/src/main/assets/img/";
-
-        String iconfilePath = img + "arrow-up.png";
-        btnMoveBefore.setIcon(new ImageIcon(iconfilePath));
-        btnMoveBefore.setBorder(BorderFactory.createEmptyBorder());
-        btnMoveBefore.setContentAreaFilled(false);
-        btnMoveBefore.setFocusable(false);
-
-        iconfilePath = img + "arrow-down.png";
-        btnMoveAfter.setIcon(new ImageIcon(iconfilePath));
-        btnMoveAfter.setBorder(BorderFactory.createEmptyBorder());
-        btnMoveAfter.setContentAreaFilled(false);
-        btnMoveAfter.setFocusable(false);
-
-        btnMoveBefore.addActionListener(buttonListener);
-        btnMoveAfter.addActionListener(buttonListener);
-        btnDelete.addActionListener(buttonListener);
-
-        btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
-        btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);
-        btnDelete.setActionCommand(Window.DELETE_DELIVERY);
 
         row.add(txtAddress);
-        row.add(txtArrivalTime);
         row.add(txtDuration);
-        row.add(txtCircuit);
-        row.add(btnMoveBefore);
-        row.add(btnMoveAfter);
-        row.add(btnDelete);
+
+        if (d.getCircuit() != null) {
+
+            JTextArea txtArrivalTime = new JTextArea(strArrivalTime);
+            JTextArea txtCircuit = new JTextArea("n°" + d.getCircuit().getCourierId());
+
+            JButton btnMoveBefore = new JButton("");
+            JButton btnMoveAfter = new JButton("");
+            JButton btnDelete = new JButton("Delete");
+
+            txtArrivalTime.setOpaque(false);
+            txtCircuit.setOpaque(false);
+
+            txtArrivalTime.setEditable(false);
+            txtCircuit.setEditable(false);
+            
+            String root = System.getProperty("user.dir");
+            String img = root + "/src/main/assets/img/";
+
+            String iconfilePath = img + "arrow-up.png";
+            btnMoveBefore.setIcon(new ImageIcon(iconfilePath));
+            btnMoveBefore.setBorder(BorderFactory.createEmptyBorder());
+            btnMoveBefore.setContentAreaFilled(false);
+            btnMoveBefore.setFocusable(false);
+
+            iconfilePath = img + "arrow-down.png";
+            btnMoveAfter.setIcon(new ImageIcon(iconfilePath));
+            btnMoveAfter.setBorder(BorderFactory.createEmptyBorder());
+            btnMoveAfter.setContentAreaFilled(false);
+            btnMoveAfter.setFocusable(false);
+
+            btnMoveBefore.addActionListener(buttonListener);
+            btnMoveAfter.addActionListener(buttonListener);
+            btnDelete.addActionListener(buttonListener);
+
+            btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
+            btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);
+            btnDelete.setActionCommand(Window.DELETE_DELIVERY);
+
+            row.add(txtArrivalTime);
+            row.add(txtCircuit);
+
+            row.add(btnMoveBefore);
+            row.add(btnMoveAfter);
+            row.add(btnDelete);
+        }
+
         setRowColor(row, d.getCircuit());
 
         TableRow tableRow = new TableRow(row, d);
