@@ -381,9 +381,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     }
 
     private void drawCityMap(Graphics g, int dotSize) {
-
         Graphics2D g2 = (Graphics2D) g;
-
         CityMap cityMap = this.controller.getModel().getCityMap();
         if (cityMap.getIntersections().size() == 0) {
             return;
@@ -508,6 +506,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         return loadCityMapButton;
     }
 
+    
     public JSlider getZoomSlider() {
         return zoomSlider;
     }

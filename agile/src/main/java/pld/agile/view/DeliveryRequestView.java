@@ -210,7 +210,7 @@ public class DeliveryRequestView extends JPanel {
         row.add(btnMoveBefore);
         row.add(btnMoveAfter);
         row.add(btnDelete);
-        setRowColor(row, d.getCircuit().getCourierId());
+        setRowColor(row, d.getCircuit());
 
         TableRow tableRow = new TableRow(row, d);
         //observable
@@ -231,7 +231,7 @@ public class DeliveryRequestView extends JPanel {
                         e.getComponent().setBackground(Color.yellow);
                     } else {
                         r.setIsSelected(false);
-                        setRowColor(r.getRow(), r.getDelivery().getCircuit().getCourierId());
+                        setRowColor(r.getRow(), r.getDelivery().getCircuit());
 //                        r.getRow().setBackground(null);
                     }
                 }
@@ -260,7 +260,7 @@ public class DeliveryRequestView extends JPanel {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
                     if (r.getRow() == row && !r.getIsSelected() && !r.getDelivery().getIsSelected()) {
-                        setRowColor(r.getRow(), r.getDelivery().getCircuit().getCourierId());
+                        setRowColor(r.getRow(), r.getDelivery().getCircuit());
                     }
                 }
             }
@@ -269,7 +269,9 @@ public class DeliveryRequestView extends JPanel {
         deliveriesListContainer.add(row);
     }
 
-    public void setRowColor(Component comp, int i) {
+    public void setRowColor(Component comp, Circuit circuit) {
+        int i = 0;
+        if (circuit != null) i = circuit.getCourierId();
         Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
         //Color c = new Color ((int)(255*0.5),0, 0);
         if (i == 0) {
