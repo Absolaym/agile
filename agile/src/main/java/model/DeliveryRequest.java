@@ -85,9 +85,9 @@ public class DeliveryRequest {
         for (Delivery delivery : this.deliveries){
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if(geolocation == null){
-            System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
-            this.deliveries.remove(delivery);
-            continue;
+                System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
+                this.deliveries.remove(delivery);
+                continue;
             }
             delivery.setGeolocation(geolocation);
         }
@@ -98,13 +98,13 @@ public class DeliveryRequest {
         	System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
     }
 
-		public Intersection getWarehouseIntersection() {
-			return warehouseIntersection;
-		}
+    public Intersection getWarehouseIntersection() {
+            return warehouseIntersection;
+    }
 
-		public void setWarehouseIntersection(Intersection warehouseIntersection) {
-			this.warehouseIntersection = warehouseIntersection;
-		}
+    public void setWarehouseIntersection(Intersection warehouseIntersection) {
+            this.warehouseIntersection = warehouseIntersection;
+    }
 
 }
 
