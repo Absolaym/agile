@@ -13,9 +13,38 @@ import model.Delivery;
 import model.DeliveryRequest;
 import utils.Time;
 
-public class DeliveryRequestView extends JPanel implements Observer {
+class TableRow extends Observable{
+    private JPanel row;
+    private String deliveryAddress;
+    private boolean isSelected = false;
 
-    
+    public TableRow(JPanel row, String address) {
+        this.row = row;
+        this.deliveryAddress = address;
+    }
+
+    public JPanel getRow() {
+        return row;
+    }
+
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+        if (isSelected) {
+            setChanged();
+            notifyObservers(deliveryAddress);
+        }
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    } 
+}
+
+public class DeliveryRequestView extends JPanel{
     private ButtonListener buttonListener;
     private JPanel deliveryRequestViewPanel /*= new JPanel()*/;
     private JPanel deliveriesContainer /*= new JPanel()*/;
@@ -23,6 +52,8 @@ public class DeliveryRequestView extends JPanel implements Observer {
     private JScrollPane deliveriesListScrollPane;
     
     private static Controller controller;
+    private ArrayList<TableRow> rows;
+    private static Window window;
     private final int width = 350;
     private final int height = 700;
 
@@ -30,11 +61,13 @@ public class DeliveryRequestView extends JPanel implements Observer {
     public DeliveryRequestView(Window w, Controller c) {
         super();
         controller = c;
+        window = w;
         buttonListener = new ButtonListener(c,w);
         
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
         deliveriesListContainer = new JPanel();
+        rows = new ArrayList<>();
         deliveriesListScrollPane = new JScrollPane(deliveriesListContainer, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setLayout(new BorderLayout());
         
@@ -43,6 +76,7 @@ public class DeliveryRequestView extends JPanel implements Observer {
     
     private void createDeliveryRequestViewPanel(){
         deliveryRequestViewPanel.removeAll();
+        rows.clear();
         deliveryRequestViewPanel.setLayout(new BorderLayout());
         deliveryRequestViewPanel.setBorder(BorderFactory.createTitledBorder("Delivery requests :"));
         deliveryRequestViewPanel.setBackground(Color.LIGHT_GRAY);
@@ -172,6 +206,53 @@ public class DeliveryRequestView extends JPanel implements Observer {
         row.add(btnMoveAfter);
         row.add(btnDelete);
         
+        TableRow tableRow = new TableRow(row,address);
+        //observable
+        tableRow.addObserver(window.getCityMapContainerPanel());
+        rows.add(tableRow);
+                       
+        row.addMouseListener(new java.awt.event.MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Component row = e.getComponent();
+                for (TableRow r : rows) {
+                    if(r.getRow() == row) {
+                        r.setIsSelected(true);
+                        e.getComponent().setBackground(Color.yellow);
+                    } else {
+                        r.setIsSelected(false);
+                        r.getRow().setBackground(null);
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Component row = e.getComponent();
+                for (TableRow r : rows) {
+                    if(r.getRow() == row && !r.getIsSelected()) {
+                        e.getComponent().setBackground(Color.green);
+                    }
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Component row = e.getComponent();
+                for (TableRow r : rows) {
+                    if(r.getRow() == row && !r.getIsSelected()) {
+                        e.getComponent().setBackground(null);
+                    }
+                }
+            }
+        });
+        
         deliveriesListContainer.add(row);
     }
     
@@ -185,10 +266,6 @@ public class DeliveryRequestView extends JPanel implements Observer {
 
     public int getWidth() {
         return width;
-    }
-
-    public void update(Observable o, Object arg) {
-        System.out.println("state" + arg);
     }
 
 }

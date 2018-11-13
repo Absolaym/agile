@@ -47,6 +47,8 @@ public class Window extends JFrame {
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
         errorAreaPanel = new ErrorAreaView(this, controller);
+        
+        
 
         setWindowSize();
         setSize(width, height);

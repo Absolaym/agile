@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -92,7 +93,9 @@ public class ButtonListener implements ActionListener {
             window.setWaitingState(0);
         }
         else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
-            System.out.println("delete delivery");
+            int confirmationPopUp = JOptionPane.showConfirmDialog(window, "Are you sure you want to delete this delivery ? ", null ,JOptionPane.YES_NO_OPTION);
+            if (confirmationPopUp == 0) 
+                System.out.println("delete delivery");
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
             System.out.println("move delivery before");
