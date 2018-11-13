@@ -374,6 +374,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         Geolocation origin = getOrigin(cityMap);
         int i = 0;
         for (Circuit circuit : circuits) {
+            System.out.println("circuit real nb: " + circuit.getCourierId() + "circ i: " + i);
             Color c = new Color(180, Math.floorMod(50 + 40 * i, 250), Math.floorMod(120 + 40 * i, 250));
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin);

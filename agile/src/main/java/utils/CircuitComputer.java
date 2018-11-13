@@ -37,8 +37,11 @@ public class CircuitComputer {
         for (LinkedList<Delivery> cluster : clusters) {
             runTSP(cluster, cluster.size());
         }
+        
+        int circuitNumber = 1;
         for(Circuit circuit : circuits){
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
+            circuit.setCourierId(circuitNumber++);
             int i = 0;
             for(Delivery delivery : circuit.getDeliveries()){
                 delivery.setCircuit(circuit);

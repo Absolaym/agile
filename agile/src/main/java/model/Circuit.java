@@ -9,7 +9,7 @@ public class Circuit {
 
     private String warehouseAddress = "";
     private Time departureTime = new Time();
-    private String courierId = "";
+    private int courierId;
 
     private LinkedList<Trip> trips;
     private LinkedList<Delivery> deliveries;
@@ -17,6 +17,7 @@ public class Circuit {
     public Circuit() {
         this.trips = new LinkedList<Trip>();
         this.deliveries = new LinkedList<Delivery>();
+        courierId = 0;
     }
     
     public void updateSections() {
@@ -67,11 +68,11 @@ public class Circuit {
         this.departureTime = departureTime;
     }
 
-    public String getCourierId() {
+    public int getCourierId() {
         return courierId;
     }
 
-    public void setCourierId(String courierId) {
+    public void setCourierId(int courierId) {
         this.courierId = courierId;
     }
 
