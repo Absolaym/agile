@@ -4,6 +4,7 @@ import controller.Controller;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -12,6 +13,10 @@ import model.Circuit;
 import model.Delivery;
 import model.DeliveryRequest;
 import utils.Time;
+import java.time.*;
+import java.time.format.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 class TableRow extends Observable {
 
@@ -151,11 +156,13 @@ public class DeliveryRequestView extends JPanel {
             circuit += d.getCircuit().getCourierId();
         }
 
+        Time time = d.getArrivalTime();
+        String strArrivalTime = time.getHours()+":"+time.getMinutes();
         
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtArrivalTime = new JTextArea("" + d.getArrivalTimeSeconds());
+        JTextArea txtArrivalTime = new JTextArea(strArrivalTime);
         JTextArea txtDuration = new JTextArea("" + d.getDuration());
         JTextArea txtCircuit = new JTextArea(circuit);
 

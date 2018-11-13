@@ -42,14 +42,15 @@ public class CircuitComputer {
         int circuitNumber = 1;
         for(Circuit circuit : circuits){
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
+            System.out.println(circuit.getDepartureTime());
             circuit.setCourierId(circuitNumber++);
             int i = 0;
             for(Delivery delivery : circuit.getDeliveries()){
                 delivery.setCircuit(circuit);
                 int tripDurationSeconds = (int)(circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
                 arrivalTimeSeconds += tripDurationSeconds;
-                delivery.setArrivalTimeSeconds(arrivalTimeSeconds);
-                arrivalTimeSeconds += delivery.getDuration() * 60;
+                delivery.setArrivalTime(new Time(arrivalTimeSeconds));
+                arrivalTimeSeconds += delivery.getDuration();
                 i++;
             }
         }
