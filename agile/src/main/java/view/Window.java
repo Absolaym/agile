@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
@@ -27,8 +28,8 @@ public class Window extends JFrame {
     protected final static String UNDO = "Undo";
     protected final static String REDO = "Redo";
 
-    
-    
+    public Color[] colors;
+
     private int width;
     private int height;
     private int waitingState = 2;
@@ -42,25 +43,28 @@ public class Window extends JFrame {
     public Window(Controller controller) {
         super("Agility is the delivery");
         //this.setLayout(new BorderLayout());
-        //Dimensions 
+        //Dimensions
         //setSize(new Dimension(1000, 800)); // to do in a separate method
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(null);
-        
+
         menuBar = new MainMenuBar( this, controller );
-        
+
         mapMenuPanel = new CityMapMenuView(this, controller);
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
         errorAreaPanel = new ErrorAreaView(this, controller);
-        
-        
+
         this.setJMenuBar( menuBar );
+        //add colors
+        colors = new Color[20];
+        setColors(colors);
+
         setWindowSize();
         setSize(width, height);
         setPreferredSize(new Dimension(width, height));
-        
+
         setVisible(true);
     }
 
@@ -80,8 +84,23 @@ public class Window extends JFrame {
 
     public MainMenuBar getMenuBarPanel() {
     		return this.menuBar;
+		}
+
+    public void setColors(Color[] colors){
+        colors[1] = new Color(205, 0, 0);
+        colors[2] = new Color(0, 155, 0);
+        colors[3] = new Color(0, 155, 216);
+        colors[4] = new Color(168, 0, 216);
+        colors[5] = new Color(250, 210, 197);
+        colors[6] = new Color(252, 144, 241);
+        colors[7] = new Color(113, 59, 241);
+        colors[8] = new Color(162, 164, 70);
+        colors[9] = new Color(245, 164, 70);
+        colors[10] = new Color(244, 88, 101);
+        colors[11] = new Color(138, 252, 235);
+        colors[12] = new Color(251, 1, 161);
     }
-    
+
     public CityMapMenuView getCityMapMenuPanel() {
         return mapMenuPanel;
     }
@@ -97,17 +116,17 @@ public class Window extends JFrame {
     public ErrorAreaView getErrorAreaPanel() {
         return errorAreaPanel;
     }
-    
+
     public void setWaitingState(int ws) {
         if (ws == 0){
             mapMenuPanel.getComputeCircuitsButton().setEnabled(false);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(false);
             mapMenuPanel.getLoadNewCityMapButton().setEnabled(false);
             mapMenuPanel.getAddNewDeliveryButton().setEnabled(false);
-            
+
         } else if (ws == 1){
             mapMenuPanel.addNewDelivery("time");
-            
+
         } else if (ws == 2){
             mapMenuPanel.addNewDelivery("");
             mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
@@ -118,7 +137,7 @@ public class Window extends JFrame {
         mapMenuPanel.repaint();
         waitingState = ws;
     }
-    
+
     public int getWaitingState() {
         return waitingState;
     }
