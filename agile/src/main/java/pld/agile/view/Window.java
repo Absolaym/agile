@@ -22,6 +22,8 @@ public class Window extends JFrame {
     protected final static String DELETE_DELIVERY = "Delete";
     protected final static String MOVE_DELIVERY_BEFORE = "Move delivery before";
     protected final static String MOVE_DELIVERY_AFTER = "Move delivery after";
+    protected final static String UNDO = "Undo";
+    protected final static String REDO = "Redo";
 
     
     
