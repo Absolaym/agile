@@ -101,6 +101,12 @@ public class ButtonListener implements ActionListener {
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
             System.out.println("move delivery after");
         }
+        else if (e.getActionCommand().equals(Window.UNDO)) {
+            System.out.println("undo");
+        }
+        else if (e.getActionCommand().equals(Window.REDO)) {
+            System.out.println("redo");
+        }
 
     }
 
