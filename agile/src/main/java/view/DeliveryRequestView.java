@@ -52,7 +52,7 @@ class TableRow extends Observable {
 
 public class DeliveryRequestView extends JPanel {
 
-    private ButtonListener buttonListener;
+//    private ButtonListener buttonListener;
     private JPanel deliveryRequestViewPanel;
     private JPanel deliveriesContainer;
     private JPanel deliveriesListContainer;
@@ -69,7 +69,7 @@ public class DeliveryRequestView extends JPanel {
         super();
         controller = c;
         window = w;
-        buttonListener = new ButtonListener(c, w);
+//        buttonListener = new ButtonListener(c, w);
 
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
@@ -174,6 +174,8 @@ public class DeliveryRequestView extends JPanel {
             JButton btnMoveBefore = new JButton("");
             JButton btnMoveAfter = new JButton("");
             JButton btnDelete = new JButton("Delete");
+            
+            ButtonListener btnListener = new ButtonListener(controller, window, d);
 
             txtArrivalTime.setOpaque(false);
             txtCircuit.setOpaque(false);
@@ -196,9 +198,9 @@ public class DeliveryRequestView extends JPanel {
             btnMoveAfter.setContentAreaFilled(false);
             btnMoveAfter.setFocusable(false);
 
-            btnMoveBefore.addActionListener(buttonListener);
-            btnMoveAfter.addActionListener(buttonListener);
-            btnDelete.addActionListener(buttonListener);
+            btnMoveBefore.addActionListener(btnListener);
+            btnMoveAfter.addActionListener(btnListener);
+            btnDelete.addActionListener(btnListener);
 
             btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
             btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);

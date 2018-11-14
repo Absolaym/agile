@@ -7,6 +7,7 @@ package view;
 
 import controller.Controller;
 import model.DeliveryRequest;
+import model.Delivery;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -26,11 +27,18 @@ public class ButtonListener implements ActionListener {
 
     private Controller controller;
     private Window window;
+    private Delivery delivery;
 
-
+    public ButtonListener(Controller c, Window w, Delivery d) {
+        this.controller = c;
+        this.window = w;
+        this.delivery = d;
+    }
+    
     public ButtonListener(Controller c, Window w) {
         this.controller = c;
         this.window = w;
+        this.delivery = null;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -93,6 +101,8 @@ public class ButtonListener implements ActionListener {
             window.setWaitingState(0);
         }
         else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
+            controller.deleteDelivery(this.delivery, this.delivery.getCircuit());
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             System.out.println("delete delivery");
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
