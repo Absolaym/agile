@@ -12,7 +12,7 @@ import javax.swing.*;
 public class Window extends JFrame {
 
     // Subcomponents of the view
-    private MainMenuBar menuBar;
+//    private MainMenuBar menuBar;
     private CityMapMenuView mapMenuPanel;
     private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;
@@ -51,14 +51,14 @@ public class Window extends JFrame {
 
         setLayout(null);
 
-        menuBar = new MainMenuBar( this, controller );
+//        menuBar = new MainMenuBar( this, controller );
 
         mapMenuPanel = new CityMapMenuView(this, controller);
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
         errorAreaPanel = new ErrorAreaView(this, controller);
 
-        this.setJMenuBar( menuBar );
+//        this.setJMenuBar( menuBar );
         //add colors
         colors = new Color[20];
         setColors(colors);
@@ -82,11 +82,11 @@ public class Window extends JFrame {
                     switch(e.getKeyCode()) {
                     case KeyEvent.VK_Z:
                             Window.this.controller.undo();
-                            Window.this.getMenuBarPanel().onUndo();
+//                            Window.this.getMenuBarPanel().onUndo();
                     break;
                     case KeyEvent.VK_Y:
                             Window.this.controller.redo();
-                            Window.this.getMenuBarPanel().onRedo();
+//                            Window.this.getMenuBarPanel().onRedo();
                             break;
                     }
                 }
@@ -117,9 +117,9 @@ public class Window extends JFrame {
         deliveryRequestPanel.setSize(deliveryRequestPanel.getWidth(), deliveryRequestPanel.getHeight());
     }
 
-    public MainMenuBar getMenuBarPanel() {
-    		return this.menuBar;
-		}
+//    public MainMenuBar getMenuBarPanel() {
+//    		return this.menuBar;
+//		}
 
     public void setColors(Color[] colors){
         colors[1] = new Color(205, 0, 0);
