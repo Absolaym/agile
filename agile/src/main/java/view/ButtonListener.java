@@ -107,9 +107,13 @@ public class ButtonListener implements ActionListener {
             System.out.println("delete delivery");
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
+            controller.moveDeliveryBefore(delivery, this.delivery.getCircuit());
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             System.out.println("move delivery before");
         }
         else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
+            controller.moveDeliveryAfter(delivery, this.delivery.getCircuit());
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             System.out.println("move delivery after");
         }
         else if (e.getActionCommand().equals(Window.UNDO)) {
