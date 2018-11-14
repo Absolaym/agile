@@ -54,13 +54,15 @@ class TableRow extends Observable {
 public class DeliveryRequestView extends JPanel {
 
     private ButtonListener buttonListener;
-    private JPanel deliveryRequestViewPanel /*= new JPanel()*/;
-    private JPanel deliveriesContainer /*= new JPanel()*/;
-    private JPanel deliveriesListContainer /*= new JPanel()*/;
+    private JPanel deliveryRequestViewPanel;
+    private JPanel deliveriesContainer;
+    private JPanel deliveriesListContainer;
     private JScrollPane deliveriesListScrollPane;
 
-    private static Controller controller;
+    
     private ArrayList<TableRow> rows;
+    private int idRow;
+    private static Controller controller;
     private static Window window;
     private final int width = 350;
     private final int height = 700;

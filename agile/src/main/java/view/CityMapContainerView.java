@@ -19,7 +19,7 @@ public class CityMapContainerView extends JPanel implements Observer {
     private JSlider zoomSlider;
 
     private final int HEIGHT = 650;
-    private final int WIDTH = 1000;
+    private final int WIDTH = 650;
     private Controller controller;
     private Window window;
 
