@@ -34,7 +34,7 @@ public class ButtonListener implements ActionListener {
         this.window = w;
         this.delivery = d;
     }
-    
+
     public ButtonListener(Controller c, Window w) {
         this.controller = c;
         this.window = w;
@@ -42,52 +42,52 @@ public class ButtonListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        
+
         String root = System.getProperty("user.dir");
         String assets = root + "/src/main/assets";
-       
+
         if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
-            
-            JFileChooser jfc = new JFileChooser( assets + "/maps/" );
-            
+
+            JFileChooser jfc = new JFileChooser(assets + "/maps/");
+
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
 //                controller.loadCityMap(assets +"/maps/grandPlan.xml");
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
-             
+
                 window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
                 window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
                 window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
                 window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                 window.getCityMapContainerPanel().repaint();
-                
+
             }
-        }  else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
+        } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
 
             try {
-                    JFileChooser jfc = new JFileChooser( assets + "/deliveries" );
-                    int result = jfc.showOpenDialog(window);
-                    
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-                
-                        //controller.loadDeliveryRequest( assets + "/deliveries/dl-petit-3.xml" );
-                        DeliveryRequest deliveryRequest;
-                        deliveryRequest = controller.getModel().getDeliveryRequest();
-                        //get deliveries and send to JTable to be displayed
-                        if(deliveryRequest != null){ 
-                            window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
-                            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
-                        }
-                        window.getCityMapContainerPanel().repaint();
-                        window.getDeliveryRequestPanel().repaint();
-                        window.repaint();
+                JFileChooser jfc = new JFileChooser(assets + "/deliveries");
+                int result = jfc.showOpenDialog(window);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
+
+                    //controller.loadDeliveryRequest( assets + "/deliveries/dl-petit-3.xml" );
+                    DeliveryRequest deliveryRequest;
+                    deliveryRequest = controller.getModel().getDeliveryRequest();
+                    //get deliveries and send to JTable to be displayed
+                    if (deliveryRequest != null) {
+                        window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
+                        window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                     }
+                    window.getCityMapContainerPanel().repaint();
+                    window.getDeliveryRequestPanel().repaint();
+                    window.repaint();
+                }
             } catch (Exception e2) {
                 System.out.print(e2.toString());
-           }
-        }else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
+            }
+        } else if (e.getActionCommand().equals(Window.COMPUTE_CIRCUITS)) {
             int numberOfCouriers = window.getCityMapMenuPanel().getCourierNumber();
             controller.computeCircuits(numberOfCouriers);
             window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
@@ -95,31 +95,35 @@ public class ButtonListener implements ActionListener {
             window.getCityMapContainerPanel().repaint();
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             System.out.println("computed circuits");
-        }
-        else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
+        } else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("select");
             window.setWaitingState(0);
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
-        }
-        else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
+            updateUndoRedoButtons();
+        } else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
             controller.deleteDelivery(this.delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+            updateUndoRedoButtons();
             System.out.println("delete delivery");
-        }
-        else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
+        } else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_BEFORE)) {
             controller.moveDeliveryBefore(delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+            updateUndoRedoButtons();
             System.out.println("move delivery before");
-        }
-        else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
+        } else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
             controller.moveDeliveryAfter(delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+            updateUndoRedoButtons();
             System.out.println("move delivery after");
-        }
-        else if (e.getActionCommand().equals(Window.UNDO)) {
+        } else if (e.getActionCommand().equals(Window.UNDO)) {
+            controller.undo();
+            updateUndoRedoButtons();
+            window.repaint();
             System.out.println("undo");
-        }
-        else if (e.getActionCommand().equals(Window.REDO)) {
+        } else if (e.getActionCommand().equals(Window.REDO)) {
+            controller.redo();
+            updateUndoRedoButtons();
+            window.repaint();
             System.out.println("redo");
         }
 
@@ -131,5 +135,18 @@ public class ButtonListener implements ActionListener {
 
     public Window getWindow() {
         return window;
+    }
+
+    private void updateUndoRedoButtons() {
+        if (controller.canUndo()) {
+            window.getCityMapMenuPanel().getUndoButton().setEnabled(true);
+        } else {
+            window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+        }
+        if (controller.canRedo()) {
+            window.getCityMapMenuPanel().getRedoButton().setEnabled(true);
+        } else {
+            window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
+        }
     }
 }
