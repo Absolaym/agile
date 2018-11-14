@@ -100,6 +100,7 @@ public class ButtonListener implements ActionListener {
             window.setWaitingState(0);
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             updateUndoRedoButtons();
+            window.repaint();
         } else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
             controller.deleteDelivery(this.delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
@@ -109,20 +110,24 @@ public class ButtonListener implements ActionListener {
             controller.moveDeliveryBefore(delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             updateUndoRedoButtons();
+            window.repaint();
             System.out.println("move delivery before");
         } else if (e.getActionCommand().equals(Window.MOVE_DELIVERY_AFTER)) {
             controller.moveDeliveryAfter(delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             updateUndoRedoButtons();
+            window.repaint();
             System.out.println("move delivery after");
         } else if (e.getActionCommand().equals(Window.UNDO)) {
             controller.undo();
             updateUndoRedoButtons();
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             window.repaint();
             System.out.println("undo");
         } else if (e.getActionCommand().equals(Window.REDO)) {
             controller.redo();
             updateUndoRedoButtons();
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             window.repaint();
             System.out.println("redo");
         }
