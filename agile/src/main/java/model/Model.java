@@ -94,13 +94,13 @@ public class Model {
         circuitComputer.execute(this.numberOfCouriers);
         this.setCircuits(circuitComputer.result());
 
-        deliveryRequest = new DeliveryRequest();
+        LinkedList<Delivery> rearrangedDeliveries = new LinkedList<Delivery>();
         for(Circuit circuit : circuits){
             for(Delivery delivery : circuit.getDeliveries()){
-                deliveryRequest.addDelivery(delivery);
+                rearrangedDeliveries.add(delivery);
             }
         }
-
+        this.deliveryRequest.setDeliveries(rearrangedDeliveries);
     }
 
     public int getNumberOfCouriers() {

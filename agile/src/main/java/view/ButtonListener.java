@@ -86,7 +86,7 @@ public class ButtonListener implements ActionListener {
             //window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
-            
+            System.out.println("computed circuits");
         }
         else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("select");
