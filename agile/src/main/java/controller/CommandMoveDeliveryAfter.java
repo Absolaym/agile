@@ -76,7 +76,9 @@ public class CommandMoveDeliveryAfter implements Command {
         Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip1);
         
         Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
+        
         Model.getInstance().rearrangeDeliveries();
+        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
