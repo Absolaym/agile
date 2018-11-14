@@ -53,7 +53,7 @@ public class CommandAddDelivery implements Command {
         Model.getInstance().getCircuits().get(circuitIndex).addTrip(trip2);
         
         Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
-        
+        Model.getInstance().rearrangeDeliveries();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
