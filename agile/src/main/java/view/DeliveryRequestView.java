@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -59,7 +58,6 @@ public class DeliveryRequestView extends JPanel {
     private JPanel deliveriesListContainer;
     private JScrollPane deliveriesListScrollPane;
 
-    
     private ArrayList<TableRow> rows;
     private int idRow;
     private static Controller controller;
@@ -139,7 +137,7 @@ public class DeliveryRequestView extends JPanel {
         deliveriesListContainer.removeAll();
         deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
 
-        if(controller.getModel().getDeliveryRequest() != null){
+        if (controller.getModel().getDeliveryRequest() != null) {
             LinkedList<Delivery> deliveries = controller.getModel().getDeliveryRequest().getDeliveries();
             for (int i = 0; i < deliveries.size(); i++) {
                 Delivery d = deliveries.get(i);
@@ -157,7 +155,7 @@ public class DeliveryRequestView extends JPanel {
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtDuration = new JTextArea("" + (d.getDuration()/60)+" min");
+        JTextArea txtDuration = new JTextArea("" + (d.getDuration() / 60) + " min");
 
         txtAddress.setOpaque(false);
         txtDuration.setOpaque(false);
@@ -182,7 +180,7 @@ public class DeliveryRequestView extends JPanel {
 
             txtArrivalTime.setEditable(false);
             txtCircuit.setEditable(false);
-            
+
             String root = System.getProperty("user.dir");
             String img = root + "/src/main/assets/img/";
 
@@ -236,7 +234,6 @@ public class DeliveryRequestView extends JPanel {
                     } else {
                         r.setIsSelected(false);
                         setRowColor(r.getRow(), r.getDelivery().getCircuit());
-//                        r.getRow().setBackground(null);
                     }
                 }
             }
@@ -275,7 +272,9 @@ public class DeliveryRequestView extends JPanel {
 
     public void setRowColor(Component comp, Circuit circuit) {
         int i = 0;
-        if (circuit != null) i = circuit.getCourierId();
+        if (circuit != null) {
+            i = circuit.getCourierId();
+        }
         Color c = window.colors[i];
         //Color c = new Color ((int)(255*0.5),0, 0);
         if (i == 0) {
