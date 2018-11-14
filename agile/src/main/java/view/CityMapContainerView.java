@@ -156,6 +156,7 @@ public class CityMapContainerView extends JPanel implements Observer {
                         window.setWaitingState(2);
                     }
                 }
+                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                 repaint();
             }
         });

@@ -99,6 +99,7 @@ public class ButtonListener implements ActionListener {
         else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("select");
             window.setWaitingState(0);
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
         }
         else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
             controller.deleteDelivery(this.delivery, this.delivery.getCircuit());
