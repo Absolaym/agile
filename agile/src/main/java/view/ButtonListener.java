@@ -101,6 +101,17 @@ public class ButtonListener implements ActionListener {
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
             updateUndoRedoButtons();
             window.repaint();
+        } else if (e.getActionCommand().equals(Window.GO_BACK_TO_PREVIOUS_STEP)) {
+            window.getCityMapMenuPanel().addNewDelivery("select");
+            window.setWaitingState(0);
+            window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+            updateUndoRedoButtons();
+            window.repaint();
+        } else if (e.getActionCommand().equals(Window.CANCEL_ADDING_DELIVERY)) {
+            window.getCityMapMenuPanel().addNewDelivery("cancel");
+            window.setWaitingState(0);
+            updateUndoRedoButtons();
+            window.repaint();
         } else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
             controller.deleteDelivery(this.delivery, this.delivery.getCircuit());
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);

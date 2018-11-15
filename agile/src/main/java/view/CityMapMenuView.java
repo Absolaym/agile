@@ -29,12 +29,14 @@ public class CityMapMenuView extends JPanel {
     private JTextField deliveryDurationField;
     
     private JPanel messages;
+    
+    ButtonListener buttonListener;
 
     public CityMapMenuView(Window w, Controller controller) {
         setLayout(new FlowLayout());
         loadNewCityMapButton = new JButton("Load a new city map");
         loadNewCityMapButton.setEnabled(false);
-        ButtonListener buttonListener = new ButtonListener(controller, w);
+        buttonListener = new ButtonListener(controller, w);
 
         computeCircuitsButton = new JButton("Compute circuits");
         computeCircuitsButton.addActionListener(buttonListener);
@@ -65,7 +67,7 @@ public class CityMapMenuView extends JPanel {
 
         messages = new JPanel(new FlowLayout());
         messages.setBackground(Color.WHITE);
-        messages.setPreferredSize(new Dimension(600, 50));
+        messages.setPreferredSize(new Dimension(800, 50));
 
         this.add(loadNewCityMapButton);
         this.add(loadDeliveryRequestButton);
@@ -93,6 +95,7 @@ public class CityMapMenuView extends JPanel {
     public void addNewDelivery(String step) {
         messages.removeAll();
         if (step.equals("")) return;
+        if (step.equals("cancel")) return;
         
         JLabel text = new JLabel();
         deliveryDurationField = null;
@@ -101,6 +104,12 @@ public class CityMapMenuView extends JPanel {
         else if (step.equals("time")) {
             text.setText("Please choose a circuit on the map.  Delivery duration : ");
             deliveryDurationField = new JTextField("5", 4);
+            JButton goBackToPreviousStepButton = new JButton("Go back to previous step");
+            JButton cancelAddingDeliveryButton = new JButton("Cancel");
+            goBackToPreviousStepButton.addActionListener(buttonListener);
+            cancelAddingDeliveryButton.addActionListener(buttonListener);
+            messages.add(goBackToPreviousStepButton);
+            messages.add(cancelAddingDeliveryButton);
         }
         text.setSize(text.getPreferredSize().width, 30);
         int textLocationX = messages.getWidth() / 2 - text.getSize().width/2;
