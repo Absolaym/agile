@@ -29,4 +29,41 @@ public class CircuitOperationsTest  extends TestCase {
         
     }
     
+    /**
+     * make a delivery request with the delivery
+     * and a circuit with the delivery
+     * make a dr and a circit without 
+     * and then delete the delivery
+     * check the circuit and dr are equal
+     */
+    public void testDeleteDelivery() throws Exception {
+        
+    }
+    
+    /**
+     * make a dr and a circuit with the delivery already moved
+     * make a dr and a circuit wth the delivery not moved
+     * move the delivery 
+     * check the circuit and dr are equal
+     * do it for a delivery in the middle of the circuit and
+     * for one that is the first of the circuit (it shall not move then)
+     * @throws Exception 
+     */
+    public void testMoveBefore() throws Exception{
+        
+    }
+    
+    /**
+     * make a dr and a circuit with the delivery already moved
+     * make a dr and a circuit wth the delivery not moved
+     * move the delivery 
+     * check the circuit and dr are equal
+     * do it for a delivery in the middle of the circuit and
+     * for one that is the first of the circuit (it shall not move then)
+     * @throws Exception 
+     */
+    public void testMoveAfter() throws Exception{
+        
+    }
+    
 }
