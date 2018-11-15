@@ -69,10 +69,10 @@ public class CityMapMenuView extends JPanel {
 
         this.add(loadNewCityMapButton);
         this.add(loadDeliveryRequestButton);
-        this.add(computeCircuitsButton);
-        this.add(addNewDeliveryButton);
         this.add(courierNumberLabel);
         this.add(courierNumberField);
+        this.add(computeCircuitsButton);
+        this.add(addNewDeliveryButton);
  
         this.add(addNewDeliveryButton);
         
