@@ -25,6 +25,18 @@ public class DeliveryRequest {
     public DeliveryRequest() {
         this.deliveries = new LinkedList<Delivery>();
     }
+
+    /**
+     * for test purposes
+     * @param deliveries
+     * @param warehouseIntersection
+     * @param time 
+     */
+    public DeliveryRequest(LinkedList<Delivery> deliveries, Intersection warehouseIntersection, Time time) {
+        this.deliveries = deliveries;
+        this.warehouseIntersection = warehouseIntersection;
+        this.departureTime = time;
+    }
     
     /**
      * 
