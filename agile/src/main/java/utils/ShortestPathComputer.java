@@ -40,7 +40,6 @@ public class ShortestPathComputer {
 
 		
 		this.nodes = new HashMap<String, Node>();
-		this.shortestPaths.clear(); // Don't fool me here GB, clear the inner hashmaps <3
 		
 		for(Intersection intersection : cityMap.getIntersections().values())
 			nodes.put(intersection.getId(), new Node(intersection));

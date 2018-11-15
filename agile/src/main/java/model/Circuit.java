@@ -15,7 +15,6 @@ public class Circuit {
 		 */
     public static final int SPEED = 15;
 
-    private String warehouseAddress = "";
     private Time departureTime = new Time();
     private int courierId;
 
@@ -32,7 +31,8 @@ public class Circuit {
     }
     
     /**
-     * 
+     * A section knows to which circuit it belongs
+     * This method makes sure the section belongs to the right circuit
      */
     public void updateSections() {
 
@@ -43,62 +43,93 @@ public class Circuit {
         }
     }
 
-    public void addTripAndDelivery(Trip trip, Delivery delivery) {
-        trips.add(trip);
-        updateSections();
-        deliveries.add(delivery);
-    }
-
+    /**
+     * Adds a trip to the end of the circuit
+     * @param trip
+     */
     public void addTrip(Trip trip) {
         trips.add(trip);
         updateSections();
     }
     
+    /**
+     * Adds a trip to a specific index in circuit
+     * @param index
+     * @param trip
+     */
     public void addTrip(int index, Trip trip) {
         trips.add(index, trip);
         updateSections();
     }
 
+    /**
+     * Adds a delivery stop to the circuit
+     * @param delivery
+     */
     public void addDelivery(Delivery delivery) {
         deliveries.add(delivery);
     }
     
+    /**
+     * Adds a delivery to a specific index of the circuit
+     * @param index
+     * @param delivery
+     */
     public void addDelivery(int index, Delivery delivery) {
         deliveries.add(index, delivery);
     }
 
+    /**
+     * Returns the trips in the circuit
+     * @return a list of the trips in the circuit
+     */
     public LinkedList<Trip> getTrips() {
         return trips;
     }
 
+    /**
+     * Returns the deliveries in the circuit
+     * @return a list of the deliveries in the circuit
+     */
     public LinkedList<Delivery> getDeliveries() {
         return deliveries;
     }
 
-    public String getWarehouseAddress() {
-        return warehouseAddress;
-    }
-
-    public void setWarehouseAddress(String warehouseAddress) {
-        this.warehouseAddress = warehouseAddress;
-    }
-
+    /**
+     * Returns the departure time of the circuit
+     * @return the departure time from the warehouse
+     */
     public Time getDepartureTime() {
         return departureTime;
     }
 
+    /**
+     * Sets the departure time of the circuit
+     * @param departureTime
+     */
     public void setDepartureTime(Time departureTime) {
         this.departureTime = departureTime;
     }
 
+    /**
+     * Gets the id of the courier. It's just a number
+     * @return the id of the courier
+     */
     public int getCourierId() {
         return courierId;
     }
 
+    /**
+     * Gets the id of the courier. It's just a number
+     * @param courierId the number of the courier
+     */
     public void setCourierId(int courierId) {
         this.courierId = courierId;
     }
     
+    /**
+     * Updates the departure and arrival time for each delivery
+     */
     public void updateDeliveryInfos(){
         int arrivalTimeSeconds = this.getDepartureTime().time;
         System.out.println(this.getDepartureTime());
@@ -115,7 +146,7 @@ public class Circuit {
 
     @Override
     public String toString() {
-        return "Circuit{" + "warehouseAddress=" + warehouseAddress + ", departureTime=" + departureTime + ", courierId=" + courierId + ", trips=" + trips + ", deliveries=" + deliveries + '}';
+        return "Circuit{" + "departureTime=" + departureTime + ", courierId=" + courierId + ", trips=" + trips + ", deliveries=" + deliveries + '}';
     }
 
 }

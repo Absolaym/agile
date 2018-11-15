@@ -146,7 +146,7 @@ public class Model {
 	 * Compute the shortest paths between deliveries
 	 */
 	public void computeShortestPaths(){
-		if(this.deliveryRequest == null) {
+		if(this.cityMap == null) {
 			ErrorLogger.getInstance().log( ProjectError.NO_MAP_BEF_CIRCUIT );
 			return;
 		}
