@@ -13,10 +13,11 @@ import model.Section;
 import model.Trip;
 
 /**
- * This class computes shortest path on citymaps.
- * It's designed to keep track of the shortest path trhoughout the calls
+<<<<<<< HEAD
+ * Class computes the shortest paths that link deliveries to each other 
+ * and to the warehouse using the Dijkstra algorithm
+ * It's designed to keep track of the shortest path throughout the calls
  * @author johnny
- *
  */
 public class ShortestPathComputer {
 	
@@ -29,9 +30,9 @@ public class ShortestPathComputer {
 	public ShortestPathComputer(){}
 	
 	/**
-	 * Initialize the shortest path
-	 * @param aCityMap
-	 * @param aDeliveryRequest
+	 * Initializes class to be able to perform the computations
+	 * @param aCityMap the city map in which the deliveries are based
+	 * @param aDeliveryRequest a delivery request containing a not null list of deliveries
 	 */
 	public void init(CityMap aCityMap, DeliveryRequest aDeliveryRequest){
 		this.cityMap = aCityMap;
@@ -53,6 +54,11 @@ public class ShortestPathComputer {
 				
 	}
 	
+	/*
+	 * Computes all shortest paths linking each delivery from the delivery request 
+	 * with one another and with the warehouse
+	 * The init method must be called first
+	 */
 	public void computeAllShortestPaths() { //formerly: execute
 		
 		LinkedList<Delivery> deliveries = deliveryRequest.getDeliveries();
@@ -64,6 +70,13 @@ public class ShortestPathComputer {
 		return;
 	}
 	
+	/*
+	 * Computes all shortest paths linking the new delivery to the warehouse and
+	 * to the other deliveries from the delivery request
+	 * The init method must be called first
+	 * @param newDelivery the new delivery to take into account
+	 * @param previousShortestPaths the shortest paths already computed for the delivery request
+	 */
 	public void setShortestPathsForNewDelivery(Delivery newDelivery, HashMap<String, HashMap<String, Trip>> previousShortestPaths) {
 		this.shortestPaths = previousShortestPaths;
 		
@@ -75,10 +88,12 @@ public class ShortestPathComputer {
 		
 	}
 
+
 	/**
-	 * Compute the shortest paths from every deliveries to the other deliveries and from the warehouse to the deliveries
-	 * @param delivery
-	 * @param deliveries
+	 * Computes shortest paths that go from to this delivery to all of the rest
+	 * and shortest paths involving this delivery and the warehouse
+	 * @param delivery the target delivery
+	 * @param deliveries the list of origin deliveries. It can contain the origin delivery
 	 */
 	private void setShortestPathsFromDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
 		Node origin = this.nodes.get( delivery.getAddress() );
@@ -106,8 +121,12 @@ public class ShortestPathComputer {
 			addShortestPath(origin, target, inter);				
 		}
 	}
-	
-	//set paths that arrive to this delivery from all of the rest
+
+	/**
+	 * Sets shortest paths that arrive to this delivery from all of the rest
+	 * @param delivery the target delivery
+	 * @param deliveries the list of origin deliveries. It can contain the target delivery
+	 */
 	private void setShortestPathsToDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
 		Node origin;
 		Node target = this.nodes.get( delivery.getAddress() );
@@ -128,10 +147,24 @@ public class ShortestPathComputer {
 		}
 	}
 	
+	/**
+	 * Returns an object containing the shortest paths that link 
+	 * the deliveries of the request to each other and to the warehouse
+	 * @return a hashmap containing, for each origin delivery, 
+	 * a hashmap containing for each target delivery the shortest path that 
+	 * links the origin delivery to the target delivery
+	 */
+
 	public HashMap<String, HashMap<String, Trip>> result() {
 		return this.shortestPaths;
 	}
 	
+	/**
+	 * Adds shortest path that links an origin delivery to a target delivery
+	 * @param origin the node corresponding to the origin delivery
+	 * @param target the node corresponding to the target delivery
+	 * @param inter the object containing the shortest path computed by the Dijkstra algorithm.
+	 */
 	private void addShortestPath(Node origin, Node target, IntermediateResult inter) {
 		HashMap<String, Trip> innerMap= this.shortestPaths.get(origin.intersection.getId());
 		if(innerMap == null)
@@ -146,6 +179,11 @@ public class ShortestPathComputer {
 	// =========== Dijkstra section ==============
 	// ===========================================
 	
+	/*
+	 * Resets the costs to reach each node and resets their parent nodes to be able 
+	 * to compute the Dijkstra algorithm starting from another node.
+	 * @param nodes the nodes of the graph to clean up
+	 */
 	private ShortestPathComputer cleanCosts(Map<String,Node> nodes) {
 		for(Node node : nodes.values()) {
 			node.cost = 2e300;
@@ -154,6 +192,11 @@ public class ShortestPathComputer {
 		return this;
 	}
 	
+	/*
+	 * Resets the nodes of this instance: resets costs to reach each node
+	 *  and resets their parent nodes to be able to compute the Dijkstra
+	 *  algorithm starting from another node.
+	 */
 	private ShortestPathComputer cleanCosts() {
 		return cleanCosts(this.nodes);
 	}
@@ -178,6 +221,13 @@ public class ShortestPathComputer {
 		return this;
 	}
 	
+	/**
+	 * Recreates the shortest path after all the costs and parent nodes have been set
+	 * @param origin the origin node
+	 * @param target the target node
+	 * @return an object containing the shortest path
+	 */
+
 	private IntermediateResult resolveDijkstra(Node origin, Node target) {
 		IntermediateResult inter = new IntermediateResult();
 		
@@ -198,11 +248,14 @@ public class ShortestPathComputer {
 	
 	
 
-	
+
 	//---------------------- Inner classes --------------------------
-	// This classes wraps the informations of the citymap to make the 
+	// These classes wrap the informations of the cityMap to make the 
 	// computations easier
-	
+
+	/**
+	 * This class wraps intersections to make the Dijkstra implementation easier
+	 */
 	private class Node {
 		Intersection intersection;
 		LinkedList<Link> links; 
@@ -226,6 +279,9 @@ public class ShortestPathComputer {
 		
 	}
 	
+	/**
+	 * This class wraps sections to make the Dijkstra implementation easier
+	 */
 	public class Link {
 		Section section;
 		Node startNode;

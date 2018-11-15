@@ -2,9 +2,6 @@ package utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.*;
 import model.Delivery;
@@ -121,7 +118,7 @@ public class XmlParser {
 		
 		if(!extensionCheck(filePath)) {
 			ErrorLogger.getInstance().log(ProjectError.NON_XML_CM );
-			return map;
+			return null;
 		}
 		
 		try {
@@ -150,7 +147,10 @@ public class XmlParser {
 				case "troncon":
 					Section sec = new Section();
 					double length = Double.parseDouble(elem.getAttribute("longueur"));
-					checkPositive(length);
+					if(!checkPositive(length)) {
+						ErrorLogger.getInstance().log(ProjectError.NON_XML_CM );
+						return null;
+					};
 					sec.setLength(length);
 					sec.setStreetName(elem.getAttribute("nomRue"));
 					sec.setStartIntersection( map.getIntersectionById(elem.getAttribute("origine")) );
@@ -171,14 +171,31 @@ public class XmlParser {
 		return map;
 	}
 	
-	private void checkPositive(double value) throws SAXException {
-		if(value < 0) throw new SAXException();
+	/**
+	 * Checks if the number is positive
+	 * @param value the number
+	 * @return true if the number is positive
+	 */
+	private boolean checkPositive(double value) {
+		if(value < 0) return false;
+		return true;
 	}
 	
+	/**
+	 * Checks if the selected file is a .xml
+	 * @param the path to the file
+	 * @return true if the file is a .xml
+	 */
 	private boolean extensionCheck(String path) {
 		return this.extensionCheck(path, "xml");
 	}
 	
+	/**
+	 * Checks if the selected file has a certain extension
+	 * @param path the path to the file
+	 * @param extension the extension in question
+	 * @return true if the file has the said extension
+	 */
 	private boolean extensionCheck(String path, String extension) {
 		String[] split = path.split("[.]");
 		return (split.length > 1 && split[split.length - 1].equals(extension));

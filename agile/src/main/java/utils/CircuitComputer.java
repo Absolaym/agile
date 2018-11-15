@@ -10,6 +10,14 @@ import model.Trip;
 import tspImproved.TSP1;
 import model.Circuit;
 
+/**
+ * 
+ * @author MarieFrance
+ * 
+ * Class divides deliveries into a given amount of clusters
+ * and computes circuits 
+ *
+ */
 public class CircuitComputer {
 
     private DeliveryRequest deliveryRequest;
@@ -26,11 +34,21 @@ public class CircuitComputer {
 
     }
 
+    /**
+  	 * Initializes class to 
+  	 * @param aDeliveryRequest the delivery request containing the deliveries to use
+  	 * @param someShortestPaths the shortest paths that link the deliveries with eachother and with the warehouse
+  	 */
     public void init(DeliveryRequest aDeliveryRequest, HashMap<String, HashMap<String, Trip>> someShortestPaths) {
         this.deliveryRequest = aDeliveryRequest;
         this.shortestPaths = someShortestPaths;
     }
 
+    /**
+  	 * Creates the clusters with a K-MEANS approach. This class must be initialized before calling execute
+  	 * and creates the circuits with calling a TSP algorithm
+  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
+  	 */
     public void execute(int numberOfCouriers) {
         LinkedList<LinkedList<Delivery>> clusters = findBestClusters(numberOfCouriers);
         
@@ -56,8 +74,11 @@ public class CircuitComputer {
         }
     }
 
-
-    public LinkedList<LinkedList<Delivery>> findBestClusters(int numberOfCouriers) {
+    /**
+  	 * Creates clusters several times with a K-MEANS approach having roughly the same size and chooses the one with the best quality
+  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
+  	 */
+    private LinkedList<LinkedList<Delivery>> findBestClusters(int numberOfCouriers) {
 
         LinkedList<LinkedList<Delivery>> bestClusters = new LinkedList<LinkedList<Delivery>>();
         double bestQuality = Double.MAX_VALUE;
@@ -77,6 +98,11 @@ public class CircuitComputer {
         return (bestClusters);
     }
 
+    /**
+  	 * Computes the quality of a set of clusters adding the distance between each delivery and its cluster center. 
+  	 * This is useful to assess which clustering solution is better, after the clusters have been moved to even out the cluster sizes
+  	 * @param clustersAndCenters each cluster of the solution paired with its center
+  	 */
     public double computeClustersQuality(Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> clustersAndCenters) {
         // The quality of a group of clusters equals to the sum of all of the distances between deliveries
         double quality = 0;
@@ -94,6 +120,10 @@ public class CircuitComputer {
         return (quality);
     }
 
+    /**
+  	 * Creates the clusters with a K-MEANS approach. The clusters are not necessarily the same size
+  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
+  	 */
     private Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> createClustersWithKMeans(int numberOfCouriers) {
         LinkedList<Delivery> deliveries = this.deliveryRequest.getDeliveries();
         int totalDeliveries = deliveries.size();
@@ -166,7 +196,12 @@ public class CircuitComputer {
         return (clustersAndCenters);
     }
     
-    
+    /**
+  	 * Computes the center of a cluster. Useful for the K-MEANS clustering implementation
+  	 * @param numberOfCouriers the number of couriers which is also the number of clusters
+  	 * @param clusters the cluster to be computed
+  	 * @return the new cluster centers
+  	 */
     private Geolocation[] computeNewCentersGeolocations(int numberOfCouriers, LinkedList<LinkedList<Delivery>> clusters) {
     	
     	Geolocation[] centers = new Geolocation[numberOfCouriers]; 
@@ -189,6 +224,14 @@ public class CircuitComputer {
         return (centers);
     }
 
+    /*
+     * Takes random deliveries from clusters that are too big and puts them
+     *  in clusters that are too small and vice-versa until they are all roughly the same size.
+     *  This means that the biggest cluster can has at most 2 deliveries more than the smallest one
+     * @param clusters the clusters to be equalized
+     * @param avgClusterSize the number of deliveries in the request devided by the number of clusters
+     * @return a list of clusters that are roughly the same size
+     */
     private LinkedList<LinkedList<Delivery>> equalizeClustersSize(LinkedList<LinkedList<Delivery>> clusters, double avgClusterSize) {
 
         for (LinkedList<Delivery> cluster : clusters) {
@@ -216,12 +259,25 @@ public class CircuitComputer {
         return clusters;
     }
 
+    /*
+     * Returns a random index in [0;size[
+     * @param size the size of the collection
+     * @return a random index inferior to the size of the collection
+     */
     private int getRandomIndex(int size) {
         double randomDouble = Math.random() * size;
         int randomInt = (int) randomDouble;
         return randomInt;
     }
 
+    /*
+     * Creates a circuit for a given cluster. An more specifically, creates the necessary 
+     * parameters to call the TSP algorithm provided for a given cluster. Then calls it. 
+     * Then transforms the results into the business objects used in the rest of the program.
+     * Then adds it to the attribute circuits of this class
+     * @param cluster the cluster for which a circuit must be computed
+     * @param clusterSize the size of the cluster
+     */
     private void runTSP(LinkedList<Delivery> cluster, int clusterSize) {
         int graphCardinality = clusterSize + 1; //because we must include the warehouse
         int[][] tripLength = new int[graphCardinality][graphCardinality];
@@ -292,6 +348,11 @@ public class CircuitComputer {
         this.circuits.add(circuit);
     }
 
+    /* 
+     * Returns the list of computed circuits
+     * The methods init and execute must be called first
+     * @return the list of computed circuits
+     */
     public LinkedList<Circuit> result() {
         return this.circuits;
     }
