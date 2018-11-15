@@ -3,10 +3,11 @@ package error;
 public enum ProjectError {
     
 	//CityMap Errors
-	UNCONNECTED_INTERSECTION("UC1-UI", "One intersection is not connected to the reste of the map making it impossible to reach"),
+	UNCONNECTED_INTERSECTION("UC1-UI", "One intersection is not connected to the rest of the map making it impossible to reach"),
 	CORRUPTED_XML_CM("UC1-CX", "This file is not well formatted as an xml"),
 	EMPTY_XML_CM("UC1-EX", "This file is empty"),
 	NON_XML_CM("UC1_NX","This file is not an XML file"),
+	NEGATIVE_SECTION_LENGTH_VALUE("UC1_NV", "One or more section lengths are negative"),
 	
         //DeliveryRequest Errors
 	CORRUPTED_XML_DR("UC2-CX", "This file is not well formatted as an xml"),
@@ -14,7 +15,7 @@ public enum ProjectError {
 	NON_XML_DR("UC2_NX","This file is not an XML file"),
 	NON_STD_DR("UC2_NS", "The object described in the file does not respect the standard description of a DR, thus the object cannot be created"),
 	DEL_ADDRESS_NOT_IN_MAP("UC2-DANIM", "The address of one of deliveries is not in the map"),
-	NEGATIVE_DURATION("UC2-ND", "A delivery gots a negative value as duration"),
+	NEGATIVE_DURATION("UC2-ND", "A delivery has a negative value as duration"),
 	//NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
 	
         //Circuits Errors
