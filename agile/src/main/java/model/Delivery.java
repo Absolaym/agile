@@ -33,6 +33,18 @@ public class Delivery {
     public Delivery() {}
 
     /**
+     * for test purposes
+     * @param address
+     * @param geolocation 
+     */
+    public Delivery(String address, Geolocation geolocation) {
+        this.address = address;
+        this.geolocation = geolocation;
+    }
+    
+    
+
+    /**
      * Get the id of the address
      * @return
      */

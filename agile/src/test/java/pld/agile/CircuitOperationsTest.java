@@ -6,6 +6,8 @@
 package pld.agile;
 
 import junit.framework.*;
+import model.*;
+import java.util.LinkedList;
 /**
  *
  * @author Lucie
@@ -16,6 +18,8 @@ public class CircuitOperationsTest  extends TestCase {
      * test nb of circuits and nb of deliveries per circuit
      */
     public void testCircuitComputation() throws Exception {
+        DeliveryRequest dr = new DeliveryRequest();
+        LinkedList<Delivery> Deliveries = new LinkedList<Delivery>();
         
     }
     
