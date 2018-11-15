@@ -7,6 +7,7 @@ package view;
 
 import controller.Controller;
 import model.DeliveryRequest;
+import model.CityMap;
 import model.Delivery;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,12 +56,14 @@ public class ButtonListener implements ActionListener {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
 //                controller.loadCityMap(assets +"/maps/grandPlan.xml");
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
-
-                window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
-                window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
-                window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
-                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
-                window.getCityMapContainerPanel().repaint();
+                CityMap cityMap = controller.getModel().getCityMap();
+                if(!cityMap.isEmpty()) {
+	                window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
+	                window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
+	                window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
+	                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+	                window.getCityMapContainerPanel().repaint();
+                }
 
             }
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
