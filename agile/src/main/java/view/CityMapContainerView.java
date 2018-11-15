@@ -35,13 +35,13 @@ public class CityMapContainerView extends JPanel implements Observer {
     private Delivery newDelivery = null;
     private Section hoveredSection = null;
     private Circuit circuitNewDelivery = null;
+    private Delivery selectedDelivery = null;
 
     // Map elements
     private int delivDotSize = 12;
     private int dotSize = 6;
     private int selectedDotSize = 16;
-    private Delivery selectedDelivery = null;
-
+    
     public CityMapContainerView(Window w, Controller c) {
         super();
         this.controller = c;
@@ -116,7 +116,9 @@ public class CityMapContainerView extends JPanel implements Observer {
 
                 LinkedList<Delivery> delivs = dr.getDeliveries();
                 Geolocation origin = getOrigin(controller.getModel().getCityMap());
-
+                
+                //determines if the user selected a delivery
+                //checks if the coordinates of mouse click correspond to one of the deliveries
                 for (Delivery d : delivs) {
                     Geolocation geo = geolocationToPixels(origin, d.getGeolocation());
 
@@ -132,22 +134,19 @@ public class CityMapContainerView extends JPanel implements Observer {
                     window.repaint();
                 }
 
-                //waiting for user to click on delivery
+                //Adding a new delivery
+                //state 0: waits for user to click on an intersection
                 if (window.getWaitingState() == 0) {
                     //getClosestLocation
-
                     newDeliveryIntersection = getIntersectionByCoordinates(x, y);
                     if (newDeliveryIntersection != null) {
                         window.setWaitingState(1);
                     }
-                    //waiting for user to click on circuit
+                //state 1: waits for user to select a circuit for the new delivery
                 } else if (window.getWaitingState() == 1) {
                     Section sectionNewDelivery = getSectionByCoordinates(x, y);
                     circuitNewDelivery = sectionNewDelivery.getCircuit();
-                    if (circuitNewDelivery == null) {
-                        //add an error: CHoose a valid circuit
-                        // window.getCityMapMenuPanel().add(new JTextField("Choose a valid circuit"));
-                    } else {
+                    if (circuitNewDelivery != null) {
                         newDelivery = new Delivery();
                         newDelivery.setAddress(newDeliveryIntersection.getId());
                         newDelivery.setDuration(window.getCityMapMenuPanel().getDeliveryDuration());
@@ -166,11 +165,10 @@ public class CityMapContainerView extends JPanel implements Observer {
                 repaint();
             }
         });
+        
         this.addMouseMotionListener(new MouseMotionListener() {
-
             public void mouseDragged(MouseEvent e) {
                 CityMapContainerView that = CityMapContainerView.this;
-
                 Vector2D dims = that.controller.getModel().getCityMap().getCoveredAreaDimensions();
 
                 that.offsetX += e.getX() - that.originX;
@@ -184,11 +182,12 @@ public class CityMapContainerView extends JPanel implements Observer {
                 that.originY = e.getY();
                 CityMapContainerView.this.repaint();
             }
-
+            
+            // on mouse moved : hovers an intersection or a section
             public void mouseMoved(MouseEvent e) {
                 int x = (int) (e.getX());
                 int y = (int) (e.getY());
-
+                
                 Section section = getSectionByCoordinates(x, y);
                 Intersection intersection = getIntersectionByCoordinates(x, y);
 
@@ -200,7 +199,13 @@ public class CityMapContainerView extends JPanel implements Observer {
             }
         });
     }
-
+    
+    /**
+     * Checks if an intersection with the given coordinates exists in the list of intersections
+     * @param x mouse coordinate x
+     * @param y mouse coordinate y
+     * @return the intersection if it exists, null otherwise
+     */
     public Intersection getIntersectionByCoordinates(int x, int y) {
         Intersection intersection = null;
         Geolocation origin = getOrigin(controller.getModel().getCityMap());
@@ -215,6 +220,12 @@ public class CityMapContainerView extends JPanel implements Observer {
         return intersection;
     }
 
+    /**
+     * Checks if a section with the given coordinates exists in the list of sections
+     * @param x mouse coordinate x
+     * @param y mouse coordinate y
+     * @return the section if it exists, null otherwise
+     */
     public Section getSectionByCoordinates(int x, int y) {
         Section sect = null;
         Geolocation origin = getOrigin(controller.getModel().getCityMap());
