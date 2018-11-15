@@ -24,12 +24,16 @@ import error.ErrorLogger;
 import error.ProjectError;
 
 /**
+ * A class dedicated to the parsing of xml files
  * @author Johnny
  */
 public class XmlParser {
 	private DocumentBuilderFactory docBuilderFactory;
 	private DocumentBuilder docBuilder;
 
+	/**
+	 * Create the xml parser
+	 */
 	public XmlParser() {
 		this.docBuilderFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -39,15 +43,12 @@ public class XmlParser {
 			e.printStackTrace();
 		}
 	}
-	
-	private boolean extensionCheck(String path) {
-		return this.extensionCheck(path, "xml");
-	}
-	private boolean extensionCheck(String path, String extension) {
-		String[] split = path.split("[.]");
-		return (split.length > 1 && split[split.length - 1].equals(extension));
-	}
 
+	/**
+	 * Parse a delivery request given its absolute path
+	 * @param filePath
+	 * @return
+	 */
 	public DeliveryRequest parseDeliveryRequest(String filePath) {
 		DeliveryRequest delReq = new DeliveryRequest();
 
@@ -76,6 +77,10 @@ public class XmlParser {
 					del.setAddress(elem.getAttribute("adresse"));
 					del.setDuration(Integer.parseInt(elem.getAttribute("duree")));
 
+					if(del.getDuration().time < 0) {
+						ErrorLogger.getInstance().log(ProjectError.NEGATIVE_DURATION);
+						break;
+					}
 					delReq.addDelivery(del);
 
 					break;
@@ -93,6 +98,8 @@ public class XmlParser {
 
 					break;
 				}
+				
+				//if(delReq.getWarehouseAddress())
 			}
 		} catch (final SAXException e) {
 			e.printStackTrace();
@@ -105,7 +112,7 @@ public class XmlParser {
 	}
 
 	/**
-	 * 
+	 * Parse a map given its absolute path
 	 * @param filePath the path to the xml file you want to convert in a Map
 	 * @return the Map converted
 	 */
@@ -124,8 +131,6 @@ public class XmlParser {
 			final Element root = doc.getDocumentElement();
 
 			NodeList nodes = root.getChildNodes();
-			// If we keep list in the Plan object, this will stay, tho, 
-			// this IMHO should be handled by the class Plan
 
 			for(int i = 0; i < nodes.getLength(); i++) {
 				if(nodes.item(i).getNodeType() != Node.ELEMENT_NODE)	continue;
@@ -168,5 +173,14 @@ public class XmlParser {
 	
 	private void checkPositive(double value) throws SAXException {
 		if(value < 0) throw new SAXException();
+	}
+	
+	private boolean extensionCheck(String path) {
+		return this.extensionCheck(path, "xml");
+	}
+	
+	private boolean extensionCheck(String path, String extension) {
+		String[] split = path.split("[.]");
+		return (split.length > 1 && split[split.length - 1].equals(extension));
 	}
 }

@@ -14,6 +14,7 @@ public enum ProjectError {
 	NON_XML_DR("UC2_NX","This file is not an XML file"),
 	NON_STD_DR("UC2_NS", "The object described in the file does not respect the standard description of a DR, thus the object cannot be created"),
 	DEL_ADDRESS_NOT_IN_MAP("UC2-DANIM", "The address of one of deliveries is not in the map"),
+	NEGATIVE_DURATION("UC2-ND", "A delivery gots a negative value as duration"),
 	//NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
 	
         //Circuits Errors

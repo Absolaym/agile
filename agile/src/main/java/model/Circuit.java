@@ -93,8 +93,8 @@ public class Circuit {
             delivery.setCircuit(this);
             int tripDurationSeconds = (int)(this.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
             arrivalTimeSeconds += tripDurationSeconds;
-            delivery.setArrivalTime(new Time(arrivalTimeSeconds));
-            arrivalTimeSeconds += delivery.getDuration();
+            delivery.setArrivalTime( arrivalTimeSeconds );
+            arrivalTimeSeconds += delivery.getDuration().getSeconds();
             i++;
         }
     }

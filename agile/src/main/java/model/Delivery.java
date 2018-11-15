@@ -5,14 +5,13 @@
  */
 package model;
 
-import java.util.Observable;
 import utils.Time;
 
 /**
- *
+ * This class represents a delivery, it can be observed by the interface
  * @author olivia & Johnny
  */
-public class Delivery extends Observable {
+public class Delivery {
     /**
      * The id of the intersection corresponding to the address
      */
@@ -24,64 +23,79 @@ public class Delivery extends Observable {
     /**
      * The time required to deliver the item to the customer (minutes)
      */
-    private int duration = 0;
+    private Time duration = new Time();
     
     /**
      * The time the courier shall arrive at the delivery address
      */
     private Time arrivalTime = new Time();
 
-    public Delivery() {
+    public Delivery() {}
 
-    }
-
+    /**
+     * Get the id of the address
+     * @return
+     */
     public String getAddress() {
         return this.address;
     }
 
+    /**
+     * Set the id of the address
+     * @warning the geolocation is not changed so please set the address wisely to avoid corrupted data
+     * @param address
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public int getDuration() {
+    /**
+     * Get the time object representing the duration of the delivery
+     * @return
+     */
+    public Time getDuration() {
         return this.duration;
     }
 
+    /**
+     * Sets the duration of the delivery
+     * @param duration in seconds
+     */
     public void setDuration(int duration) {
-        this.duration = duration;
+        this.duration.time = duration;
     }
     
+    /**
+     * Gets the arrival time as a time object
+     * @return
+     */
     public Time getArrivalTime() {
         return this.arrivalTime;
     }
 
-    public void setArrivalTime(Time time) {
-        this.arrivalTime = time;
+    /**
+     * Sets the arrival time of the delivery
+     * @param time in seconds
+     */
+    public void setArrivalTime(int time) {
+    		this.arrivalTime.time = time;
     }
 
-    public String toString() {
-        String str = "";
-
-        str += "Delivery - Location: " + this.address + " \t| ";
-        str += "Duration: " + new Time(this.duration * 60);
-
-        return str;
-    }
-
+    /**
+     * Get the geolocation of the delivery
+     * @return
+     */
     public Geolocation getGeolocation() {
         return geolocation;
     }
 
+    /**
+     * Sets the geolocation of the delivery
+     * @warning be sure to keep this consistent with the address id 
+     * @param geolocation
+     */
     public void setGeolocation(Geolocation geolocation) {
         this.geolocation = geolocation;
-    }
-    
-    public void computeDeliveryGeolocation(CityMap cityMap){
-        Geolocation geolocation = cityMap.getIntersectionGeolocation(this.getAddress());
-        if(geolocation == null){
-            System.out.println("The address " + this.getAddress() + " was not found"); //Error
-        }
-        this.setGeolocation(geolocation);
     }
 
     public Circuit getCircuit() {
@@ -98,9 +112,16 @@ public class Delivery extends Observable {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
-        setChanged();
-        notifyObservers(isSelected);
     }
+    
+    public String toString() {
+      String str = "";
+
+      str += "Delivery - Location: " + this.address + " \t| ";
+      str += "Duration: " + this.duration;
+
+      return str;
+  }
     
     
 }

@@ -49,8 +49,8 @@ public class CircuitComputer {
                 delivery.setCircuit(circuit);
                 int tripDurationSeconds = (int)(circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
                 arrivalTimeSeconds += tripDurationSeconds;
-                delivery.setArrivalTime(new Time(arrivalTimeSeconds));
-                arrivalTimeSeconds += delivery.getDuration();
+                delivery.setArrivalTime( arrivalTimeSeconds );
+                arrivalTimeSeconds += delivery.getDuration().getSeconds();
                 i++;
             }
         }
@@ -236,7 +236,7 @@ public class CircuitComputer {
 
             HashMap<String, Trip> shortestPathsFromDelivery = this.shortestPaths.get(deliveryAddress);
 
-            deliveryDuration[i] = delivery.getDuration();
+            deliveryDuration[i] = delivery.getDuration().getSeconds();
 
             // Establish the shortest paths between warehouse and delivery
             tripLength[0][i] = (int) this.shortestPaths.get(warehouseAddress).get(deliveryAddress).getLength();
