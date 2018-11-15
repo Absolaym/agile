@@ -14,32 +14,36 @@ import model.Model;
  * @author pagilles
  */
 public class CommandChangeCircuit implements Command {
-        
-    private CommandDeleteDelivery comDelDel;
-    private CommandAddDelivery comAddDel;  
-    
-    public CommandChangeCircuit(Delivery d, Circuit oc, Circuit tc){
 
-        comDelDel = new CommandDeleteDelivery(d, oc);
-        comAddDel = new CommandAddDelivery(d, tc);
-    }
-    
-    @Override
-    public void doCde() {
-        
-        comDelDel.doCde();
-        comAddDel.doCde();        
-        
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	private CommandDeleteDelivery comDelDel;
+	private CommandAddDelivery comAddDel;  
 
-    @Override
-    public void undoCde() {
-        
-        comAddDel.undoCde();
-        comDelDel.undoCde();
-        
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+	/**
+	 * Create a move delivery command that moves a delivery from a circuit to an other when executed (and revert it when cancelled)
+	 * @param d The delivery moved
+	 * @param oc The circuit in which the delivery were
+	 * @param tc The circuit in which the delivery will be
+	 */
+	public CommandChangeCircuit(Delivery d, Circuit oc, Circuit tc){
+
+		comDelDel = new CommandDeleteDelivery(d, oc);
+		comAddDel = new CommandAddDelivery(d, tc);
+	}
+
+	@Override
+	public void execute() {
+
+		comDelDel.execute();
+		comAddDel.execute();        
+
+	}
+
+	@Override
+	public void cancel() {
+
+		comAddDel.cancel();
+		comDelDel.cancel();
+
+	}
+
 }
