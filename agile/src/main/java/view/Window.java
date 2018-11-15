@@ -24,6 +24,8 @@ public class Window extends JFrame {
     protected final static String LOAD_NEW_CITY_MAP = "Load a new city map";
     protected final static String LOAD_DELIVERY_REQUESTS = "Load delivery requests";
     protected final static String ADD_DELIVERY = "Add a delivery";
+    protected final static String GO_BACK_TO_PREVIOUS_STEP = "Go back to previous step";
+    protected final static String CANCEL_ADDING_DELIVERY = "Cancel";
     protected final static String DELETE_DELIVERY = "Delete";
     protected final static String MOVE_DELIVERY_BEFORE = "Move delivery before";
     protected final static String MOVE_DELIVERY_AFTER = "Move delivery after";
