@@ -28,18 +28,18 @@ public class CommandsList {
         }
         list.add(c);
         i++;
-        c.doCde();
+        c.execute();
     }
     
     public void undo() {
         if(i >= 0){
-            list.get(i--).undoCde();
+            list.get(i--).cancel();
         }
     }
     
     public void redo() {
         if(i < list.size()-1){
-            list.get(++i).doCde();
+            list.get(++i).execute();
         }
     }
     

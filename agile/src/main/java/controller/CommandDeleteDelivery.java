@@ -35,7 +35,7 @@ public class CommandDeleteDelivery implements Command {
     }
     
     @Override
-    public void doCde() {
+    public void execute() {
         
         String tripOrigin;
         String tripTarget;
@@ -67,7 +67,7 @@ public class CommandDeleteDelivery implements Command {
     }
 
     @Override
-    public void undoCde() {
+    public void cancel() {
         
         Model.getInstance().getDeliveryRequest().addDelivery(delivery);
         Model.getInstance().getCircuits().set(circuitIndex, circuit);

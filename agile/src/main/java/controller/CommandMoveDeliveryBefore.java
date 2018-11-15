@@ -31,7 +31,7 @@ public class CommandMoveDeliveryBefore implements Command {
     }
     
     @Override
-    public void doCde() {
+    public void execute() {
         
         String trip1Origin, trip1Target;
         String trip2Origin, trip2Target;
@@ -83,7 +83,7 @@ public class CommandMoveDeliveryBefore implements Command {
     }
 
     @Override
-    public void undoCde() {
+    public void cancel() {
         
         Model.getInstance().getCircuits().set(circuitIndex, circuit);
         Model.getInstance().rearrangeDeliveries();

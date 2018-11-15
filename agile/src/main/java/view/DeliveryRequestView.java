@@ -155,7 +155,7 @@ public class DeliveryRequestView extends JPanel {
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtDuration = new JTextArea("" + (d.getDuration() / 60) + " min");
+        JTextArea txtDuration = new JTextArea("" + d.getDuration().getMinutes() + " min");
 
         txtAddress.setOpaque(false);
         txtDuration.setOpaque(false);
