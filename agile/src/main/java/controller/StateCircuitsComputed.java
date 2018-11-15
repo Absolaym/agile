@@ -40,6 +40,7 @@ public class StateCircuitsComputed extends StateDefault{
         Model model = c.getModel();
         model.computeCircuits();
         Controller.commandsList = new CommandsList();
+        c.setState(c.STATE_CIRCUITS_COMPUTED);
     }
     
     public void addDelivery(Delivery d, Circuit c) {
