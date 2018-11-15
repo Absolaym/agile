@@ -115,6 +115,9 @@ public class ButtonListener implements ActionListener {
         } else if (e.getActionCommand().equals(Window.CANCEL_ADDING_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("cancel");
             window.setWaitingState(0);
+            window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
+            window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
+            window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(true);
             updateUndoRedoButtons();
             window.repaint();
         } else if (e.getActionCommand().equals(Window.DELETE_DELIVERY)) {
