@@ -25,24 +25,31 @@ public class Section {
     public String getStreetName() {
         return streetName;
     }
+    
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
+    
     public double getLength() {
         return length;
     }
+    
     public void setLength(double length) {
-        this.length = length;
+        this.length = Math.max(0, length);
     }
+    
     public Intersection getStartIntersection() {
         return startIntersection;
     }
+    
     public void setStartIntersection(Intersection startIntersection) {
         this.startIntersection = startIntersection;
     }
+    
     public Intersection getEndIntersection() {
         return endIntersection;
     }
+    
     public void setEndIntersection(Intersection endIntersection) {
         this.endIntersection = endIntersection;
     }

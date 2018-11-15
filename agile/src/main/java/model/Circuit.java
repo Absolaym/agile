@@ -3,8 +3,16 @@ package model;
 import java.util.LinkedList;
 import utils.Time;
 
+/**
+ * This class represents a circuit composed by deliveries and trips between them
+ * @author johnny
+ *
+ */
 public class Circuit {
 
+		/**
+		 * The average speed of a courier on a trip in km/h
+		 */
     public static final int SPEED = 15;
 
     private String warehouseAddress = "";
@@ -14,14 +22,20 @@ public class Circuit {
     private LinkedList<Trip> trips;
     private LinkedList<Delivery> deliveries;
 
+    /**
+     * Create a circuit
+     */
     public Circuit() {
         this.trips = new LinkedList<Trip>();
         this.deliveries = new LinkedList<Delivery>();
         courierId = 0;
     }
     
+    /**
+     * 
+     */
     public void updateSections() {
-        if (trips == null) return;
+
         for(Trip t : trips){
             java.util.List<Section> sections = t.getSections();
             for (Section s : sections)
