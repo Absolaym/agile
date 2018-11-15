@@ -144,7 +144,9 @@ public class XmlParser {
 					break;
 				case "troncon":
 					Section sec = new Section();
-					sec.setLength(Double.parseDouble(elem.getAttribute("longueur")));
+					double length = Double.parseDouble(elem.getAttribute("longueur"));
+					checkPositive(length);
+					sec.setLength(length);
 					sec.setStreetName(elem.getAttribute("nomRue"));
 					sec.setStartIntersection( map.getIntersectionById(elem.getAttribute("origine")) );
 					sec.setEndIntersection( map.getIntersectionById(elem.getAttribute("destination")) );
@@ -162,5 +164,9 @@ public class XmlParser {
 		}
 
 		return map;
+	}
+	
+	private void checkPositive(double value) throws SAXException {
+		if(value < 0) throw new SAXException();
 	}
 }
