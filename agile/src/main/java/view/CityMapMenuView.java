@@ -99,17 +99,20 @@ public class CityMapMenuView extends JPanel {
         
         JLabel text = new JLabel();
         deliveryDurationField = null;
+        
+        JButton cancelAddingDeliveryButton = new JButton("Cancel");
+        cancelAddingDeliveryButton.addActionListener(buttonListener);
+        messages.add(cancelAddingDeliveryButton);
+        
         if (step.equals("select")) 
             text.setText("Please select the delivery address on map.");
+            
         else if (step.equals("time")) {
             text.setText("Please choose a circuit on the map.  Delivery duration : ");
             deliveryDurationField = new JTextField("5", 4);
             JButton goBackToPreviousStepButton = new JButton("Go back to previous step");
-            JButton cancelAddingDeliveryButton = new JButton("Cancel");
             goBackToPreviousStepButton.addActionListener(buttonListener);
-            cancelAddingDeliveryButton.addActionListener(buttonListener);
             messages.add(goBackToPreviousStepButton);
-            messages.add(cancelAddingDeliveryButton);
         }
         text.setSize(text.getPreferredSize().width, 30);
         int textLocationX = messages.getWidth() / 2 - text.getSize().width/2;
