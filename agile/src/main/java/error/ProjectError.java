@@ -17,10 +17,13 @@ public enum ProjectError {
 	DEL_ADDRESS_NOT_IN_MAP("UC2-DANIM", "The address of one of deliveries is not in the map"),
 	NEGATIVE_DURATION("UC2-ND", "A delivery has a negative value as duration"),
 	//NO_MAP_PREVIOUSLY_LOADED("UC2-NMPL", "No map has been previously loaded"),
+
 	
         //Circuits Errors
 	NO_COURRIER_ASSIGNED("UC3-NCA", "You didn't provide the number of courriers you want to assign circuits"),
+	NEGATIVE_COURRIER("UC3-NC","How can a team be so negative ? You'd better provide a positive number of couriers (0 is possible but quite innefficient tho"),
 	TOO_MUCH_COURRIER("UC3-TMC", "A few of your courrier are idling because there is more courrier than deliveries."),
+	NO_MAP_BEF_CIRCUIT("UC3-NMBC","Who needs a map ? Guess what...you need one to compute a circuit :3"),
 	NO_DR_BEF_CIRCUIT("UC3-NDBC", "You have no delivery request so the circuit is already the best by its absence"),
 	TIMEOUT("UC3-TO", "Your request is killin' it, the program is not designed to support such a huge file"),
 	DEAD_END("UC3-DE", "One of the deliveries is accessible but the path is one sided and the courrier can't come back"),

@@ -13,8 +13,11 @@ import model.Section;
 import model.Trip;
 
 /**
+<<<<<<< HEAD
  * Class computes the shortest paths that link deliveries to each other 
  * and to the warehouse using the Dijkstra algorithm
+ * It's designed to keep track of the shortest path throughout the calls
+ * @author johnny
  */
 public class ShortestPathComputer {
 	
@@ -24,9 +27,7 @@ public class ShortestPathComputer {
 	private HashMap<String, Node> nodes;
 	private HashMap<String,HashMap<String,Trip>> shortestPaths;		
 	
-	public ShortestPathComputer(){
-		
-	}
+	public ShortestPathComputer(){}
 	
 	/**
 	 * Initializes class to be able to perform the computations
@@ -39,6 +40,8 @@ public class ShortestPathComputer {
 
 		
 		this.nodes = new HashMap<String, Node>();
+		this.shortestPaths.clear(); // Don't fool me here GB, clear the inner hashmaps <3
+		
 		for(Intersection intersection : cityMap.getIntersections().values())
 			nodes.put(intersection.getId(), new Node(intersection));
 		
@@ -87,7 +90,7 @@ public class ShortestPathComputer {
 
 
 	/**
-	 * Sets shortest paths that go from to this delivery to all of the rest
+	 * Computes shortest paths that go from to this delivery to all of the rest
 	 * and shortest paths involving this delivery and the warehouse
 	 * @param delivery the target delivery
 	 * @param deliveries the list of origin deliveries. It can contain the origin delivery
@@ -96,8 +99,9 @@ public class ShortestPathComputer {
 		Node origin = this.nodes.get( delivery.getAddress() );
 		Node target = this.nodes.get( deliveryRequest.getWarehouseAddress() );
 
+		IntermediateResult inter = null;
 		// Establish the shortest paths between delivery and warehouse
-		IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
+		inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 		inter.computeLength();
 		addShortestPath(origin, target, inter);
 		
@@ -109,9 +113,7 @@ public class ShortestPathComputer {
 		// Establish the shortest paths between this delivery and the other deliveries
 		for(Delivery delivery2 : deliveries) {
 			
-			if(delivery == delivery2) {
-				continue;
-			}
+			if(delivery == delivery2) continue;
 			
 			target = this.nodes.get( delivery2.getAddress() );
 			inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
@@ -139,9 +141,7 @@ public class ShortestPathComputer {
 			}
 			
 			origin = this.nodes.get( delivery2.getAddress() );
-			this.cleanCosts();
-			this.dijkstra(origin);
-			inter = this.resolveDijkstra( origin, target );
+			inter = this.cleanCosts().dijkstra(origin).resolveDijkstra( origin, target );
 			inter.computeLength();
 			addShortestPath(origin, target, inter);				
 		}
@@ -154,6 +154,7 @@ public class ShortestPathComputer {
 	 * a hashmap containing for each target delivery the shortest path that 
 	 * links the origin delivery to the target delivery
 	 */
+
 	public HashMap<String, HashMap<String, Trip>> result() {
 		return this.shortestPaths;
 	}
@@ -174,8 +175,9 @@ public class ShortestPathComputer {
 		this.shortestPaths.put(origin.intersection.getId(), innerMap);
 	}
 	
-	
-	//-------------Dijkstra section---------------
+	// ===========================================
+	// =========== Dijkstra section ==============
+	// ===========================================
 	
 	/*
 	 * Resets the costs to reach each node and resets their parent nodes to be able 
@@ -198,6 +200,7 @@ public class ShortestPathComputer {
 	private ShortestPathComputer cleanCosts() {
 		return cleanCosts(this.nodes);
 	}
+	
 	private ShortestPathComputer dijkstra(Node origin) {
 		Queue<Node> queue = new LinkedList<Node>();
 		
@@ -208,7 +211,7 @@ public class ShortestPathComputer {
 			Node node = queue.remove();
 			for(Link l : node.links) {
 				double cost = l.getLength() + node.cost;
-				if(cost >= l.endNode.cost) continue;
+				if(cost >= l.endNode.cost) continue; // keeps the first best path in case of a draw
 				
 				l.endNode.cost = cost;
 				l.endNode.previous = l;
@@ -224,6 +227,7 @@ public class ShortestPathComputer {
 	 * @param target the target node
 	 * @return an object containing the shortest path
 	 */
+
 	private IntermediateResult resolveDijkstra(Node origin, Node target) {
 		IntermediateResult inter = new IntermediateResult();
 		
@@ -244,10 +248,13 @@ public class ShortestPathComputer {
 	
 	
 
-//------------------------------Inner classes --------------------------
+
+	//---------------------- Inner classes --------------------------
+	// These classes wrap the informations of the cityMap to make the 
+	// computations easier
+
 	/**
-	 * 
-	 *
+	 * This class wraps intersections to make the Dijkstra implementation easier
 	 */
 	private class Node {
 		Intersection intersection;
@@ -272,6 +279,9 @@ public class ShortestPathComputer {
 		
 	}
 	
+	/**
+	 * This class wraps sections to make the Dijkstra implementation easier
+	 */
 	public class Link {
 		Section section;
 		Node startNode;
@@ -296,6 +306,10 @@ public class ShortestPathComputer {
 		}
 	}
 	
+	/**
+	 * This class ressembles the trip class but with this inner class tooltip
+	 *
+	 */
 	public class IntermediateResult {
 		Node start;
 		Node end;
