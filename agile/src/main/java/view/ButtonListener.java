@@ -79,6 +79,9 @@ public class ButtonListener implements ActionListener {
                     if (deliveryRequest != null) {
                         window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                         window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+                        window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(false);
+      	                window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+      	                window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
                     }
                     window.getCityMapContainerPanel().repaint();
                     window.getDeliveryRequestPanel().repaint();
@@ -94,6 +97,8 @@ public class ButtonListener implements ActionListener {
             //window.getDeliveryRequestPanel().setCircuitNumber();
             window.getCityMapContainerPanel().repaint();
             window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+            window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+            window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
             System.out.println("computed circuits");
         } else if (e.getActionCommand().equals(Window.ADD_DELIVERY)) {
             window.getCityMapMenuPanel().addNewDelivery("select");
