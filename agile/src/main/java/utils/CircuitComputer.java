@@ -20,6 +20,7 @@ public class CircuitComputer {
 
     private final int KMEANS_TIMEOUT = 10;
     private final int KMEANS_EXECUTION_NUMBER = 10;
+    private final int TSP_TIMEOUT = 30000;
 
     public CircuitComputer() {
 
@@ -254,7 +255,7 @@ public class CircuitComputer {
 
         long startTime = System.currentTimeMillis();
         TSP1 tsp = new TSP1();
-        tsp.chercheSolution(60000, clusterSize + 1, tripLength, deliveryDuration);
+        tsp.chercheSolution(TSP_TIMEOUT, clusterSize + 1, tripLength, deliveryDuration);
         long tspDuration = System.currentTimeMillis() - startTime;
         System.out.println("Tsp lasted " + tspDuration + " ms");
 

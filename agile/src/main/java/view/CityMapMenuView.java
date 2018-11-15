@@ -12,18 +12,22 @@ import javax.swing.*;
 
 public class CityMapMenuView extends JPanel {
 
+    private final int buttonHeight = 30;
+    private final int HEIGHT = 100;
+    private final int WIDTH = 1000;
+    
     private JButton computeCircuitsButton;
     private JButton loadNewCityMapButton;
     private JButton loadDeliveryRequestButton;
     private JButton addNewDeliveryButton;
     private JButton undoButton;
     private JButton redoButton;
-    private final int buttonHeight = 30;
-    private final int HEIGHT = 100;
-    private final int WIDTH = 1000;
+    
     private JLabel courierNumberLabel;
+    
     private JTextField courierNumberField;
     private JTextField deliveryDurationField;
+    
     private JPanel messages;
 
     public CityMapMenuView(Window w, Controller controller) {
@@ -65,10 +69,10 @@ public class CityMapMenuView extends JPanel {
 
         this.add(loadNewCityMapButton);
         this.add(loadDeliveryRequestButton);
-        this.add(computeCircuitsButton);
-        this.add(addNewDeliveryButton);
         this.add(courierNumberLabel);
         this.add(courierNumberField);
+        this.add(computeCircuitsButton);
+        this.add(addNewDeliveryButton);
  
         this.add(addNewDeliveryButton);
         
@@ -133,9 +137,25 @@ public class CityMapMenuView extends JPanel {
     public JButton getLoadDeliveryRequestButton() {
         return loadDeliveryRequestButton;
     }
-
+    
+    public JButton getAddNewDeliveryButton() {
+        return addNewDeliveryButton;
+    }
+    
+    public JButton getUndoButton() {
+        return undoButton;
+    }
+    
+    public JButton getRedoButton() {
+        return redoButton;
+    }
+    
     public JTextField getCourierNumberField() {
         return courierNumberField;
+    }
+    
+    public JPanel getMessages() {
+        return messages;
     }
 
     public int getCourierNumber() {
@@ -146,14 +166,6 @@ public class CityMapMenuView extends JPanel {
     public int getDeliveryDuration() {
         String numberString = this.deliveryDurationField.getText();
         return Integer.parseInt(numberString);
-    }
-
-    public JButton getAddNewDeliveryButton() {
-        return addNewDeliveryButton;
-    }
-
-    public JPanel getMessages() {
-        return messages;
     }
 
 }

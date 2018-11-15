@@ -19,23 +19,23 @@ import utils.XmlParser;
 public class StateDefault implements State{
     
     public void loadCityMap(String path,Controller c){
-        try {
-            CityMap cityMap = null;
-            Model model = c.getModel();
-            XmlParser xmlParser = new XmlParser();
-            
+    	CityMap cityMap = null;
+      Model model = c.getModel();  
+    	try {
+            XmlParser xmlParser = new XmlParser();            
             cityMap = xmlParser.parseMap(path);
             if (cityMap != null){
-                model.setCityMap(cityMap);
-                model.setDeliveryRequest(null);
-                model.resetShortestPaths();
-                model.setCircuits(null);
-                c.setState(c.STATE_CITYMAP_LOADED);
-            }
+              model.setCityMap(cityMap);
+              model.setDeliveryRequest(null);
+              model.resetShortestPaths();
+              model.setCircuits(null);
+              c.setState(c.STATE_CITYMAP_LOADED);
+          }
     	}catch(Exception e) {
             //display exception in a pop up
             //make specific error for reading exception
     	}
+        
     }
     
     public void loadDeliveryRequest(String path,Controller c){

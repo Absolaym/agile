@@ -7,7 +7,6 @@ package controller;
 
 import model.Circuit;
 import model.Delivery;
-import model.DeliveryRequest;
 import model.Model;
 import model.Trip;
 
@@ -28,7 +27,6 @@ public class CommandAddDelivery implements Command {
 	 */
 	public CommandAddDelivery(Delivery d, Circuit c){
 		this.delivery = d;
-
 		this.circuit = c;
 		this.circuitIndex = Model.getInstance().getCircuits().indexOf(c);
 	}
@@ -59,7 +57,7 @@ public class CommandAddDelivery implements Command {
 		model.getCircuits().get(circuitIndex).addTrip(trip2);
 
 		model.getCircuits().get(circuitIndex).updateDeliveryInfos();
-
+		model.rearrangeDeliveries();
 	}
 
 	@Override

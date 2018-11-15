@@ -67,15 +67,15 @@ public class ShortestPathComputer {
 	//set paths that go from this delivery to all of the rest
 	//and paths involving this delivery and the warehouse
 	private void setShortestPathsFromDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
-		// Establish the shortest paths between warehouse and deliveries
-		Node origin = this.nodes.get( deliveryRequest.getWarehouseAddress() );
-		Node target = this.nodes.get( delivery.getAddress() );
-		
+		Node origin = this.nodes.get( delivery.getAddress() );
+		Node target = this.nodes.get( deliveryRequest.getWarehouseAddress() );
+
+		// Establish the shortest paths between delivery and warehouse
 		IntermediateResult inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 		inter.computeLength();
 		addShortestPath(origin, target, inter);
 		
-		// Establish the shortest paths between deliveries and warehouse
+		// Establish the shortest paths between warehouse and delivery
 		inter = this.cleanCosts().dijkstra( target ).resolveDijkstra( target, origin );
 		inter.computeLength();
 		addShortestPath(target, origin, inter);
@@ -87,7 +87,7 @@ public class ShortestPathComputer {
 				continue;
 			}
 			
-			origin = this.nodes.get( delivery2.getAddress() );
+			target = this.nodes.get( delivery2.getAddress() );
 			inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
 			inter.computeLength();
 			addShortestPath(origin, target, inter);				
@@ -96,8 +96,8 @@ public class ShortestPathComputer {
 	
 	//set paths that arrive to this delivery from all of the rest
 	private void setShortestPathsToDelivery(Delivery delivery, LinkedList<Delivery> deliveries){
-		Node origin = this.nodes.get( delivery.getAddress() );
-		Node target;
+		Node origin;
+		Node target = this.nodes.get( delivery.getAddress() );
 		
 		IntermediateResult inter;
 		
@@ -108,8 +108,10 @@ public class ShortestPathComputer {
 				continue;
 			}
 			
-			target = this.nodes.get( delivery2.getAddress() );
-			inter = this.cleanCosts().dijkstra( origin ).resolveDijkstra( origin, target );
+			origin = this.nodes.get( delivery2.getAddress() );
+			this.cleanCosts();
+			this.dijkstra(origin);
+			inter = this.resolveDijkstra( origin, target );
 			inter.computeLength();
 			addShortestPath(origin, target, inter);				
 		}
@@ -130,7 +132,10 @@ public class ShortestPathComputer {
 	//-------------Dijkstra section---------------
 	
 	private ShortestPathComputer cleanCosts(Map<String,Node> nodes) {
-		for(Node node : nodes.values())			node.cost = 2e300;
+		for(Node node : nodes.values()) {
+			node.cost = 2e300;
+			node.previous = null;
+		}
 		return this;
 	}
 	private ShortestPathComputer cleanCosts() {

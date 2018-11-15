@@ -77,6 +77,8 @@ public class CommandMoveDeliveryBefore implements Command {
         
         Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
         
+        Model.getInstance().rearrangeDeliveries();
+        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -84,7 +86,7 @@ public class CommandMoveDeliveryBefore implements Command {
     public void cancel() {
         
         Model.getInstance().getCircuits().set(circuitIndex, circuit);
-        
+        Model.getInstance().rearrangeDeliveries();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

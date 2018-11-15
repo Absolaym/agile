@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.Controller;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -53,13 +52,12 @@ class TableRow extends Observable {
 
 public class DeliveryRequestView extends JPanel {
 
-    private ButtonListener buttonListener;
+//    private ButtonListener buttonListener;
     private JPanel deliveryRequestViewPanel;
     private JPanel deliveriesContainer;
     private JPanel deliveriesListContainer;
     private JScrollPane deliveriesListScrollPane;
 
-    
     private ArrayList<TableRow> rows;
     private int idRow;
     private static Controller controller;
@@ -71,7 +69,7 @@ public class DeliveryRequestView extends JPanel {
         super();
         controller = c;
         window = w;
-        buttonListener = new ButtonListener(c, w);
+//        buttonListener = new ButtonListener(c, w);
 
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
@@ -139,7 +137,7 @@ public class DeliveryRequestView extends JPanel {
         deliveriesListContainer.removeAll();
         deliveriesListContainer.setLayout(new BoxLayout(deliveriesListContainer, BoxLayout.Y_AXIS));
 
-        if(controller.getModel().getDeliveryRequest() != null){
+        if (controller.getModel().getDeliveryRequest() != null) {
             LinkedList<Delivery> deliveries = controller.getModel().getDeliveryRequest().getDeliveries();
             for (int i = 0; i < deliveries.size(); i++) {
                 Delivery d = deliveries.get(i);
@@ -157,7 +155,7 @@ public class DeliveryRequestView extends JPanel {
         JPanel row = new JPanel();
 
         JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtDuration = new JTextArea("" + (d.getDuration()/60)+" min");
+        JTextArea txtDuration = new JTextArea("" + (d.getDuration() / 60) + " min");
 
         txtAddress.setOpaque(false);
         txtDuration.setOpaque(false);
@@ -176,13 +174,15 @@ public class DeliveryRequestView extends JPanel {
             JButton btnMoveBefore = new JButton("");
             JButton btnMoveAfter = new JButton("");
             JButton btnDelete = new JButton("Delete");
+            
+            ButtonListener btnListener = new ButtonListener(controller, window, d);
 
             txtArrivalTime.setOpaque(false);
             txtCircuit.setOpaque(false);
 
             txtArrivalTime.setEditable(false);
             txtCircuit.setEditable(false);
-            
+
             String root = System.getProperty("user.dir");
             String img = root + "/src/main/assets/img/";
 
@@ -198,9 +198,9 @@ public class DeliveryRequestView extends JPanel {
             btnMoveAfter.setContentAreaFilled(false);
             btnMoveAfter.setFocusable(false);
 
-            btnMoveBefore.addActionListener(buttonListener);
-            btnMoveAfter.addActionListener(buttonListener);
-            btnDelete.addActionListener(buttonListener);
+            btnMoveBefore.addActionListener(btnListener);
+            btnMoveAfter.addActionListener(btnListener);
+            btnDelete.addActionListener(btnListener);
 
             btnMoveBefore.setActionCommand(Window.MOVE_DELIVERY_BEFORE);
             btnMoveAfter.setActionCommand(Window.MOVE_DELIVERY_AFTER);
@@ -236,7 +236,6 @@ public class DeliveryRequestView extends JPanel {
                     } else {
                         r.setIsSelected(false);
                         setRowColor(r.getRow(), r.getDelivery().getCircuit());
-//                        r.getRow().setBackground(null);
                     }
                 }
             }
@@ -275,7 +274,9 @@ public class DeliveryRequestView extends JPanel {
 
     public void setRowColor(Component comp, Circuit circuit) {
         int i = 0;
-        if (circuit != null) i = circuit.getCourierId();
+        if (circuit != null) {
+            i = circuit.getCourierId();
+        }
         Color c = window.colors[i];
         //Color c = new Color ((int)(255*0.5),0, 0);
         if (i == 0) {
