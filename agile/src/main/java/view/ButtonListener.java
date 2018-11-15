@@ -61,6 +61,10 @@ public class ButtonListener implements ActionListener {
 	                window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
 	                window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
 	                window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
+	                window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(false);
+	                window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(false);
+	                window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+	                window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
 	                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
 	                window.getCityMapContainerPanel().repaint();
                 }
