@@ -48,6 +48,7 @@ public class StateCircuitsComputed extends StateDefault{
     
     public void deleteDelivery(Delivery d, Circuit c) {        
         Controller.commandsList.addCommand(new CommandDeleteDelivery(d, c));
+
     }
     
     public void changeCircuit(Delivery d, Circuit oc, Circuit tc) {        

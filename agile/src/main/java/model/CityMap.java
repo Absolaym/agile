@@ -91,5 +91,11 @@ public class CityMap extends Observable{
         return str;
     }
     
+    public boolean isEmpty() {
+    	boolean isEmpty = true;
+    	if(this.sections != null && this.sections.size() > 0) isEmpty = false;
+    	if(this.intersections != null && this.sections.size() > 0) isEmpty = false;
+    	return isEmpty;
+    }
     
 }
