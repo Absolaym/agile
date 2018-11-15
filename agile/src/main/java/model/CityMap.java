@@ -27,6 +27,7 @@ public class CityMap extends Observable{
         this.intersections = new HashMap<String,Intersection>();
     }
     
+    
     public Vector2D getCoveredAreaDimensions() {
     		Vector2D dims = new Vector2D();
     		double maxLat = -2e300;
