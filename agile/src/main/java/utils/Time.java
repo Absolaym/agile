@@ -65,4 +65,9 @@ public class Time {
                 + ":" + String.format("%02d", this.getMinutes())
                 + ":" + String.format("%02d", this.getSeconds());
     }
+    
+    public String toStringWithoutSeconds() {
+        return String.format("%02d", this.getHours())
+                + ":" + String.format("%02d", this.getMinutes());
+    }
 }

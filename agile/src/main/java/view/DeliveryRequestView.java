@@ -188,7 +188,7 @@ public class DeliveryRequestView extends JPanel {
     private void addRow(Delivery delivery) {
 
         Time time = delivery.getArrivalTime();
-        String strArrivalTime = time.getHours() + ":" + time.getMinutes();
+        String strArrivalTime = time.toStringWithoutSeconds();
 
         JPanel row = new JPanel();
 
