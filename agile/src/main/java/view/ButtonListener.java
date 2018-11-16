@@ -6,6 +6,8 @@
 package view;
 
 import controller.Controller;
+import error.ErrorLogger;
+import error.ProjectError;
 import model.DeliveryRequest;
 import model.CityMap;
 import model.Delivery;
