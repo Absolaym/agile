@@ -1,4 +1,4 @@
-package utils;
+package model.computers;
 
 import java.util.HashMap;
 import java.util.LinkedList;

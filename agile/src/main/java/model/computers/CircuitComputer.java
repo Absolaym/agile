@@ -1,4 +1,4 @@
-package utils;
+package model.computers;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,6 +8,7 @@ import model.DeliveryRequest;
 import model.Geolocation;
 import model.Trip;
 import tspImproved.TSP1;
+import utils.Pair;
 import model.Circuit;
 
 /**

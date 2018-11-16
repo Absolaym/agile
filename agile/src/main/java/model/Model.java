@@ -10,8 +10,8 @@ import java.util.LinkedList;
 
 import error.ErrorLogger;
 import error.ProjectError;
-import utils.CircuitComputer;
-import utils.ShortestPathComputer;
+import model.computers.CircuitComputer;
+import model.computers.ShortestPathComputer;
 
 /**
  * This class links the controller to the model

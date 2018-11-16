@@ -1,7 +1,5 @@
 package tspImproved;
 
-import model.Delivery;
-
 public interface TSP {
 
     /**

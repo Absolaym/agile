@@ -5,8 +5,6 @@
  */
 package controller;
 
-import model.Circuit;
-import model.Delivery;
 import model.DeliveryRequest;
 import model.Model;
 import utils.XmlParser;
