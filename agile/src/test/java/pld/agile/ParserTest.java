@@ -17,7 +17,6 @@ public class ParserTest extends TestCase {
 
         DeliveryRequest delReq = xmlParser.parseDeliveryRequest("src/main/assets/deliveries/dl-petit-6.xml");
         assertEquals("Warehouse: 25611425 | Departure time: 08:00:00	6 deliveries", delReq.toString());
-
     }
 
     public void testParseDeliveryRequestDeliveries() throws Exception {
@@ -36,7 +35,6 @@ public class ParserTest extends TestCase {
         for (Delivery del : delReq.getDeliveries()) {
             assertEquals(strs[i++], del.toString());
         }
-
     }
 
     public void testParseMap() throws Exception {
@@ -51,7 +49,6 @@ public class ParserTest extends TestCase {
         assertEquals("Plan : 1448 intersections, 3097 sections", map.getPlanInfos());
         assertEquals(map.getIntersections().containsKey("1440845047"), true);
         assertEquals(map.getIntersections().containsKey("41"), false);
-
     }
 
     public void testNoLatitude() throws Exception {
