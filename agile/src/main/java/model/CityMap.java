@@ -56,7 +56,7 @@ public class CityMap extends Observable {
     
     /**
      * Adds an intersection to the sections attribute of the map
-     * @param intersection the intersection
+     * @param section the section to add
      */
     public void AddSection(Section section) {
         this.sections.add( section );
@@ -65,7 +65,7 @@ public class CityMap extends Observable {
     /**
      * Get an intersection by its Id
      *
-     * @param intersectionId
+     * @param intersectionId the id of the address of the intersection
      * @return if found the intersection, null if not
      */
     public Intersection getIntersectionById(String intersectionId) {

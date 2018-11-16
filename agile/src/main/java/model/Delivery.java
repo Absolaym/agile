@@ -10,7 +10,7 @@ import utils.Time;
 /**
  * This class represents a delivery, it can be observed by the interface
  *
- * @author olivia & Johnny
+ * @author olivia and Johnny
  */
 public class Delivery {
 
@@ -57,8 +57,6 @@ public class Delivery {
 
     /**
      * Get the id of the address
-     *
-     * @return
      */
     public String getAddress() {
         return this.address;
@@ -67,7 +65,7 @@ public class Delivery {
     /**
      * Set the id of the address
      *
-     * @warning the geolocation is not changed so please set the address wisely
+     * /!\ the geolocation is not changed so please set the address wisely
      * to avoid corrupted data
      * @param address
      */
@@ -123,7 +121,7 @@ public class Delivery {
     /**
      * Sets the geolocation of the delivery
      *
-     * @warning be sure to keep this consistent with the address id
+     * /!\ be sure to keep this consistent with the address id
      * @param geolocation
      */
     public void setGeolocation(Geolocation geolocation) {
