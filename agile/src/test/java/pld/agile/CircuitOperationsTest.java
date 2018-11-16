@@ -5,9 +5,11 @@
  */
 package pld.agile;
 
+import controller.Controller;
 import junit.framework.*;
 import model.*;
 import java.util.LinkedList;
+import utils.XmlParser;
 
 /**
  *
@@ -17,19 +19,54 @@ public class CircuitOperationsTest extends TestCase {
 
     /**
      * test nb of circuits and nb of deliveries per circuit
+     *
+     * @throws Exception
      */
     public void testCircuitComputation() throws Exception {
-        DeliveryRequest dr = new DeliveryRequest();
-        LinkedList<Delivery> Deliveries = new LinkedList<Delivery>();
+        Controller c = new Controller();
+        CityMap cityMap = null;
+        Model model = c.getModel();
+        XmlParser xmlParser = new XmlParser();
+        cityMap = xmlParser.parseMap("src/main/assets/maps/petitPlan.xml");
 
+        if (cityMap != null) {
+            model.setCityMap(cityMap);
+            model.setDeliveryRequest(null);
+            model.resetShortestPaths();
+            model.setCircuits(null);
+        }
+
+        DeliveryRequest delReq = null;
+        delReq = xmlParser.parseDeliveryRequest("src/main/assets/deliveries/dl-petit-6.xml");
+
+        if (delReq != null) {
+            delReq.computeDeliveryRequestGeolocation(model.getCityMap());
+            model.setDeliveryRequest(delReq);
+            model.computeShortestPaths();
+            model.setCircuits(null);
+        }
+
+        model.setNumberOfCouriers(1);
+        model.computeCircuits();
+        
+        assertEquals(1, model.getCircuits().size());
+        
+        
+        model.setNumberOfCouriers(3);
+        model.computeCircuits();
+
+        assertEquals(3, model.getCircuits().size());
     }
 
     /**
      * make a delivery request with already the added delivery and a circuit
      * with already the added delivery make a dr and a circuit without and then
      * add the delivery check the circuit and dr are equal
+     *
+     * @throws Exception
      */
     public void testAddDelivery() throws Exception {
+        DeliveryRequest dr = new DeliveryRequest();
 
     }
 
@@ -37,6 +74,8 @@ public class CircuitOperationsTest extends TestCase {
      * make a delivery request with the delivery and a circuit with the delivery
      * make a dr and a circuit without and then delete the delivery check the
      * circuit and dr are equal
+     *
+     * @throws Exception
      */
     public void testDeleteDelivery() throws Exception {
 
