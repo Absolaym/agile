@@ -18,6 +18,10 @@ import java.time.format.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
+/**
+ * 
+ * 
+ */
 class TableRow extends Observable {
 
     private JPanel row;
@@ -52,7 +56,6 @@ class TableRow extends Observable {
 
 public class DeliveryRequestView extends JPanel {
 
-//    private ButtonListener buttonListener;
     private JPanel deliveryRequestViewPanel;
     private JPanel deliveriesContainer;
     private JPanel deliveriesListContainer;
@@ -69,7 +72,6 @@ public class DeliveryRequestView extends JPanel {
         super();
         controller = c;
         window = w;
-//        buttonListener = new ButtonListener(c, w);
 
         deliveryRequestViewPanel = new JPanel();
         deliveriesContainer = new JPanel();
@@ -80,7 +82,34 @@ public class DeliveryRequestView extends JPanel {
 
         w.getContentPane().add(this);
     }
+    
+    /**
+     * this method is called when the textual view (the delivery request view)
+     * needs to be updated, for example when a new delivery is loaded, when
+     * a delivery is added, deleted, moved in a circuit 
+     * @param window 
+     */
+    public void loadDeliveryRequest(Window window) {
+        createDeliveryRequestViewPanel();
+        createDeliveriesContainer();
+        addDeliveries();
 
+        deliveriesContainer.add(deliveriesListScrollPane);
+        deliveryRequestViewPanel.add(deliveriesContainer);
+        add(deliveryRequestViewPanel);
+        window.getContentPane().add(this);
+
+        deliveriesListContainer.repaint();
+        deliveriesContainer.repaint();
+        deliveryRequestViewPanel.repaint();
+        window.revalidate();
+        window.repaint();
+    }
+    
+    /**
+     * this method initializes the panel that contains all the textual view.
+     * it is called by loadDeliveryRequest
+     */
     private void createDeliveryRequestViewPanel() {
         deliveryRequestViewPanel.removeAll();
         rows.clear();
@@ -89,6 +118,11 @@ public class DeliveryRequestView extends JPanel {
         deliveryRequestViewPanel.setBackground(Color.LIGHT_GRAY);
     }
 
+    /**
+     * this method initializes and fills the panel that contains the heading of 
+     * the textual view
+     * it is called by loadDeliveryRequest
+     */
     private void createDeliveriesContainer() {
 
         deliveriesContainer.removeAll();
@@ -114,24 +148,14 @@ public class DeliveryRequestView extends JPanel {
         deliveryRequestViewPanel.add(deliveriesContainer);
     }
 
-    public void loadDeliveryRequest(Window window) {
-        createDeliveryRequestViewPanel();
-        createDeliveriesContainer();
-        addDeliveries();
+    
 
-//        deliveriesContainer.add(deliveriesListContainer);
-        deliveriesContainer.add(deliveriesListScrollPane);
-        deliveryRequestViewPanel.add(deliveriesContainer/*, BorderLayout.CENTER*/);
-        add(deliveryRequestViewPanel);
-        window.getContentPane().add(this);
-
-        deliveriesListContainer.repaint();
-        deliveriesContainer.repaint();
-        deliveryRequestViewPanel.repaint();
-        window.revalidate();
-        window.repaint();
-    }
-
+    /**
+     * this method initializes the panel that contains the list of deliveries 
+     * for the textual view, it fills it with the deliveries from the delivery 
+     * request of the model.
+     * it is called by loadDeliveryRequest
+     */
     public void addDeliveries() {
 
         deliveriesListContainer.removeAll();
@@ -147,15 +171,23 @@ public class DeliveryRequestView extends JPanel {
         deliveriesListContainer.revalidate();
     }
 
-    private void addRow(Delivery d) {
+    /**
+     * this method creates a row for each delivery and fills it with the right
+     * informations and the required buttons, depending on whether a circuit
+     * has already been calculated for the delivery. the row is then added to 
+     * the delivery list panel.
+     * it is called in addDeliveries
+     * @param delivery 
+     */
+    private void addRow(Delivery delivery) {
 
-        Time time = d.getArrivalTime();
+        Time time = delivery.getArrivalTime();
         String strArrivalTime = time.getHours() + ":" + time.getMinutes();
 
         JPanel row = new JPanel();
 
-        JTextArea txtAddress = new JTextArea(d.getAddress());
-        JTextArea txtDuration = new JTextArea("" + d.getDuration().getMinutes() + " min");
+        JTextArea txtAddress = new JTextArea(delivery.getAddress());
+        JTextArea txtDuration = new JTextArea("" + delivery.getDuration().getMinutes() + " min");
 
         txtAddress.setOpaque(false);
         txtDuration.setOpaque(false);
@@ -166,16 +198,16 @@ public class DeliveryRequestView extends JPanel {
         row.add(txtAddress);
         row.add(txtDuration);
 
-        if (d.getCircuit() != null) {
+        if (delivery.getCircuit() != null) {
 
             JTextArea txtArrivalTime = new JTextArea(strArrivalTime);
-            JTextArea txtCircuit = new JTextArea("n°" + d.getCircuit().getCourierId());
+            JTextArea txtCircuit = new JTextArea("n°" + delivery.getCircuit().getCourierId());
 
             JButton btnMoveBefore = new JButton("");
             JButton btnMoveAfter = new JButton("");
             JButton btnDelete = new JButton("Delete");
-
-            ButtonListener btnListener = new ButtonListener(controller, window, d);
+            
+            ButtonListener btnListener = new ButtonListener(controller, window, delivery);
 
             txtArrivalTime.setOpaque(false);
             txtCircuit.setOpaque(false);
@@ -214,14 +246,14 @@ public class DeliveryRequestView extends JPanel {
             row.add(btnDelete);
         }
 
-        setRowColor(row, d.getCircuit());
+        setRowColor(row, delivery.getCircuit());
 
-        TableRow tableRow = new TableRow(row, d);
+        TableRow tableRow = new TableRow(row, delivery);
         //observable
         tableRow.addObserver(window.getCityMapContainerPanel());
         rows.add(tableRow);
 
-        if (d.getIsSelected()) {
+        if (delivery.getIsSelected()) {
             row.setBackground(Color.yellow);
         }
 
@@ -272,17 +304,21 @@ public class DeliveryRequestView extends JPanel {
         deliveriesListContainer.add(row);
     }
 
-    public void setRowColor(Component comp, Circuit circuit) {
+    /**
+     * 
+     * @param component
+     * @param circuit 
+     */
+    public void setRowColor(Component component, Circuit circuit) {
         int i = 0;
         if (circuit != null) {
             i = circuit.getCourierId();
         }
         Color c = window.colors[i];
-        //Color c = new Color ((int)(255*0.5),0, 0);
         if (i == 0) {
-            comp.setBackground(null);
+            component.setBackground(null);
         } else {
-            comp.setBackground(c);
+            component.setBackground(c);
         }
     }
 
