@@ -97,8 +97,6 @@ public class DeliveryRequest {
      * @param cityMap the cityMap in which the delivery request is located
      */
     public void computeDeliveryRequestGeolocation(CityMap cityMap){
-
-    public void computeDeliveryRequestGeolocation(CityMap cityMap) {
         
         for (Delivery delivery : this.deliveries) {
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
