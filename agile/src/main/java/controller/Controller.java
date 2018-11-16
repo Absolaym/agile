@@ -27,7 +27,6 @@ public class Controller {
     protected static final StateCircuitsComputed STATE_CIRCUITS_COMPUTED = new StateCircuitsComputed();
 
     public Controller() {
-        //this.setCityMap(new CityMap());
         this.setState(STATE_INIT);
         //this.preload();
         Controller.commandsList = new CommandsList();
@@ -39,7 +38,7 @@ public class Controller {
     }
 
     /**
-     * Loads a map given its location
+     * Loads a map given its path in the file system
      *
      * @param path The absolute path to the map file
      */
@@ -48,7 +47,7 @@ public class Controller {
     }
 
     /**
-     * Loads a delivery given its location
+     * Loads a delivery given its path in the file system
      *
      * @param path The absolute path to the delivery file
      */
@@ -57,7 +56,7 @@ public class Controller {
     }
 
     /**
-     * Compute a set of circuits given the number of circuits
+     * Computes a set of circuits given the wanted number of circuits
      *
      * @param numberOfCouriers the number of couriers/circuits
      */
@@ -67,7 +66,7 @@ public class Controller {
     }
 
     /**
-     * Set the delivery currently selected
+     * Sets in the model the delivery currently selected in the UI
      *
      * @param delivery The delivery selected
      */
@@ -76,7 +75,7 @@ public class Controller {
     }
 
     /**
-     * Add a delivery to circuit
+     * Adds a delivery to a circuit
      *
      * @param d The delivery you want to add
      * @param c The circuit in which you want to add the delivery
@@ -107,8 +106,9 @@ public class Controller {
     }
 
     /**
-     * Reorders a delivery in a circuit by a decrement of one (if it's the 3rd
-     * delivrey, it's gonna be the 2nd after a call)
+     * Reorders a delivery inside the delivery list of a circuit, by 
+     * decrementing its index in the list by one 
+     * (if it's the 3rd delivery, it's gonna be the 2nd after a call)
      *
      * @param d The delivery you want to move
      * @param c The circuit in which the delivery is
@@ -118,8 +118,9 @@ public class Controller {
     }
 
     /**
-     * Reorders a delivery in a circuit by a decrement of one (if it's the 3rd
-     * delivrey, it's gonna be the 4th after a call)
+     * Reorders a delivery inside the delivery list of a circuit, by 
+     * incrementing its index in the list by one 
+     * (if it's the 3rd delivery, it's gonna be the 4th after a call)
      *
      * @param d The delivery you want to move
      * @param c The circuit in which the delivery is
@@ -128,43 +129,40 @@ public class Controller {
         this.state.moveDeliveryAfter(d, c);
     }
 
-    //    public void addDeliveryToDeliveryRequest(Delivery d, Circuit c) {
-    //        this.state.addDeliveryToDeliveryRequest(d, c);
-    //    }
     /**
-     * Undo the last command
+     * Undoes the last command
      */
     public void undo() {
         this.state.undoCde();
     }
 
     /**
-     * Redo the last undone command
+     * Redoes the last undone command
      */
     public void redo() {
         this.state.redoCde();
     }
 
     /**
-     * Check wether it's possible to undo an action or not
+     * Checks whether there is any action to undo
      *
-     * @return true if it's possible to undo
+     * @return true if there is at least one action that can be undone
      */
     public boolean canUndo() {
         return Controller.commandsList.canUndo();
     }
 
     /**
-     * Check wether it's possible to redo an action or not
+     * Checks whether there is any action to redo
      *
-     * @return trueif it's possible to redo
+     * @return true if there is at least one action that can be redone
      */
     public boolean canRedo() {
         return Controller.commandsList.canRedo();
     }
 
     /**
-     * Get the model (result of a bad design since the model is a singleton)
+     * Gets the model (result of a bad design since the model is a singleton)
      *
      * @return
      */
@@ -173,7 +171,7 @@ public class Controller {
     }
 
     /**
-     * Change the state of the controller
+     * Changes the state of the controller
      *
      * @param state
      */
@@ -182,7 +180,7 @@ public class Controller {
     }
 
     /**
-     * Get the state of controller
+     * Gets the state of controller
      *
      * @return
      */

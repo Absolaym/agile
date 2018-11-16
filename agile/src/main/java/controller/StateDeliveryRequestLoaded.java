@@ -42,8 +42,5 @@ public class StateDeliveryRequestLoaded extends StateDefault {
         Controller.commandsList = new CommandsList();
         c.setState(c.STATE_CIRCUITS_COMPUTED);
     }
-
-    public void addDeliveryToDeliveryRequest(Delivery d, Circuit c) {
-        Controller.commandsList.addCommand(new CommandAddDeliveryToDeliveryRequest(d, c));
-    }
+    
 }
