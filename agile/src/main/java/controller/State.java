@@ -32,8 +32,6 @@ public interface State {
 
     public abstract void moveDeliveryAfter(Delivery d, Circuit c);
 
-    public abstract void addDeliveryToDeliveryRequest(Delivery d, Circuit c);
-
     public abstract void undoCde();
 
     public abstract void redoCde();
