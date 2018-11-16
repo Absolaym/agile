@@ -8,11 +8,8 @@ import utils.XmlParser;
 
 public class DeliveryTest extends TestCase {
 
-	// The three important things : 
-	// - a test returns void, 
-	// - it goes without params 
-	// - it begins with "test" lowercase
-
-	
-
+    // The three important things : 
+    // - a test returns void, 
+    // - it goes without params 
+    // - it begins with "test" lowercase
 }

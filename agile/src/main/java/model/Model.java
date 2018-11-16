@@ -196,4 +196,5 @@ public class Model {
 		}
 		return shortestPathsFromOrigin.get(targetAddress);
 	}
+
 }

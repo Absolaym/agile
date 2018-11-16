@@ -43,9 +43,9 @@ public class ButtonListener implements ActionListener {
         String assets = root + "/src/main/assets";
 
         if (e.getActionCommand().equals(Window.LOAD_CITY_MAP) || (e.getActionCommand().equals(Window.LOAD_NEW_CITY_MAP))) {
-            
+
             window.getCityMapMenuPanel().addNewDelivery("cancel");
-            
+
             JFileChooser jfc = new JFileChooser(assets + "/maps/");
 
             int result = jfc.showOpenDialog(window);
@@ -54,21 +54,21 @@ public class ButtonListener implements ActionListener {
 //                controller.loadCityMap(assets +"/maps/grandPlan.xml");
                 //the button "Load aCityMap should become invisible once theCityMap is loaded"
                 CityMap cityMap = controller.getModel().getCityMap();
-                if(!cityMap.isEmpty()) {
-	                window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
-	                window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
-	                window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
-	                window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(false);
-	                window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(false);
-	                window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
-	                window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
-	                window.getDeliveryRequestPanel().loadDeliveryRequest(window);
-	                window.getCityMapContainerPanel().repaint();
+                if (!cityMap.isEmpty()) {
+                    window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
+                    window.getCityMapMenuPanel().getLoadNewCityMapButton().setEnabled(true);
+                    window.getCityMapMenuPanel().getLoadDeliveryRequestButton().setEnabled(true);
+                    window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(false);
+                    window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(false);
+                    window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+                    window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
+                    window.getDeliveryRequestPanel().loadDeliveryRequest(window);
+                    window.getCityMapContainerPanel().repaint();
                 }
 
             }
         } else if (e.getActionCommand().equals(Window.LOAD_DELIVERY_REQUESTS)) {
-            
+
             window.getCityMapMenuPanel().addNewDelivery("cancel");
 
             try {
@@ -83,15 +83,15 @@ public class ButtonListener implements ActionListener {
                     deliveryRequest = controller.getModel().getDeliveryRequest();
                     window.getCityMapContainerPanel().setNewDeliveryIntersection(null);
                     window.getCityMapContainerPanel().setNewDelivery(null);
-                    
+
                     window.getCityMapContainerPanel().repaint();
                     //get deliveries and send to JTable to be displayed
                     if (deliveryRequest != null) {
                         window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                         window.getDeliveryRequestPanel().loadDeliveryRequest(window);
                         window.getCityMapMenuPanel().getAddNewDeliveryButton().setEnabled(false);
-      	                window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
-      	                window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
+                        window.getCityMapMenuPanel().getUndoButton().setEnabled(false);
+                        window.getCityMapMenuPanel().getRedoButton().setEnabled(false);
                     }
                     window.getCityMapContainerPanel().repaint();
                     window.getDeliveryRequestPanel().repaint();
@@ -123,7 +123,7 @@ public class ButtonListener implements ActionListener {
             updateUndoRedoButtons();
             window.repaint();
         } else if (e.getActionCommand().equals(Window.CANCEL_ADDING_DELIVERY)) {
-            
+
             window.getCityMapContainerPanel().setNewDeliveryIntersection(null);
             window.getCityMapMenuPanel().addNewDelivery("cancel");
             window.setWaitingState(0);
@@ -173,7 +173,11 @@ public class ButtonListener implements ActionListener {
     public Window getWindow() {
         return window;
     }
-
+    
+    /**
+     * this method checks whether the undo and redo buttons must be enabled
+     * and updates the user interface as needed
+     */
     private void updateUndoRedoButtons() {
         if (controller.canUndo()) {
             window.getCityMapMenuPanel().getUndoButton().setEnabled(true);

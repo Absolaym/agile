@@ -575,8 +575,6 @@ public class CityMapContainerView extends JPanel implements Observer {
     public void setNewDelivery(Delivery newDelivery) {
         this.newDelivery = newDelivery;
     }
-    
-    
 
     public Delivery getNewDelivery() {
         return newDelivery;

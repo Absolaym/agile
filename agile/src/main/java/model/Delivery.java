@@ -9,40 +9,44 @@ import utils.Time;
 
 /**
  * This class represents a delivery, it can be observed by the interface
+ *
  * @author olivia & Johnny
  */
 public class Delivery {
+
     /**
      * The id of the intersection corresponding to the address
      */
     private String address = "";
     private Geolocation geolocation;
-    private Circuit circuit = null; 
+    private Circuit circuit = null;
     private boolean isSelected = false;
 
     /**
      * The time required to deliver the item to the customer (minutes)
      */
     private Time duration = new Time();
-    
+
     /**
      * The time the courier shall arrive at the delivery address
      */
     private Time arrivalTime = new Time();
 
-    public Delivery() {}
+    public Delivery() {
+    }
 
     /**
      * for test purposes
+     *
      * @param address
-     * @param geolocation 
+     * @param geolocation
      */
     public Delivery(String address, Geolocation geolocation) {
         this.address = address;
         this.geolocation = geolocation;
     }
-    
-    public Delivery(Delivery d){
+
+    public Delivery(Delivery d) {
         address = d.getAddress();
         geolocation = d.getGeolocation();
         circuit = d.getCircuit();
@@ -53,6 +57,7 @@ public class Delivery {
 
     /**
      * Get the id of the address
+     *
      * @return
      */
     public String getAddress() {
@@ -61,7 +66,9 @@ public class Delivery {
 
     /**
      * Set the id of the address
-     * @warning the geolocation is not changed so please set the address wisely to avoid corrupted data
+     *
+     * @warning the geolocation is not changed so please set the address wisely
+     * to avoid corrupted data
      * @param address
      */
     public void setAddress(String address) {
@@ -70,6 +77,7 @@ public class Delivery {
 
     /**
      * Get the time object representing the duration of the delivery
+     *
      * @return
      */
     public Time getDuration() {
@@ -78,14 +86,16 @@ public class Delivery {
 
     /**
      * Sets the duration of the delivery
+     *
      * @param duration in seconds
      */
     public void setDuration(int duration) {
         this.duration.time = duration;
     }
-    
+
     /**
      * Gets the arrival time as a time object
+     *
      * @return
      */
     public Time getArrivalTime() {
@@ -94,14 +104,16 @@ public class Delivery {
 
     /**
      * Sets the arrival time of the delivery
+     *
      * @param time in seconds
      */
     public void setArrivalTime(int time) {
-    		this.arrivalTime.time = time;
+        this.arrivalTime.time = time;
     }
 
     /**
      * Get the geolocation of the delivery
+     *
      * @return
      */
     public Geolocation getGeolocation() {
@@ -110,7 +122,8 @@ public class Delivery {
 
     /**
      * Sets the geolocation of the delivery
-     * @warning be sure to keep this consistent with the address id 
+     *
+     * @warning be sure to keep this consistent with the address id
      * @param geolocation
      */
     public void setGeolocation(Geolocation geolocation) {
@@ -124,7 +137,7 @@ public class Delivery {
     public void setCircuit(Circuit circuit) {
         this.circuit = circuit;
     }
-    
+
     public boolean getIsSelected() {
         return isSelected;
     }
@@ -132,15 +145,14 @@ public class Delivery {
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
     }
-    
+
     public String toString() {
-      String str = "";
+        String str = "";
 
-      str += "Delivery - Location: " + this.address + " \t| ";
-      str += "Duration: " + this.duration;
+        str += "Delivery - Location: " + this.address + " \t| ";
+        str += "Duration: " + this.duration;
 
-      return str;
-  }
-    
-    
+        return str;
+    }
+
 }
