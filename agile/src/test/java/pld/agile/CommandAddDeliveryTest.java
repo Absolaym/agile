@@ -51,8 +51,10 @@ public class CommandAddDeliveryTest extends TestCase {
 //            Controller.commandsList.addCommand(new CommandAddDelivery(d, c));
         CommandAddDelivery cad = new CommandAddDelivery(delivery, circuit);
         cad.execute();
+        
+        System.out.print(circuit.toString());
 
-        assertEquals("", circuit.toString());
+        assertEquals("r", circuit.toString());
     }
 
 }
