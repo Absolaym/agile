@@ -13,6 +13,10 @@ import javax.swing.event.ChangeListener;
 import model.*;
 
 @SuppressWarnings("serial")
+/**
+ * This class extends a panel containing the visual view with the map (sections and intersections) the deliveries, the circuits displayed.
+ * Contains all the methods useful to draw elements on the map.
+ */
 public class CityMapContainerView extends JPanel implements Observer {
 
     private JButton loadCityMapButton;
@@ -64,7 +68,9 @@ public class CityMapContainerView extends JPanel implements Observer {
         this.createMouseListener();
         w.getContentPane().add(this);
     }
-
+    /**
+     * creates a Slider to zoom/dezoom the city map
+     */
     private void createSlider() {
         this.zoomSlider = new JSlider();
         this.zoomSlider.setInverted(true);
@@ -81,7 +87,6 @@ public class CityMapContainerView extends JPanel implements Observer {
                 source.getParent().repaint();
             }
         });
-
         this.add(this.zoomSlider);
     }
 
@@ -106,7 +111,6 @@ public class CityMapContainerView extends JPanel implements Observer {
                 int x = (int) (e.getX());
                 int y = (int) (e.getY());
 
-                //newDeliveryIntersection = null;
                 if (controller.getModel().getCityMap() == null) {
                     return;
                 }
@@ -257,13 +261,12 @@ public class CityMapContainerView extends JPanel implements Observer {
                 distanceSec = dist2;
             }
         }
-
         return sect;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.drawCityMap(g, dotSize);
+        this.drawCityMap(g);
         this.drawDeliveriesOnCityMap(g);
         this.drawCircuits(g);
         window.getCityMapMenuPanel().getLoadNewCityMapButton().setVisible(true);
@@ -291,6 +294,14 @@ public class CityMapContainerView extends JPanel implements Observer {
         return origin;
     }
 
+    /**
+     * Color deliveries on the map
+     * @param g Graphics object coming from paint()
+     * @param c Color of the delivery
+     * @param delivery to color on the map
+     * @param origin of the map that serves as a reference for other elements
+     * @param dotSize diameter of the circle representing the delivery 
+     */
     private void colorDelivery(Graphics g, Color c, Delivery delivery, Geolocation origin, int dotSize) {
         if (delivery == null) {
             return;
@@ -310,20 +321,31 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     }
 
+    /**
+     * Color intersections on map (useful for warehouse and the new added delivery)
+     * @param g Graphics object coming from paint()
+     * @param c : color of the dot 
+     * @param geolocation of the intersection
+     * @param origin of the map that serves as a reference for other elements
+     * @param dotSize : diameter of the circle representing the delivery 
+     */
     private void colorIntersection(Graphics g, Color c, Geolocation geolocation, Geolocation origin, int dotSize) {
         if (geolocation == null) {
             return;
         }
-
         Geolocation geo = geolocationToPixels(origin, geolocation);
         g.setColor(c);
         g.fillArc((int) geo.getLongitude() - dotSize / 2, (int) geo.getLatitude() - dotSize / 2, dotSize, dotSize, 0, 360);
     }
 
-    private void colorSectionUtil(Graphics g, Section s, Color c, Geolocation origin, boolean hovered) {
-        colorSectionUtil(g, s, c, origin, hovered, 0);
-    }
-
+    /**
+     * Utility method to color sections
+     * @param g Graphics object coming from paint()
+     * @param c : color of the section
+     * @param origin of the map that serves as a reference for other elements
+     * @param hovered indicates whether the element should be hovered or not
+     * @param index allows to determine if arrows indicating the direction on the circuits should be added
+     */
     private void colorSectionUtil(Graphics g, Section s, Color c, Geolocation origin, boolean hovered, int index) {
         g.setColor(c);
         int lineThickness = 2;
@@ -364,14 +386,18 @@ public class CityMapContainerView extends JPanel implements Observer {
 
     }
 
-    private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin) {
-        colorSections(g, c, sections, origin, 0);
-    }
-
+    /**
+     * Method to color section on map
+     * @param g Graphics coming from paint()
+     * @param c Color of the section
+     * @param sections : list of sections to color
+     * @param origin of the map that serves as a reference for other elements
+     * @param index allows to determine if arrows indicating the direction on the circuits should be added
+     */
     private void colorSections(Graphics g, Color c, java.util.List<Section> sections, Geolocation origin, int index) {
         for (Section sec : sections) {
             if (sec == hoveredSection) {
-                colorSectionUtil(g, sec, c, origin, true);
+                colorSectionUtil(g, sec, c, origin, true,0);
 
                 // if section is part of circuit then hover the whole circuit
                 if (sec.getCircuit() != null) {
@@ -384,11 +410,15 @@ public class CityMapContainerView extends JPanel implements Observer {
                     }
                 }
             } else {
-                colorSectionUtil(g, sec, c, origin, false);
+                colorSectionUtil(g, sec, c, origin, false,0);
             }
         }
     }
 
+    /**
+     * Draws deliveries on the city map
+     * @param g : Graphics object coming from paint()
+     */
     private void drawDeliveriesOnCityMap(Graphics g) {
         CityMap cityMap = controller.getModel().getCityMap();
         if (cityMap == null) {
@@ -401,7 +431,6 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
 
         Geolocation origin = getOrigin(cityMap);
-
         LinkedList<Delivery> delivs = dr.getDeliveries();
         for (Delivery d : delivs) {
             colorDelivery(g, Color.green, d, origin, delivDotSize);
@@ -416,6 +445,10 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Draws circuits on the map
+     * @param g Graphics object coming from paint()
+     */
     private void drawCircuits(Graphics g) {
         CityMap cityMap = controller.getModel().getCityMap();
         LinkedList<Circuit> circuits = this.controller.getModel().getCircuits();
@@ -427,7 +460,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         for (Circuit circuit : circuits) {
             int circuitId = circuit.getCourierId();
 
-            Color c = window.colors[circuitId];
+            Color c = window.colors[circuitId%window.colors.length];
             int j = 0;
             for (Trip trip : circuit.getTrips()) {
                 colorSections(g, c, trip.getSections(), origin, j);
@@ -437,7 +470,11 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
     }
 
-    private void drawCityMap(Graphics g, int dotSize) {
+    /**
+     * Draws the city map with sections and intersections
+     * @param g : Graphics object coming from paint()
+     */
+    private void drawCityMap(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
 
@@ -447,7 +484,7 @@ public class CityMapContainerView extends JPanel implements Observer {
         }
         Geolocation origin = getOrigin(cityMap);
 
-        colorSections(g, new Color(100, 100, 105), cityMap.getSections(), origin);
+        colorSections(g, new Color(100, 100, 105), cityMap.getSections(), origin,0);
         g.setColor(new Color(180, 140, 180));
 
         for (Intersection inter : cityMap.getIntersections().values()) {
@@ -467,13 +504,7 @@ public class CityMapContainerView extends JPanel implements Observer {
                     (int) Math.round(dotSize * 2),
                     0, 360);
         }
-//        if (newDelivery != null) {
-//            g.setColor(Color.GREEN);
-//            Geolocation target = geolocationToPixels(origin, newDelivery.getGeolocation());
-//            g.fillArc((int) target.getLongitude() - delivDotSize / 2, (int) target.getLatitude() - delivDotSize / 2, delivDotSize, delivDotSize, 0, 360);
-//        }
 
-        // Write the name of every sections if it's big enough
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.PLAIN, 12));
         FontMetrics fm = g2.getFontMetrics();
@@ -506,29 +537,48 @@ public class CityMapContainerView extends JPanel implements Observer {
 
         }
     }
-
+    /**
+     * @return the number of km in pixels corresponding to the map
+     */
     private double kmToPixelCoeff() {
         return (100 - this.zoomSlider.getValue()) * KM_TO_PIXEL;
     }
 
+    /**
+     * Returns the distance in pixels
+     * @param origin of the map, used as a reference to draw all the elements
+     * @param target : the element for which the distance in pixels is needed
+     * @return distance in pixels
+     */
     private double distanceInPixels(Geolocation origin, Geolocation target) {
         double coeff = kmToPixelCoeff();
         return origin.distance(target) * coeff;
     }
 
+    /**
+     * Transforms real geolocation coordinates in pixels, in order to draw the city map 
+     * @param origin of the map, used as a reference to draw all the elements
+     * @param target : the element for which the geolocation in pixels is needed
+     * @return the new geolocation in pixels
+     */
     private Geolocation geolocationToPixels(Geolocation origin, Geolocation target) {
         double coeff = kmToPixelCoeff();
         Geolocation geoY = new Geolocation(target.getLatitude(), origin.getLongitude());
         Geolocation geoX = new Geolocation(origin.getLatitude(), target.getLongitude());
         Geolocation ret = new Geolocation(origin.distance(geoY) * coeff + offsetY, origin.distance(geoX) * coeff + offsetX);
-
         return ret;
     }
 
+    /**
+     * Gets the angle between two points
+     * @param A : geolocation of the first point
+     * @param B : geolocation of the second point
+     * @return the angle between the 2 points
+     */
     private double angleBetweenPositions(Geolocation A, Geolocation B) {
         return this.angleBetweenPositions(A, B, true);
     }
-
+    
     private double angleBetweenPositions(Geolocation A, Geolocation B, boolean halve) {
         double op = A.getLatitude() - B.getLatitude();
         double ad = A.getLongitude() - B.getLongitude();
@@ -541,16 +591,19 @@ public class CityMapContainerView extends JPanel implements Observer {
         return a;
     }
 
-    // to change
     public int getHeight() {
         return HEIGHT;
     }
 
-    // to change
     public int getWidth() {
         return WIDTH;
     }
 
+    /**
+     * Used to synchronize the map with the text area
+     * @param o Observable object
+     * @param deliverySelected : delivery that was selected in the textual view
+     */
     public void update(Observable o, Object deliverySelected) {
         LinkedList<Delivery> delivs = controller.getModel().getDeliveryRequest().getDeliveries();
         for (Delivery d : delivs) {
@@ -575,8 +628,6 @@ public class CityMapContainerView extends JPanel implements Observer {
     public void setNewDelivery(Delivery newDelivery) {
         this.newDelivery = newDelivery;
     }
-    
-    
 
     public Delivery getNewDelivery() {
         return newDelivery;

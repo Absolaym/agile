@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,26 +9,30 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
+/**
+ * This class extends a panel containing the menu with all available options 
+ * Contains the declaration of buttons and fields necessary to perform different operations (loading, adding new delivery, etc.)
+ */
 public class CityMapMenuView extends JPanel {
 
     private final int buttonHeight = 30;
     private final int HEIGHT = 100;
     private final int WIDTH = 1000;
-    
+
     private JButton computeCircuitsButton;
     private JButton loadNewCityMapButton;
     private JButton loadDeliveryRequestButton;
     private JButton addNewDeliveryButton;
     private JButton undoButton;
     private JButton redoButton;
-    
+
     private JLabel courierNumberLabel;
-    
+
     private JTextField courierNumberField;
     private JTextField deliveryDurationField;
-    
+
     private JPanel messages;
-    
+
     ButtonListener buttonListener;
 
     public CityMapMenuView(Window w, Controller controller) {
@@ -50,11 +53,11 @@ public class CityMapMenuView extends JPanel {
         addNewDeliveryButton = new JButton("Add a delivery");
         addNewDeliveryButton.addActionListener(buttonListener);
         addNewDeliveryButton.setEnabled(false);
-        
+
         undoButton = new JButton("Undo");
         undoButton.addActionListener(buttonListener);
         undoButton.setEnabled(false);
-        
+
         redoButton = new JButton("Redo");
         redoButton.addActionListener(buttonListener);
         redoButton.setEnabled(false);
@@ -62,8 +65,6 @@ public class CityMapMenuView extends JPanel {
         courierNumberLabel = new JLabel("Number of couriers: ");
         courierNumberField = new JTextField("1", 4);
         courierNumberField.setEditable(true);
-        
-        
 
         messages = new JPanel(new FlowLayout());
         messages.setBackground(Color.WHITE);
@@ -75,13 +76,13 @@ public class CityMapMenuView extends JPanel {
         this.add(courierNumberField);
         this.add(computeCircuitsButton);
         this.add(addNewDeliveryButton);
- 
+
         this.add(addNewDeliveryButton);
-        
+
         this.add(messages);
         this.add(undoButton);
         this.add(redoButton);
-        
+
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Menu :"));
         w.getContentPane().add(this);
@@ -92,22 +93,31 @@ public class CityMapMenuView extends JPanel {
 
     }
 
+    /**
+     * Adds a new delivery in 2 steps :
+     * step 1 : selecting the intersection for the delivery
+     * step 2 : choosing the circuit and setting duration
+     * @param step 
+     */
     public void addNewDelivery(String step) {
         messages.removeAll();
-        if (step.equals("")) return;
-        if (step.equals("cancel")) return;
-        
+        if (step.equals("")) {
+            return;
+        }
+        if (step.equals("cancel")) {
+            return;
+        }
+
         JLabel text = new JLabel();
         deliveryDurationField = null;
-        
+
         JButton cancelAddingDeliveryButton = new JButton("Cancel");
         cancelAddingDeliveryButton.addActionListener(buttonListener);
         messages.add(cancelAddingDeliveryButton);
-        
-        if (step.equals("select")) 
+
+        if (step.equals("select")) {
             text.setText("Please select the delivery address on map.");
-            
-        else if (step.equals("time")) {
+        } else if (step.equals("time")) {
             text.setText("Please choose a circuit on the map.  Delivery duration : ");
             deliveryDurationField = new JTextField("5", 4);
             JButton goBackToPreviousStepButton = new JButton("Go back to previous step");
@@ -115,18 +125,18 @@ public class CityMapMenuView extends JPanel {
             messages.add(goBackToPreviousStepButton);
         }
         text.setSize(text.getPreferredSize().width, 30);
-        int textLocationX = messages.getWidth() / 2 - text.getSize().width/2;
+        int textLocationX = messages.getWidth() / 2 - text.getSize().width / 2;
         text.setLocation(textLocationX, 0);
         text.setVisible(true);
         messages.add(text);
-        
-        if(deliveryDurationField != null) {
+
+        if (deliveryDurationField != null) {
             deliveryDurationField.setSize(50, 20);
-            deliveryDurationField.setLocation(textLocationX + text.getSize().width + 10 , 0);
+            deliveryDurationField.setLocation(textLocationX + text.getSize().width + 10, 0);
             deliveryDurationField.setVisible(true);
             messages.add(deliveryDurationField);
         }
-        
+
     }
 
     // to change
@@ -149,23 +159,23 @@ public class CityMapMenuView extends JPanel {
     public JButton getLoadDeliveryRequestButton() {
         return loadDeliveryRequestButton;
     }
-    
+
     public JButton getAddNewDeliveryButton() {
         return addNewDeliveryButton;
     }
-    
+
     public JButton getUndoButton() {
         return undoButton;
     }
-    
+
     public JButton getRedoButton() {
         return redoButton;
     }
-    
+
     public JTextField getCourierNumberField() {
         return courierNumberField;
     }
-    
+
     public JPanel getMessages() {
         return messages;
     }
@@ -174,10 +184,10 @@ public class CityMapMenuView extends JPanel {
         String numberString = this.courierNumberField.getText();
         return Integer.parseInt(numberString);
     }
-    
+
     public int getDeliveryDuration() {
         String numberString = this.deliveryDurationField.getText();
-        return Integer.parseInt(numberString)*60;
+        return Integer.parseInt(numberString) * 60;
     }
 
 }

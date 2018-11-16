@@ -11,11 +11,11 @@ import tspImproved.TSP1;
 import model.Circuit;
 
 /**
- * 
+ *
  * @author MarieFrance
- * 
- * Class divides deliveries into a given amount of clusters
- * and computes circuits 
+ *
+ * Class divides deliveries into a given amount of clusters and computes
+ * circuits
  *
  */
 public class CircuitComputer {
@@ -35,39 +35,44 @@ public class CircuitComputer {
     }
 
     /**
-  	 * Initializes class to 
-  	 * @param aDeliveryRequest the delivery request containing the deliveries to use
-  	 * @param someShortestPaths the shortest paths that link the deliveries with eachother and with the warehouse
-  	 */
+     * Initializes class to
+     *
+     * @param aDeliveryRequest the delivery request containing the deliveries to
+     * use
+     * @param someShortestPaths the shortest paths that link the deliveries with
+     * eachother and with the warehouse
+     */
     public void init(DeliveryRequest aDeliveryRequest, HashMap<String, HashMap<String, Trip>> someShortestPaths) {
         this.deliveryRequest = aDeliveryRequest;
         this.shortestPaths = someShortestPaths;
     }
 
     /**
-  	 * Creates the clusters with a K-MEANS approach. This class must be initialized before calling execute
-  	 * and creates the circuits with calling a TSP algorithm
-  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
-  	 */
+     * Creates the clusters with a K-MEANS approach. This class must be
+     * initialized before calling execute and creates the circuits with calling
+     * a TSP algorithm
+     *
+     * @param numberOfCouriers the number of circuits to create. Must be less
+     * than the number of deliveries in the request
+     */
     public void execute(int numberOfCouriers) {
         LinkedList<LinkedList<Delivery>> clusters = findBestClusters(numberOfCouriers);
-        
+
         this.circuits = new LinkedList<Circuit>();
         for (LinkedList<Delivery> cluster : clusters) {
             runTSP(cluster, cluster.size());
         }
-        
+
         int circuitNumber = 1;
-        for(Circuit circuit : circuits){
+        for (Circuit circuit : circuits) {
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
-            System.out.println(circuit.getDepartureTime());
             circuit.setCourierId(circuitNumber++);
             int i = 0;
-            for(Delivery delivery : circuit.getDeliveries()){
+            for (Delivery delivery : circuit.getDeliveries()) {
                 delivery.setCircuit(circuit);
-                int tripDurationSeconds = (int)(circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
+                int tripDurationSeconds = (int) (circuit.getTrips().get(i).getLength() / (Circuit.SPEED / 3.6));
                 arrivalTimeSeconds += tripDurationSeconds;
-                delivery.setArrivalTime( arrivalTimeSeconds );
+                delivery.setArrivalTime(arrivalTimeSeconds);
                 arrivalTimeSeconds += delivery.getDuration().getSeconds();
                 i++;
             }
@@ -75,9 +80,12 @@ public class CircuitComputer {
     }
 
     /**
-  	 * Creates clusters several times with a K-MEANS approach having roughly the same size and chooses the one with the best quality
-  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
-  	 */
+     * Creates clusters several times with a K-MEANS approach having roughly the
+     * same size and chooses the one with the best quality
+     *
+     * @param numberOfCouriers the number of circuits to create. Must be less
+     * than the number of deliveries in the request
+     */
     private LinkedList<LinkedList<Delivery>> findBestClusters(int numberOfCouriers) {
 
         LinkedList<LinkedList<Delivery>> bestClusters = new LinkedList<LinkedList<Delivery>>();
@@ -99,10 +107,14 @@ public class CircuitComputer {
     }
 
     /**
-  	 * Computes the quality of a set of clusters adding the distance between each delivery and its cluster center. 
-  	 * This is useful to assess which clustering solution is better, after the clusters have been moved to even out the cluster sizes
-  	 * @param clustersAndCenters each cluster of the solution paired with its center
-  	 */
+     * Computes the quality of a set of clusters adding the distance between
+     * each delivery and its cluster center. This is useful to assess which
+     * clustering solution is better, after the clusters have been moved to even
+     * out the cluster sizes
+     *
+     * @param clustersAndCenters each cluster of the solution paired with its
+     * center
+     */
     public double computeClustersQuality(Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> clustersAndCenters) {
         // The quality of a group of clusters equals to the sum of all of the distances between deliveries
         double quality = 0;
@@ -121,9 +133,12 @@ public class CircuitComputer {
     }
 
     /**
-  	 * Creates the clusters with a K-MEANS approach. The clusters are not necessarily the same size
-  	 * @param numberOfCouriers the number of circuits to create. Must be less than the number of deliveries in the request
-  	 */
+     * Creates the clusters with a K-MEANS approach. The clusters are not
+     * necessarily the same size
+     *
+     * @param numberOfCouriers the number of circuits to create. Must be less
+     * than the number of deliveries in the request
+     */
     private Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> createClustersWithKMeans(int numberOfCouriers) {
         LinkedList<Delivery> deliveries = this.deliveryRequest.getDeliveries();
         int totalDeliveries = deliveries.size();
@@ -148,7 +163,7 @@ public class CircuitComputer {
         }
 
         LinkedList<LinkedList<Delivery>> clusters = new LinkedList<LinkedList<Delivery>>();
-        
+
         for (int k = 0; k < KMEANS_TIMEOUT; k++) {
 
             //finding closest center for each delivery
@@ -179,34 +194,34 @@ public class CircuitComputer {
             for (Map.Entry<Geolocation, LinkedList<Delivery>> entry : correspondingCenter.entrySet()) {
                 clusters.add(entry.getValue());
             }
-            
+
             centers = computeNewCentersGeolocations(numberOfCouriers, clusters);
 
         }
 
-
         double avgClusterSize = ((double) deliveries.size()) / ((double) numberOfCouriers);
-        
+
         // Equalize sizes of clusters 
         clusters = equalizeClustersSize(clusters, avgClusterSize);
         centers = computeNewCentersGeolocations(numberOfCouriers, clusters);
 
-
         Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]> clustersAndCenters = new Pair<LinkedList<LinkedList<Delivery>>, Geolocation[]>(clusters, centers);
         return (clustersAndCenters);
     }
-    
+
     /**
-  	 * Computes the center of a cluster. Useful for the K-MEANS clustering implementation
-  	 * @param numberOfCouriers the number of couriers which is also the number of clusters
-  	 * @param clusters the cluster to be computed
-  	 * @return the new cluster centers
-  	 */
+     * Computes the center of a cluster. Useful for the K-MEANS clustering
+     * implementation
+     *
+     * @param numberOfCouriers the number of couriers which is also the number
+     * of clusters
+     * @param clusters the cluster to be computed
+     * @return the new cluster centers
+     */
     private Geolocation[] computeNewCentersGeolocations(int numberOfCouriers, LinkedList<LinkedList<Delivery>> clusters) {
-    	
-    	Geolocation[] centers = new Geolocation[numberOfCouriers]; 
-    	
-       
+
+        Geolocation[] centers = new Geolocation[numberOfCouriers];
+
         for (int i = 0; i < numberOfCouriers; i++) {
             double meanLatitude = 0;
             double meanLongitude = 0;
@@ -220,7 +235,7 @@ public class CircuitComputer {
 
             centers[i] = new Geolocation(meanLatitude, meanLongitude);
         }
-        
+
         return (centers);
     }
 

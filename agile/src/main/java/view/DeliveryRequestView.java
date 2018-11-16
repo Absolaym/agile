@@ -19,8 +19,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 /**
- * 
- * 
+ * This is a wrap class containing a table row (the delivery address, time, duration).
+ * Allows o determine which rows is selected and to synchronize the table with the city map.
  */
 class TableRow extends Observable {
 
@@ -40,7 +40,9 @@ class TableRow extends Observable {
     public boolean getIsSelected() {
         return isSelected;
     }
-
+    /**
+     * Notifies the observers that a row is selected. 
+     */
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
         if (isSelected) {
@@ -54,6 +56,10 @@ class TableRow extends Observable {
     }
 }
 
+/**
+ * Panel containing the textual view (delivery requests with all available deliveries)
+ * Contains methods to add deliveries information in the textual view
+ */
 public class DeliveryRequestView extends JPanel {
 
     private JPanel deliveryRequestViewPanel;
@@ -259,6 +265,9 @@ public class DeliveryRequestView extends JPanel {
 
         row.addMouseListener(new java.awt.event.MouseListener() {
             @Override
+            /**
+             * On click, sets a yellow row's background
+             */
             public void mouseClicked(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
@@ -281,6 +290,9 @@ public class DeliveryRequestView extends JPanel {
             }
 
             @Override
+            /**
+             * On hover, sets a green background
+             */
             public void mouseEntered(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
@@ -291,6 +303,9 @@ public class DeliveryRequestView extends JPanel {
             }
 
             @Override
+            /**
+             * On mouse out, sets the previous background
+             */
             public void mouseExited(MouseEvent e) {
                 Component row = e.getComponent();
                 for (TableRow r : rows) {
@@ -305,7 +320,7 @@ public class DeliveryRequestView extends JPanel {
     }
 
     /**
-     * 
+     * Sets the color of a row(containing a specific delivery) according to its circuit number 
      * @param component
      * @param circuit 
      */
@@ -314,7 +329,7 @@ public class DeliveryRequestView extends JPanel {
         if (circuit != null) {
             i = circuit.getCourierId();
         }
-        Color c = window.colors[i];
+        Color c = window.colors[i%(window.colors.length)];
         if (i == 0) {
             component.setBackground(null);
         } else {

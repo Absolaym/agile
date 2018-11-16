@@ -1,12 +1,14 @@
 package utils;
 
 /**
- * A wrapper class around the time (since most of the Date object is now deprecated)
- * The atomic time is the second to fit the need 
+ * A wrapper class around the time (since most of the Date object is now
+ * deprecated) The atomic time is the second to fit the need
+ *
  * @author johnny
  *
  */
 public class Time {
+
     /**
      * Time in seconds
      */
@@ -25,8 +27,8 @@ public class Time {
         this.addMinutes(minute);
         this.addSeconds(second);
     }
-    
-    public Time(Time t){
+
+    public Time(Time t) {
         this(t.time);
     }
 
@@ -43,7 +45,7 @@ public class Time {
     }
 
     public Time ellapsedFrom(Time time) {
-        return new Time(this.time - time.time);	
+        return new Time(this.time - time.time);
     }
 
     public int getHours() {
@@ -59,8 +61,8 @@ public class Time {
     }
 
     public String toString() {
-        return String.format("%02d", this.getHours()) 
-                + ":" + String.format("%02d", this.getMinutes()) 
+        return String.format("%02d", this.getHours())
+                + ":" + String.format("%02d", this.getMinutes())
                 + ":" + String.format("%02d", this.getSeconds());
     }
 }

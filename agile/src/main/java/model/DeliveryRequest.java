@@ -9,14 +9,13 @@ import java.util.LinkedList;
 import utils.Time;
 
 /**
- *
- * @author olivi & Johnny
+ * A DeliveryRequest is an object containing a list of deliveries to perform, 
+ * a warehouse and a departure time
  */
 public class DeliveryRequest {
-    
+
     // While there is no bottleneck here, I do prefer to use LinkedLists over ArrayList
     // since we might have a bunch of addition/deletion to make. Though it's not that relevant
-
     private LinkedList<Delivery> deliveries;
     private String warehouseAddress = "";
     private Intersection warehouseIntersection;
@@ -27,42 +26,42 @@ public class DeliveryRequest {
     }
 
     /**
-     * for test purposes
+     * Constructor for test purposes
      * @param deliveries
      * @param warehouseIntersection
-     * @param time 
+     * @param time
      */
     public DeliveryRequest(LinkedList<Delivery> deliveries, Intersection warehouseIntersection, Time time) {
         this.deliveries = deliveries;
         this.warehouseIntersection = warehouseIntersection;
         this.departureTime = time;
     }
-    
+
     /**
-     * 
+     *
      * @param delivery The delivery you want to add to the list of deliveries
      * @return this
      */
     public DeliveryRequest addDelivery(Delivery delivery) {
-        this.deliveries.add( delivery );
+        this.deliveries.add(delivery);
         return this;
     }
-    
+
     /**
-     * 
+     * Removes a delivery from the request
      * @param delivery The delivery you want to remove from the list
      * @return this
      */
     public boolean removeDelivery(Delivery delivery) {
         return this.deliveries.remove(delivery);
     }
-    
+
     public LinkedList<Delivery> getDeliveries() {
         return deliveries;
     }
-    
-    public void setDeliveries(LinkedList<Delivery> d){
-    	this.deliveries = d;
+
+    public void setDeliveries(LinkedList<Delivery> d) {
+        this.deliveries = d;
     }
 
     public String getWarehouseAddress() {
@@ -91,31 +90,37 @@ public class DeliveryRequest {
         return str;
     }
     
+    /**
+     * Method matches the addresses of the deliveries in the request to intersections of the cityMap
+     * in which it's supposed to be located. This sets the delivery's geolocation to be able to display it
+     * @param cityMap the cityMap in which the delivery request is located
+     */
     public void computeDeliveryRequestGeolocation(CityMap cityMap){
+
 //        LinkedList<Delivery> deliveries = this.getDeliveries();
-        for (Delivery delivery : this.deliveries){
+        for (Delivery delivery : this.deliveries) {
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
-            if(geolocation == null){
+            if (geolocation == null) {
                 System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
                 this.deliveries.remove(delivery);
                 continue;
             }
             delivery.setGeolocation(geolocation);
         }
-        
+
         this.warehouseIntersection = cityMap.getIntersectionById(this.warehouseAddress);
         //Error
-        if(this.warehouseIntersection == null)
-        	System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
+        if (this.warehouseIntersection == null) {
+            System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
+        }
     }
 
     public Intersection getWarehouseIntersection() {
-            return warehouseIntersection;
+        return warehouseIntersection;
     }
 
     public void setWarehouseIntersection(Intersection warehouseIntersection) {
-            this.warehouseIntersection = warehouseIntersection;
+        this.warehouseIntersection = warehouseIntersection;
     }
 
 }
-
