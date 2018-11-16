@@ -18,6 +18,7 @@ public class CommandDeleteDeliveryTest extends TestCase {
     // - a test returns void, 
     // - it goes without params 
     // - it begins with "test" lowercase
+    
     public void testExecute() throws Exception {
 
         Controller c = new Controller();
@@ -43,17 +44,18 @@ public class CommandDeleteDeliveryTest extends TestCase {
             model.setCircuits(null);
         }
 
+        model.setNumberOfCouriers(1);
         model.computeCircuits();
-//            Controller.setCommandsList(new CommandsList());
 
         Circuit circuit = model.getCircuits().getFirst();
+        Circuit circuitBeforeDelete = new Circuit(circuit);
+        
         Delivery delivery = circuit.getDeliveries().getLast();
 
-//            Controller.commandsList.addCommand(new CommandAddDelivery(d, c));
         CommandDeleteDelivery cdd = new CommandDeleteDelivery(delivery, circuit);
         cdd.execute();
-
-        assertEquals("", circuit.toString());
+        
+        assertEquals(circuitBeforeDelete.getDeliveries().size()-1, model.getCircuits().getFirst().getDeliveries().size());
     }
 
 }

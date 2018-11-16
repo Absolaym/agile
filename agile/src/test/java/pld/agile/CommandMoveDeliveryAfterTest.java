@@ -18,6 +18,7 @@ public class CommandMoveDeliveryAfterTest extends TestCase {
     // - a test returns void, 
     // - it goes without params 
     // - it begins with "test" lowercase
+    
     public void testExecute() throws Exception {
 
         Controller c = new Controller();
@@ -43,17 +44,18 @@ public class CommandMoveDeliveryAfterTest extends TestCase {
             model.setCircuits(null);
         }
 
+        model.setNumberOfCouriers(1);
         model.computeCircuits();
-//            Controller.setCommandsList(new CommandsList());
 
         Circuit circuit = model.getCircuits().getFirst();
-        Delivery delivery = circuit.getDeliveries().getLast();
+        Circuit circuitBeforeMoveAfter = new Circuit(circuit);
+        
+        Delivery delivery = circuit.getDeliveries().getFirst();
 
-//            Controller.commandsList.addCommand(new CommandAddDelivery(d, c));
         CommandMoveDeliveryAfter cmda = new CommandMoveDeliveryAfter(delivery, circuit);
         cmda.execute();
 
-        assertEquals("", circuit.toString());
+        assertEquals(circuitBeforeMoveAfter.getDeliveries().getFirst().toString(), model.getCircuits().getFirst().getDeliveries().get(1).toString());;
     }
 
 }
