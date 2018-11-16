@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatterBuilder;
 
 /**
  * This is a wrap class containing a table row (the delivery address, time, duration).
- * Allows o determine which rows is selected and to synchronize the table with the city map.
+ * Allows to determine which rows is selected and to synchronize the table with the city map.
  */
 class TableRow extends Observable {
 
@@ -126,7 +126,7 @@ public class DeliveryRequestView extends JPanel {
 
     /**
      * this method initializes and fills the panel that contains the heading of 
-     * the textual view
+     * the textual view.
      * it is called by loadDeliveryRequest
      */
     private void createDeliveriesContainer() {
