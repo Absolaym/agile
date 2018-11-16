@@ -42,7 +42,14 @@ public class Delivery {
         this.geolocation = geolocation;
     }
     
-    
+    public Delivery(Delivery d){
+        address = d.getAddress();
+        geolocation = d.getGeolocation();
+        circuit = d.getCircuit();
+        isSelected = d.getIsSelected();
+        duration = new Time(d.getDuration());
+        arrivalTime = new Time(d.getArrivalTime());
+    }
 
     /**
      * Get the id of the address

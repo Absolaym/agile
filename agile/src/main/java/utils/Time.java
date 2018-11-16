@@ -25,6 +25,10 @@ public class Time {
         this.addMinutes(minute);
         this.addSeconds(second);
     }
+    
+    public Time(Time t){
+        this(t.time);
+    }
 
     public void addHours(int hours) {
         this.time += 3600 * hours;

@@ -7,7 +7,14 @@ public class Trip {
     private List<Section> sections;
 
     public Trip() {
-        this.sections = new LinkedList<Section>();
+        this.sections = new LinkedList<>();
+    }
+    
+    public Trip(Trip t){
+        sections = new LinkedList<>();
+        for(Section s : t.getSections()){
+            sections.add(new Section(s));
+        }
     }
 
     public List<Section> getSections() {

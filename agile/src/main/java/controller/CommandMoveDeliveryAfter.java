@@ -15,69 +15,88 @@ import model.Trip;
  * @author pagilles
  */
 public class CommandMoveDeliveryAfter implements Command {
-
-    private Delivery delivery;
-    private int deliveryIndex;
     
-    private Circuit circuit;
-    private int circuitIndex;
+    private boolean hasMoved;
+    
+    private Delivery originalDelivery;
+    private int originalDeliveryIndex;
+    
+    private Circuit originalCircuit;
+    private int originalCircuitIndex;
     
     public CommandMoveDeliveryAfter(Delivery d, Circuit c){
-        this.delivery = d;
                 
-        this.circuit = c;
-        this.circuitIndex = Model.getInstance().getCircuits().indexOf(c);
-        this.deliveryIndex = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().indexOf(d);
+        this.originalDelivery = new Delivery(d);
+        this.originalCircuit = new Circuit(c);
+        
+        this.originalDeliveryIndex = c.getDeliveries().indexOf(d);
+        this.originalCircuitIndex = Model.getInstance().getCircuits().indexOf(c);
+        
+        hasMoved = false;
     }
     
     @Override
     public void execute() {
         
+        hasMoved = false;
+        
+        Delivery updatedDelivery = new Delivery(originalDelivery);
+        Circuit updatedCircuit = new Circuit(originalCircuit);
+        
+        int deliveryIndex = originalDeliveryIndex;
+        int circuitIndex = originalCircuitIndex;
+        
+        Model model = Model.getInstance();
+        
         String trip1Origin, trip1Target;
         String trip2Origin, trip2Target;
         String trip3Origin, trip3Target;
         
-        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-1) {
+        if(deliveryIndex == updatedCircuit.getDeliveries().size()-1) {
             return;
         }
         
         if(deliveryIndex == 0) {
-            trip1Origin = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
+            trip1Origin = model.getDeliveryRequest().getWarehouseAddress();
         } else {
-            trip1Origin = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex-1).getAddress();
+            trip1Origin = updatedCircuit.getDeliveries().get(deliveryIndex-1).getAddress();
         }
         
-        trip1Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+1).getAddress();
+        trip1Target = updatedCircuit.getDeliveries().get(deliveryIndex+1).getAddress();
         
         trip2Origin = trip1Target;
-        trip2Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex).getAddress();
+        trip2Target = updatedCircuit.getDeliveries().get(deliveryIndex).getAddress();
         
         trip3Origin = trip2Target;
         
-        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-2){
-            trip3Target = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
+        if(deliveryIndex == updatedCircuit.getDeliveries().size()-2){
+            trip3Target = model.getDeliveryRequest().getWarehouseAddress();
         } else {
-            trip3Target = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+2).getAddress();
+            trip3Target = updatedCircuit.getDeliveries().get(deliveryIndex+2).getAddress();
         }
         
-        Trip trip1 = Model.getInstance().getTripBetweenIntersections(trip1Origin, trip1Target);
-        Trip trip2 = Model.getInstance().getTripBetweenIntersections(trip2Origin, trip2Target);
-        Trip trip3 = Model.getInstance().getTripBetweenIntersections(trip3Origin, trip3Target);
+        Trip trip1 = model.getTripBetweenIntersections(trip1Origin, trip1Target);
+        Trip trip2 = model.getTripBetweenIntersections(trip2Origin, trip2Target);
+        Trip trip3 = model.getTripBetweenIntersections(trip3Origin, trip3Target);
         
         
-        Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).addDelivery(deliveryIndex+1,delivery);
+        updatedCircuit.getDeliveries().remove(deliveryIndex);
+        updatedCircuit.addDelivery(deliveryIndex+1,updatedDelivery);
         
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip3);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip2);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip1);
+        updatedCircuit.getTrips().remove(deliveryIndex);
+        updatedCircuit.getTrips().remove(deliveryIndex);
+        updatedCircuit.getTrips().remove(deliveryIndex);
+        updatedCircuit.addTrip(deliveryIndex, trip3);
+        updatedCircuit.addTrip(deliveryIndex, trip2);
+        updatedCircuit.addTrip(deliveryIndex, trip1);
         
-        Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
+        updatedCircuit.updateSections();
+        updatedCircuit.updateDeliveryInfos();        
         
-        Model.getInstance().rearrangeDeliveries();
+        model.getCircuits().set(circuitIndex, updatedCircuit);
+        model.rearrangeDeliveries();
+        
+        hasMoved = true;
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -85,8 +104,21 @@ public class CommandMoveDeliveryAfter implements Command {
     @Override
     public void cancel() {
         
-        Model.getInstance().getCircuits().set(circuitIndex, circuit);
-        Model.getInstance().rearrangeDeliveries();
+        if(!hasMoved){
+            return;
+        }
+        
+        Model model = Model.getInstance();
+        
+        Circuit copyOfOriginalCircuit = new Circuit(originalCircuit);
+        
+        copyOfOriginalCircuit.updateSections();
+        copyOfOriginalCircuit.updateDeliveryInfos();
+        
+        model.getCircuits().set(originalCircuitIndex, copyOfOriginalCircuit);
+        
+        model.rearrangeDeliveries();
+        
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
