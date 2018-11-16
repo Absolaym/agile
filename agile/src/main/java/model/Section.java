@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Class represents a road section
+ */
 public class Section {
 	
     private String streetName;

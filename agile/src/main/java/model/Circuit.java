@@ -5,7 +5,6 @@ import utils.Time;
 
 /**
  * This class represents a circuit composed by deliveries and trips between them
- * @author johnny
  *
  */
 public class Circuit {

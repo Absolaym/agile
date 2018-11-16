@@ -14,8 +14,7 @@ import utils.CircuitComputer;
 import utils.ShortestPathComputer;
 
 /**
- *
- * @author Lucie
+ * This class links the controller to the model
  */
 public class Model {
 
@@ -28,8 +27,6 @@ public class Model {
 	private static Model INSTANCE = null;
 
 	private Model(){
-		//        deliveryRequest = new DeliveryRequest();
-		//        circuits = new LinkedList<Circuit>();
 		cityMap = new CityMap();
 		deliveryRequest = null;
 		circuits = null;

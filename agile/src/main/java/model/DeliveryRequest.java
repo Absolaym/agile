@@ -9,8 +9,7 @@ import java.util.LinkedList;
 import utils.Time;
 
 /**
- *
- * @author olivi & Johnny
+ * A DeliveryRequest is an 
  */
 public class DeliveryRequest {
     
@@ -27,7 +26,7 @@ public class DeliveryRequest {
     }
 
     /**
-     * for test purposes
+     * Constructor for test purposes
      * @param deliveries
      * @param warehouseIntersection
      * @param time 
@@ -49,7 +48,7 @@ public class DeliveryRequest {
     }
     
     /**
-     * 
+     * Removes a delivery from the request
      * @param delivery The delivery you want to remove from the list
      * @return this
      */
@@ -91,6 +90,11 @@ public class DeliveryRequest {
         return str;
     }
     
+    /**
+     * Method matches the addresses of the deliveries in the request to intersections of the cityMap
+     * in which it's supposed to be located. This sets the delivery's geolocation to be able to display it
+     * @param cityMap the cityMap in which the delivery request is located
+     */
     public void computeDeliveryRequestGeolocation(CityMap cityMap){
 //        LinkedList<Delivery> deliveries = this.getDeliveries();
         for (Delivery delivery : this.deliveries){

@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Class represents the intersection between two roads on a map
+ */
 public class Intersection {
 
     private Geolocation geolocation;
