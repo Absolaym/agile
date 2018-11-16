@@ -6,11 +6,15 @@ package controller;
  */
 public interface Command {
     /**
-     * The code for execution of the command should be placed in this method
+     * Executes the command.
+     * The code for the execution of the command should be placed in this method
      */
     void execute();
+    
     /**
-     * The code for the cancellation of the command should be placed in this method
+     * Undoes all the effects of the command.
+     * The code for the cancellation of the command should be placed in this 
+     * method
      */
     void cancel();
 }

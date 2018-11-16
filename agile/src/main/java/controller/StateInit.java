@@ -7,7 +7,6 @@ package controller;
 
 /**
  *
- * @author lgalle
  */
 public class StateInit extends StateDefault {
 

@@ -13,8 +13,7 @@ import model.Model;
 import utils.XmlParser;
 
 /**
- *
- * @author lgalle
+ * Implements the default version of methods shared by all the states.
  */
 public class StateDefault implements State {
 

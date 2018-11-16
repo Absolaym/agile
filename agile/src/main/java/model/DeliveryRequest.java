@@ -22,7 +22,7 @@ public class DeliveryRequest {
     private Time departureTime = new Time();
 
     public DeliveryRequest() {
-        this.deliveries = new LinkedList<Delivery>();
+        this.deliveries = new LinkedList<>();
     }
 
     /**
@@ -80,6 +80,7 @@ public class DeliveryRequest {
         this.departureTime = departureTime;
     }
 
+    @Override
     public String toString() {
         String str = "";
         str += "Warehouse: " + this.warehouseAddress + " | ";
@@ -96,8 +97,7 @@ public class DeliveryRequest {
      * @param cityMap the cityMap in which the delivery request is located
      */
     public void computeDeliveryRequestGeolocation(CityMap cityMap){
-
-//        LinkedList<Delivery> deliveries = this.getDeliveries();
+        
         for (Delivery delivery : this.deliveries) {
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if (geolocation == null) {

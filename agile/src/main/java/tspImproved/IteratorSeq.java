@@ -5,36 +5,36 @@ import java.util.Iterator;
 
 public class IteratorSeq implements Iterator<Integer> {
 
-    private Integer[] candidats;
-    private int nbCandidats;
-    private int[][] couts;
-    private int sommetCourant;
+    private Integer[] candidates;
+    private int nbCandidates;
+    private int[][] costs;
+    private int currentVertex;
 
     /**
-     * Cree un iterateur pour iterer sur l'ensemble des sommets de nonVus
+     * Creates an iterator to iterate of the collection of unseen vertexes 
      *
-     * @param nonVus
-     * @param sommetCrt
+     * @param unseenVertexes
+     * @param currentVertex
      */
-    public IteratorSeq(Collection<Integer> nonVus, int sommetCrt, int[][] cout) {
-        this.candidats = new Integer[nonVus.size()];
-        this.couts = cout;
-        this.sommetCourant = sommetCrt;
-        nbCandidats = 0;
-        for (Integer s : nonVus) {
-            candidats[nbCandidats++] = s;
+    public IteratorSeq(Collection<Integer> unseenVertexes, int currentVertex, int[][] cost) {
+        this.candidates = new Integer[unseenVertexes.size()];
+        this.costs = cost;
+        this.currentVertex = currentVertex;
+        nbCandidates = 0;
+        for (Integer s : unseenVertexes) {
+            candidates[nbCandidates++] = s;
         }
         sortCandidates();
     }
 
     @Override
     public boolean hasNext() {
-        return nbCandidats > 0;
+        return nbCandidates > 0;
     }
 
     @Override
     public Integer next() {
-        return candidats[--nbCandidats];
+        return candidates[--nbCandidates];
     }
 
     @Override
@@ -42,19 +42,20 @@ public class IteratorSeq implements Iterator<Integer> {
     }
 
     /**
-     * Trie les candidats par rapport au plus court chemin qui les lie au sommet courant
-     * Le sommet le plus éloigné sera au début du tableau
+     * Sorts the candidates relatively to their shortest path to the current
+     * vertex.
+     * The vertex the most far away will be placed at the beginning of the table
      */
     private void sortCandidates() {
         int i, j, temp;
         boolean swapped;
-        for (i = 0; i < candidats.length - 1; i++) {
+        for (i = 0; i < candidates.length - 1; i++) {
             swapped = false;
-            for (j = 0; j < candidats.length - i - 1; j++) {
-                if (couts[sommetCourant][candidats[j]] < couts[sommetCourant][candidats[j + 1]]) {
-                    temp = candidats[j];
-                    candidats[j] = candidats[j + 1];
-                    candidats[j + 1] = temp;
+            for (j = 0; j < candidates.length - i - 1; j++) {
+                if (costs[currentVertex][candidates[j]] < costs[currentVertex][candidates[j + 1]]) {
+                    temp = candidates[j];
+                    candidates[j] = candidates[j + 1];
+                    candidates[j + 1] = temp;
                     swapped = true;
                 }
             }
