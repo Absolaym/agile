@@ -1,5 +1,7 @@
 package model;
-
+/**
+ * 
+ */
 public class Vector2D {
 
     public double x;

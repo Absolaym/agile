@@ -16,7 +16,6 @@ import javax.swing.*;
 public class Window extends JFrame {
 
     // Subcomponents of the view
-//    private MainMenuBar menuBar;
     private CityMapMenuView mapMenuPanel;
     private CityMapContainerView mapContainerPanel;
     private DeliveryRequestView deliveryRequestPanel;

@@ -36,8 +36,6 @@ public class Delivery {
     }
 
     /**
-     * for test purposes
-     *
      * @param address
      * @param geolocation
      */

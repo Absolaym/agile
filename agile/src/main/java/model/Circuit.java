@@ -10,7 +10,7 @@ import utils.Time;
 public class Circuit {
 
     /**
-     * The average speed of a courier on a trip in km/h
+     * The average speed of a courier on a trip in km/h.
      */
     public static final int SPEED = 15;
 
@@ -21,7 +21,7 @@ public class Circuit {
     private LinkedList<Delivery> deliveries;
 
     /**
-     * Create a circuit
+     * Create a circuit.
      */
     public Circuit() {
         this.trips = new LinkedList<>();

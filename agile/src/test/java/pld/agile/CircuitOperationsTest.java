@@ -26,7 +26,7 @@ public class CircuitOperationsTest extends TestCase {
 
     /**
      * make a delivery request with already the added delivery and a circuit
-     * with already the added delivery make a dr and a circit without and then
+     * with already the added delivery make a dr and a circuit without and then
      * add the delivery check the circuit and dr are equal
      */
     public void testAddDelivery() throws Exception {
@@ -35,7 +35,7 @@ public class CircuitOperationsTest extends TestCase {
 
     /**
      * make a delivery request with the delivery and a circuit with the delivery
-     * make a dr and a circit without and then delete the delivery check the
+     * make a dr and a circuit without and then delete the delivery check the
      * circuit and dr are equal
      */
     public void testDeleteDelivery() throws Exception {

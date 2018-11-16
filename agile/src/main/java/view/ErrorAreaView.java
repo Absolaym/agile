@@ -56,7 +56,7 @@ public class ErrorAreaView extends JPanel implements ErrorObserver {
         g.drawString("(Note that this error is the last encountered, it might have been resolved by one of your subsequent actions)", 10, 48);
     }
 
-    // to change
+    
     public int getHeight() {
         return HEIGHT;
     }
