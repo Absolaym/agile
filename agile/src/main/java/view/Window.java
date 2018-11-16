@@ -9,6 +9,10 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
+/**
+ * Main class containing the view and the references to all panels. 
+ * Allows communication between all the view classes and the controller.
+ */
 public class Window extends JFrame {
 
     // Subcomponents of the view

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Observable;
 
 /**
- * @author olivi
+ * This class represents a map containing the road sections and intersections
  */
 public class CityMap extends Observable {
 
@@ -45,13 +45,21 @@ public class CityMap extends Observable {
         dims.x = Math.max(Geolocation.distance(minLat, minLon, minLat, maxLon), Geolocation.distance(maxLat, minLon, maxLat, maxLon));
         return dims;
     }
-
-    public void AddIntersection(Intersection inter) {
-        this.intersections.put(inter.getId(), inter);
+    
+    /**
+     * Adds an intersection to the intersections attribute of the map
+     * @param intersection the intersection
+     */
+    public void AddIntersection(Intersection intersection) {
+        this.intersections.put( intersection.getId(), intersection );
     }
-
-    public void AddSection(Section sec) {
-        this.sections.add(sec);
+    
+    /**
+     * Adds an intersection to the sections attribute of the map
+     * @param intersection the intersection
+     */
+    public void AddSection(Section section) {
+        this.sections.add( section );
     }
 
     /**
