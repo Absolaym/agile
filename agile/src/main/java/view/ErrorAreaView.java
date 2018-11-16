@@ -11,35 +11,49 @@ import error.ErrorObserver;
 import error.ProjectError;
 
 import java.awt.*;
+import java.util.Locale;
+
 import javax.swing.*;
 
 /**
  *
  * @author olivi
  */
-public class ErrorAreaView extends JPanel {
-    private final int HEIGHT = 150;
+@SuppressWarnings("serial")
+public class ErrorAreaView extends JPanel implements ErrorObserver {
+	
+    private final int HEIGHT = 80;
     private final int WIDTH = 1000;
-    private JTextArea text;
+    private ProjectError error = null;
+    
     private Controller controller;
 
     public ErrorAreaView(Window w, Controller controller) {
         this.controller = controller;
-        text = new JTextArea(20, 90);
-        add(text);
+        ErrorLogger.getInstance().addObserver(this);
         
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createTitledBorder("Error area :"));
+        this.setLocation(0, 0);
+       
+        
         w.getContentPane().add(this);
     }
     
     public void update(ProjectError error) {
-    	this.text.setText(error.toString());
-    	this.repaint();
+	    	this.error = error;
+	    	this.repaint();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if(this.error == null) return;
+ 
+        g.setColor( new Color(120, 20, 20));
+        g.setFont(new Font("Arial", Font.BOLD, 14));
+        g.drawString(this.error.toString(), 10, 30);
+        g.setFont(new Font("Arial", Font.ITALIC, 8));
+        g.drawString("(Note that this error is the last encountered, it might have been resolved by one of your subsequent actions)", 10, 48);
     }
 
     // to change
