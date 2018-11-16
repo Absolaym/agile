@@ -332,16 +332,17 @@ public class CityMapContainerView extends JPanel implements Observer {
 			Geolocation center = Geolocation.center(start, end);
 			Geolocation pxCenter = geolocationToPixels(origin, center);
 			double a = this.angleBetweenPositions(start, end, false) - Math.PI / 2;
-			g2.drawPolygon(
+			final double triangleSize = 3;
+			g2.fillPolygon(
 					new int[]{
-							(int) Math.round(Math.cos(a) * 6 + pxCenter.getLongitude()),
-							(int) Math.round(Math.sin(a) * 12 + pxCenter.getLongitude()),
-							(int) Math.round(Math.cos(a) * -6 + pxCenter.getLongitude())
+							(int) Math.round(Math.cos(a) * triangleSize * 2 + pxCenter.getLongitude()),
+							(int) Math.round(Math.sin(a) * triangleSize * 4 + pxCenter.getLongitude()),
+							(int) Math.round(Math.cos(a) * -triangleSize * 2 + pxCenter.getLongitude())
 					},
 					new int[]{
-							(int) Math.round(Math.sin(a) * -6 + pxCenter.getLatitude()),
-							(int) Math.round(Math.cos(a) * 12 + pxCenter.getLatitude()),
-							(int) Math.round(Math.sin(a) * 6 + pxCenter.getLatitude())
+							(int) Math.round(Math.sin(a) * -triangleSize + pxCenter.getLatitude()),
+							(int) Math.round(Math.cos(a) * triangleSize * 3 + pxCenter.getLatitude()),
+							(int) Math.round(Math.sin(a) * triangleSize + pxCenter.getLatitude())
 					}, 3);
 		}
 
