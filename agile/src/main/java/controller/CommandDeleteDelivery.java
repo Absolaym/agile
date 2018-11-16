@@ -63,7 +63,6 @@ public class CommandDeleteDelivery implements Command {
 
         boolean removedFromDR
                 = model.getDeliveryRequest().removeDelivery(refToDeletedDelivery);
-        System.out.println("Delivery removed from DR (delete)? " + removedFromDR);
 
         updatedCircuit.getDeliveries().remove(deliveryIndex);
         updatedCircuit.getTrips().remove(deliveryIndex);

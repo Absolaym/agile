@@ -314,7 +314,7 @@ public class DeliveryRequestView extends JPanel {
         if (circuit != null) {
             i = circuit.getCourierId();
         }
-        Color c = window.colors[i];
+        Color c = window.colors[i%(window.colors.length)];
         if (i == 0) {
             component.setBackground(null);
         } else {
