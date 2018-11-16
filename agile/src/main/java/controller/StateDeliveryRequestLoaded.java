@@ -31,7 +31,7 @@ public class StateDeliveryRequestLoaded extends StateDefault {
                 c.setState(c.STATE_DELIVERYREQUEST_LOADED);
             }
         } catch (Exception e) {
-        		ErrorLogger.getInstance().log(ProjectError.)
+        		e.printStackTrace();
         }
     }
 
