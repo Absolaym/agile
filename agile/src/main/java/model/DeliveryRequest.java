@@ -6,6 +6,9 @@
 package model;
 
 import java.util.LinkedList;
+
+import error.ErrorLogger;
+import error.ProjectError;
 import utils.Time;
 
 /**
@@ -101,7 +104,7 @@ public class DeliveryRequest {
         for (Delivery delivery : this.deliveries) {
             Geolocation geolocation = cityMap.getIntersectionGeolocation(delivery.getAddress());
             if (geolocation == null) {
-                System.out.println("The address " + delivery.getAddress() + " was not found"); //Error
+                ErrorLogger.getInstance().log(ProjectError.DEL_ADDRESS_NOT_IN_MAP);
                 this.deliveries.remove(delivery);
                 continue;
             }
@@ -109,9 +112,9 @@ public class DeliveryRequest {
         }
 
         this.warehouseIntersection = cityMap.getIntersectionById(this.warehouseAddress);
-        //Error
+
         if (this.warehouseIntersection == null) {
-            System.out.println("The warehouse address was not found. Cannot compute circuits. Please try again"); //Error
+        		ErrorLogger.getInstance().log(ProjectError.WAR_ADDRESS_NOT_IN_MAP);
         }
     }
 

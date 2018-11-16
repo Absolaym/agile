@@ -5,6 +5,7 @@
  */
 package controller;
 
+import error.ErrorLogger;
 import model.DeliveryRequest;
 import model.Model;
 import utils.XmlParser;
@@ -30,7 +31,7 @@ public class StateDeliveryRequestLoaded extends StateDefault {
                 c.setState(c.STATE_DELIVERYREQUEST_LOADED);
             }
         } catch (Exception e) {
-
+        		ErrorLogger.getInstance().log(ProjectError.)
         }
     }
 
