@@ -61,7 +61,7 @@ public class Circuit {
     /**
      * Adds a trip to the end of the circuit
      *
-     * @param trip
+     * @param trip The trip you want to add
      */
     public void addTrip(Trip trip) {
         trips.add(trip);
@@ -71,8 +71,8 @@ public class Circuit {
     /**
      * Adds a trip to a specific index in circuit
      *
-     * @param index
-     * @param trip
+     * @param index The position of a trip (0 based)
+     * @param trip The trip you want to add
      */
     public void addTrip(int index, Trip trip) {
         trips.add(index, trip);
@@ -82,7 +82,7 @@ public class Circuit {
     /**
      * Adds a delivery stop to the circuit
      *
-     * @param delivery
+     * @param delivery The delivery to add
      */
     public void addDelivery(Delivery delivery) {
         deliveries.add(delivery);
@@ -91,8 +91,8 @@ public class Circuit {
     /**
      * Adds a delivery to a specific index of the circuit
      *
-     * @param index
-     * @param delivery
+     * @param index The position where to add the delivery in the circuit (0 based)
+     * @param delivery The delivery to add
      */
     public void addDelivery(int index, Delivery delivery) {
         deliveries.add(index, delivery);
@@ -128,7 +128,7 @@ public class Circuit {
     /**
      * Sets the departure time of the circuit
      *
-     * @param departureTime
+     * @param departureTime The time object representing the departure time
      */
     public void setDepartureTime(Time departureTime) {
         this.departureTime = departureTime;

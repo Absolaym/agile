@@ -5,6 +5,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import utils.Time;
 
+/**
+ * Singleton class used to log errors from anywhere in the code
+ * 
+ * @author johnny
+ *
+ */
 public class ErrorLogger {
 
     // Singleton part
@@ -29,7 +35,7 @@ public class ErrorLogger {
     /**
      * Logs an error and notifies it to every registered observer
      *
-     * @param error
+     * @param error The error to log
      * @param verbose Whether it's written in the error stream or not
      */
     public void log(ProjectError error, boolean verbose) {
@@ -42,6 +48,11 @@ public class ErrorLogger {
         }
     }
 
+    /**
+     * Logs an error and notifies it to every registered observer
+     *
+     * @param error The error to log
+     */
     public void log(ProjectError error) {
         log(error, true);
     }

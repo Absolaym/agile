@@ -2,12 +2,16 @@ package error;
 
 public enum ProjectError {
 
+		//File
+		CANT_OPEN_FILE("UC0-COF", "Couldn't open the file due to system restrictions"),
+		
     //CityMap Errors
     UNCONNECTED_INTERSECTION("UC1-UI", "One intersection is not connected to the rest of the map making it impossible to reach"),
     CORRUPTED_XML_CM("UC1-CX", "This file is not well formatted as an xml"),
     EMPTY_XML_CM("UC1-EX", "This file is empty"),
     NON_XML_CM("UC1_NX", "This file is not an XML file"),
     NEGATIVE_SECTION_LENGTH_VALUE("UC1_NV", "One or more section lengths are negative"),
+    
     //DeliveryRequest Errors
     CORRUPTED_XML_DR("UC2-CX", "This file is not well formatted as an xml"),
     EMPTY_XML_DR("UC2-EX", "This file is empty"),
