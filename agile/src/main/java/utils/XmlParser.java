@@ -150,11 +150,13 @@ public class XmlParser {
                         map.AddIntersection(inter);
 
                         break;
+                        
                     case "troncon":
+                    	
                         Section sec = new Section();
                         double length = Double.parseDouble(elem.getAttribute("longueur"));
                         if (!checkPositive(length)) {
-                            ErrorLogger.getInstance().log(ProjectError.NON_XML_CM);
+                            ErrorLogger.getInstance().log(ProjectError.NEGATIVE_SECTION_LENGTH_VALUE);
                             return null;
                         }
                         ;
@@ -162,6 +164,9 @@ public class XmlParser {
                         sec.setStreetName(elem.getAttribute("nomRue"));
                         sec.setStartIntersection(map.getIntersectionById(elem.getAttribute("origine")));
                         sec.setEndIntersection(map.getIntersectionById(elem.getAttribute("destination")));
+                        if(sec.getStartIntersection() == null || sec.getEndIntersection() == null ) {
+                        	ErrorLogger.getInstance().log(ProjectError.CORRUPTED_XML_CM);
+                        }
 
                         map.AddSection(sec);
 
