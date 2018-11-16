@@ -66,7 +66,6 @@ public class CircuitComputer {
         int circuitNumber = 1;
         for (Circuit circuit : circuits) {
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
-            System.out.println(circuit.getDepartureTime());
             circuit.setCourierId(circuitNumber++);
             int i = 0;
             for (Delivery delivery : circuit.getDeliveries()) {
