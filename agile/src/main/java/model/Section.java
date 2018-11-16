@@ -21,6 +21,14 @@ public class Section {
         setStartIntersection(aStartIntersection);
         setEndIntersection(anEndIntersection);
     }
+    
+    public Section(Section s){
+        streetName = s.getStreetName();
+        length = s.getLength();
+        startIntersection = s.getStartIntersection();
+        endIntersection = s.getEndIntersection();
+        circuit = s.getCircuit();
+    }
 
     public String getStreetName() {
         return streetName;

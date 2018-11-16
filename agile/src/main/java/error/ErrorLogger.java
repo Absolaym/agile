@@ -3,6 +3,8 @@ package error;
 import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import utils.Time;
+
 public class ErrorLogger {
 	
 	// Singleton part
@@ -29,15 +31,15 @@ public class ErrorLogger {
 	 * @param verbose Whether it's written in the error stream or not
 	 */
 	public void log(ProjectError error, boolean verbose) {
-            if(verbose) errors.add(error);
-            System.err.println(error);
-            for(ErrorObserver obs : observers) {
-		obs.update( error );
-            }
+    if(verbose) errors.add(error);
+    System.err.println( new Time((int) Math.floor( System.currentTimeMillis() / 1000 ) ).toString() + " || " + error);
+    for(ErrorObserver obs : observers) {
+    		obs.update( error );
+    }
 	}
 	
 	public void log(ProjectError error) {
-            log(error, true);
+    log(error, true);
 	}
 	
 	/**

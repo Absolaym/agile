@@ -128,7 +128,7 @@ public class Controller {
 	}
 
 	/**
-	 * Redo the last cancelled command
+	 * Redo the last undone command
 	 */
 	public void redo() {
 		this.state.redoCde();

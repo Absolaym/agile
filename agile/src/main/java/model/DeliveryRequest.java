@@ -25,6 +25,18 @@ public class DeliveryRequest {
     public DeliveryRequest() {
         this.deliveries = new LinkedList<Delivery>();
     }
+
+    /**
+     * for test purposes
+     * @param deliveries
+     * @param warehouseIntersection
+     * @param time 
+     */
+    public DeliveryRequest(LinkedList<Delivery> deliveries, Intersection warehouseIntersection, Time time) {
+        this.deliveries = deliveries;
+        this.warehouseIntersection = warehouseIntersection;
+        this.departureTime = time;
+    }
     
     /**
      * 
@@ -41,9 +53,8 @@ public class DeliveryRequest {
      * @param delivery The delivery you want to remove from the list
      * @return this
      */
-    public DeliveryRequest removeDelivery(Delivery delivery) {
-        this.deliveries.remove(delivery);
-        return this;
+    public boolean removeDelivery(Delivery delivery) {
+        return this.deliveries.remove(delivery);
     }
     
     public LinkedList<Delivery> getDeliveries() {
