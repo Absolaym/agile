@@ -169,7 +169,7 @@ public class ButtonListener implements ActionListener {
     
     /**
      * this method checks whether the undo and redo buttons must be enabled
-     * and updates the user interface as needed
+     * and updates the user interface as needed.
      */
     private void updateUndoRedoButtons() {
         if (controller.canUndo()) {

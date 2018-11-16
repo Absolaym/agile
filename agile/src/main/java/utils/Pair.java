@@ -4,8 +4,7 @@
 package utils;
 
 /**
- * @author Clémentine CL
- *
+ * 
  */
 public class Pair<A, B> {
 

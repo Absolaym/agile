@@ -2,7 +2,11 @@ package model;
 
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * Represents the trip between two delivery addresses or the warehouse and a
+ * delivery address. It contains the length of the trip and the sections 
+ * associated
+ */
 public class Trip {
 
     private List<Section> sections;

@@ -139,7 +139,7 @@ public class CityMapMenuView extends JPanel {
 
     }
 
-    // to change
+    
     public int getHeight() {
         return HEIGHT;
     }
