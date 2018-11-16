@@ -1,13 +1,9 @@
 package pld.agile;
 
 import junit.framework.*;
-import model.Delivery;
-import model.DeliveryRequest;
-import model.CityMap;
 import model.Geolocation;
 import model.Intersection;
 import model.Section;
-import utils.XmlParser;
 
 public class SectionTest extends TestCase {
 

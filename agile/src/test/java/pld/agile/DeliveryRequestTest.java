@@ -1,13 +1,9 @@
 package pld.agile;
 
-import java.util.LinkedList;
 import junit.framework.*;
 import model.Delivery;
 import model.DeliveryRequest;
 import model.CityMap;
-import model.Geolocation;
-import model.Intersection;
-import utils.Time;
 import utils.XmlParser;
 
 public class DeliveryRequestTest extends TestCase {
