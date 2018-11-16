@@ -174,6 +174,14 @@ public class Controller {
 	public State getState(){
 		return state;
 	}
+        
+        public static CommandsList getCommandsList(){
+            return commandsList;
+        }
+        
+        public static void setCommandsList(CommandsList cl){
+            Controller.commandsList = cl;
+        }
 }
 
 

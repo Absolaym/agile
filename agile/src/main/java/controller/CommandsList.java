@@ -44,11 +44,11 @@ public class CommandsList {
     }
     
     public boolean canUndo() {
-        return i >= 0;
+        return (i >= 0);
     }
     
     public boolean canRedo() {
-        return i < list.size()-1;
+        return (i < list.size()-1);
     }
     
 }
