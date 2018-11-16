@@ -15,11 +15,10 @@ import java.util.Locale;
 
 import javax.swing.*;
 
-/**
- *
- * @author olivi
- */
 @SuppressWarnings("serial")
+/**
+ * This class extends a panel containing a text area with information about potential errors
+ */
 public class ErrorAreaView extends JPanel implements ErrorObserver {
 
     private final int HEIGHT = 80;

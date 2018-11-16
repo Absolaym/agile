@@ -16,8 +16,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 
 /**
- *
- * @author olivi
+ * This class is used to implement the action listeners when the main buttons are clicked.
  */
 public class ButtonListener implements ActionListener {
 
@@ -51,8 +50,6 @@ public class ButtonListener implements ActionListener {
             int result = jfc.showOpenDialog(window);
             if (result == JFileChooser.APPROVE_OPTION) {
                 controller.loadCityMap(jfc.getSelectedFile().getAbsolutePath());
-//                controller.loadCityMap(assets +"/maps/grandPlan.xml");
-                //the button "Load aCityMap should become invisible once theCityMap is loaded"
                 CityMap cityMap = controller.getModel().getCityMap();
                 if (!cityMap.isEmpty()) {
                     window.getCityMapContainerPanel().getLoadCityMapButton().setVisible(false);
@@ -77,15 +74,11 @@ public class ButtonListener implements ActionListener {
 
                 if (result == JFileChooser.APPROVE_OPTION) {
                     controller.loadDeliveryRequest(jfc.getSelectedFile().getAbsolutePath());
-
-                    //controller.loadDeliveryRequest( assets + "/deliveries/dl-petit-3.xml" );
                     DeliveryRequest deliveryRequest;
                     deliveryRequest = controller.getModel().getDeliveryRequest();
                     window.getCityMapContainerPanel().setNewDeliveryIntersection(null);
                     window.getCityMapContainerPanel().setNewDelivery(null);
 
-                    window.getCityMapContainerPanel().repaint();
-                    //get deliveries and send to JTable to be displayed
                     if (deliveryRequest != null) {
                         window.getCityMapMenuPanel().getComputeCircuitsButton().setEnabled(true);
                         window.getDeliveryRequestPanel().loadDeliveryRequest(window);

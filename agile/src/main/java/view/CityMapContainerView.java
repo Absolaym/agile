@@ -13,6 +13,10 @@ import javax.swing.event.ChangeListener;
 import model.*;
 
 @SuppressWarnings("serial")
+/**
+ * This class extends a panel containing the visual view with the map (sections and intersections) the deliveries, the circuits displayed.
+ * Contains all the methods useful to draw elements on the map.
+ */
 public class CityMapContainerView extends JPanel implements Observer {
 
     private JButton loadCityMapButton;
