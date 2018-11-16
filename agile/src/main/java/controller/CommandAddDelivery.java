@@ -88,7 +88,6 @@ public class CommandAddDelivery implements Command {
 
         boolean removedFromDR
                 = model.getDeliveryRequest().removeDelivery(refToAddedDelivery);
-        System.out.println("Delivery removed from DR (add) ? " + removedFromDR);
 
         copyOfOriginalCircuit.updateSections();
         copyOfOriginalCircuit.updateDeliveryInfos();
