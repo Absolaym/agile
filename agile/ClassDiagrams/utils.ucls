@@ -1,174 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="utils.Time" project="agile" file="/agile/src/main/java/utils/Time.java" 
+  <class id="1" language="java" name="utils.CircuitComputer" project="agile" 
+    file="/agile/src/main/java/utils/CircuitComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="119" y="254"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="utils.Pair" project="agile" file="/agile/src/main/java/utils/Pair.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="279" width="145" x="722" y="9"/>    
+    <position height="-1" width="-1" x="626" y="245"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="utils.XmlParser" project="agile" file="/agile/src/main/java/utils/XmlParser.java" 
+  <class id="3" language="java" name="utils.ShortestPathComputer.LinkTrip" project="agile" 
+    file="/agile/src/main/java/utils/ShortestPathComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="556" y="1207"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="utils.ShortestPathComputer.Link" project="agile" 
+    file="/agile/src/main/java/utils/ShortestPathComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="83" y="1319"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="utils.ShortestPathComputer" project="agile" 
+    file="/agile/src/main/java/utils/ShortestPathComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="700" y="697"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="utils.ShortestPathComputer.Node" project="agile" 
+    file="/agile/src/main/java/utils/ShortestPathComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-69" y="969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="utils.ShortestPathComputer.IntermediateResult" project="agile" 
+    file="/agile/src/main/java/utils/ShortestPathComputer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="71" y="663"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="utils.Time" project="agile" file="/agile/src/main/java/utils/Time.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="251" x="682" y="366"/>    
+    <position height="-1" width="-1" x="928" y="1150"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="utils.CircuitAlgorithm.LinkTrip" project="agile" 
-    file="/agile/src/main/java/utils/CircuitAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="346" y="701"/>    
+  <class id="9" language="java" name="utils.XmlParser" project="agile" file="/agile/src/main/java/utils/XmlParser.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="967" y="248"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="utils.CircuitAlgorithm.Node" project="agile" 
-    file="/agile/src/main/java/utils/CircuitAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="9" y="695"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="utils.CircuitAlgorithm.Link" project="agile" 
-    file="/agile/src/main/java/utils/CircuitAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="186" y="439"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="utils.CircuitAlgorithm" project="agile" 
-    file="/agile/src/main/java/utils/CircuitAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="260" y="34"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="utils.CircuitAlgorithm.IntermediateResult" project="agile" 
-    file="/agile/src/main/java/utils/CircuitAlgorithm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="350" y="423"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <generalization id="8">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <association id="9">    
-    <bendpoint x="184" y="514"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="10" name="previous"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="12">    
-    <bendpoint x="-119" y="240"/>    
-    <bendpoint x="-136" y="500"/>    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="13" name="nodes"/>      
-      <multiplicity id="14" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <bendpoint x="43" y="530"/>    
-    <bendpoint x="32" y="443"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="16" name="links">        
-        <position height="18" width="31" x="52" y="444"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <bendpoint x="-18" y="418"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="19" name="endNode">        
-        <position height="18" width="53" x="-26" y="568"/>      
-      </attribute>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
+  <association id="10">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="22" name="intermediateResult"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
+      <attribute id="11" name="intermediateResult"/>      
+      <multiplicity id="12" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="24">    
-    <bendpoint x="-83" y="277"/>    
-    <bendpoint x="-77" y="459"/>    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </nesting>  
-  <nesting id="25">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
-  </nesting>  
-  <association id="26">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="27" name="start">        
-        <position height="18" width="32" x="114" y="635"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="29">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
-  <association id="30">    
-    <bendpoint x="108" y="517"/>    
+  <association id="13">    
+    <bendpoint x="252" y="774"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="31" name="startNode">        
-        <position height="18" width="57" x="42" y="575"/>      
-      </attribute>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
+      <attribute id="14" name="nodes"/>      
+      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="33">    
-    <bendpoint x="471" y="359"/>    
-    <bendpoint x="471" y="518"/>    
-    <end type="SOURCE" refId="6"/>    
+  <generalization id="16">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <nesting id="17">    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="3"/>  
   </nesting>  
-  <association id="34">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="35" name="end">        
-        <position height="18" width="28" x="101" y="601"/>      
-      </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1"/>    
+  <association id="18">    
+    <bendpoint x="-18" y="1147"/>    
+    <bendpoint x="-28" y="1210"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="19" name="links"/>      
+      <multiplicity id="20" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <association id="22">    
+    <bendpoint x="142" y="989"/>    
+    <bendpoint x="148" y="1070"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="23" name="previous"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <bendpoint x="-179" y="1224"/>    
+    <bendpoint x="-199" y="1114"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="26" name="startNode"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <bendpoint x="-145" y="679"/>    
+    <bendpoint x="-153" y="802"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="29" name="start"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="31">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <association id="32">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="33" name="end"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <bendpoint x="-73" y="1231"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="36" name="endNode">        
+        <position height="22" width="77" x="-143" y="1058"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="20" width="31" x="-67" y="1064"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="38">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

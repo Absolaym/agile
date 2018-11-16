@@ -5,8 +5,6 @@
  */
 package controller;
 
-import model.Circuit;
-import model.Delivery;
 import model.DeliveryRequest;
 import model.Model;
 import utils.XmlParser;
@@ -42,8 +40,5 @@ public class StateDeliveryRequestLoaded extends StateDefault {
         Controller.commandsList = new CommandsList();
         c.setState(c.STATE_CIRCUITS_COMPUTED);
     }
-
-    public void addDeliveryToDeliveryRequest(Delivery d, Circuit c) {
-        Controller.commandsList.addCommand(new CommandAddDeliveryToDeliveryRequest(d, c));
-    }
+    
 }

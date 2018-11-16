@@ -6,8 +6,6 @@ import utils.Time;
 /**
  * This class represents a circuit composed by deliveries and trips between them
  *
- * @author johnny
- *
  */
 public class Circuit {
 
@@ -159,7 +157,6 @@ public class Circuit {
      */
     public void updateDeliveryInfos() {
         int arrivalTimeSeconds = this.getDepartureTime().time;
-        System.out.println(this.getDepartureTime());
         int i = 0;
         for (Delivery delivery : this.getDeliveries()) {
             delivery.setCircuit(this);

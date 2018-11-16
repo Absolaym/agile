@@ -1,4 +1,4 @@
-package utils;
+package model.computers;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,9 +13,9 @@ import model.Section;
 import model.Trip;
 
 /**
- * <<<<<<< HEAD Class computes the shortest paths that link deliveries to each
- * other and to the warehouse using the Dijkstra algorithm It's designed to keep
- * track of the shortest path throughout the calls @author johnny
+ * Class computes the shortest paths that link deliveries to each
+ * other and to the warehouse using the Dijkstra algorithm. It's designed to keep
+ * track of the shortest path throughout the calls 
  */
 public class ShortestPathComputer {
 

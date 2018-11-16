@@ -9,6 +9,10 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
+/**
+ * This class extends a panel containing the menu with all available options 
+ * Contains the declaration of buttons and fields necessary to perform different operations (loading, adding new delivery, etc.)
+ */
 public class CityMapMenuView extends JPanel {
 
     private final int buttonHeight = 30;
@@ -89,6 +93,12 @@ public class CityMapMenuView extends JPanel {
 
     }
 
+    /**
+     * Adds a new delivery in 2 steps :
+     * step 1 : selecting the intersection for the delivery
+     * step 2 : choosing the circuit and setting duration
+     * @param step 
+     */
     public void addNewDelivery(String step) {
         messages.removeAll();
         if (step.equals("")) {

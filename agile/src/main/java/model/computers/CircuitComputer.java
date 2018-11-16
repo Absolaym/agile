@@ -1,4 +1,4 @@
-package utils;
+package model.computers;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,6 +8,7 @@ import model.DeliveryRequest;
 import model.Geolocation;
 import model.Trip;
 import tspImproved.TSP1;
+import utils.Pair;
 import model.Circuit;
 
 /**
@@ -66,7 +67,6 @@ public class CircuitComputer {
         int circuitNumber = 1;
         for (Circuit circuit : circuits) {
             int arrivalTimeSeconds = circuit.getDepartureTime().time;
-            System.out.println(circuit.getDepartureTime());
             circuit.setCourierId(circuitNumber++);
             int i = 0;
             for (Delivery delivery : circuit.getDeliveries()) {
