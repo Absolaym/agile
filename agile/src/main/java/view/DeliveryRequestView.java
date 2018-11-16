@@ -277,8 +277,7 @@ public class DeliveryRequestView extends JPanel {
         if (circuit != null) {
             i = circuit.getCourierId();
         }
-        Color c = window.colors[i];
-        //Color c = new Color ((int)(255*0.5),0, 0);
+        Color c = window.colors[i%(window.colors.length)];
         if (i == 0) {
             comp.setBackground(null);
         } else {
