@@ -177,7 +177,7 @@ public class CityMapMenuView extends JPanel {
     
     public int getDeliveryDuration() {
         String numberString = this.deliveryDurationField.getText();
-        return Integer.parseInt(numberString);
+        return Integer.parseInt(numberString)*60;
     }
 
 }
