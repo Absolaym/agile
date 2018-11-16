@@ -11,12 +11,17 @@ public class TSP1 extends TemplateTSP {
     }
 
     @Override
+    /**
+     * Calcule une heuristique: une borne minimale du plus court chemin passant par les noeuds de nonVus
+     * et revenant au warehouse
+     * Somme de:
+     * - cout minimum reliant le sommet courant aux sommets non vus
+     * - pour chaque sommet non vu: cout minimum reliant ce sommet aux sommets non vus ou au warehouse
+     * @return la borne minimum dans la meme unite que les couts
+     */
     protected int bound(Integer sommetCourant, ArrayList<Integer> nonVus, int[][] cout, int[] duree) {
-        //bound = min(cout(sommetcourant, unSommetNonVu))
-        int bound = findMinCostUnseen(sommetCourant, nonVus, cout);
+    	int bound = findMinCostUnseen(sommetCourant, nonVus, cout);
 
-        // + for each sommets from nonVus
-        //min cout(sommetNonVu, the other sommets from nonVus or the warehouse)
         for (Integer sommetNonVu : nonVus) {
             bound += findMinCostUnseenOrWarehouse(sommetNonVu, nonVus, cout);
         }
@@ -35,7 +40,6 @@ public class TSP1 extends TemplateTSP {
             }
         }
         if (min == Integer.MAX_VALUE) {
-            //System.out.println("Min cost unseen did not have any results in TSP1");
             return 0;
         }
         return min;

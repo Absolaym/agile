@@ -1,10 +1,7 @@
 package tspImproved;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-
-import model.Delivery;
 
 public abstract class TemplateTSP implements TSP {
 

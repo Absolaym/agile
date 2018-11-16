@@ -41,6 +41,10 @@ public class IteratorSeq implements Iterator<Integer> {
     public void remove() {
     }
 
+    /**
+     * Trie les candidats par rapport au plus court chemin qui les lie au sommet courant
+     * Le sommet le plus éloigné sera au début du tableau
+     */
     private void sortCandidates() {
         int i, j, temp;
         boolean swapped;
