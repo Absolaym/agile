@@ -37,7 +37,7 @@ public class Window extends JFrame {
     private int width;
     private int height;
     private int waitingState = 2;
-    
+
     private Controller controller;
 
     public Window() {
@@ -46,7 +46,7 @@ public class Window extends JFrame {
 
     public Window(Controller controller) {
         super("Agility is the delivery");
-        
+
         this.controller = controller;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +54,6 @@ public class Window extends JFrame {
         setLayout(null);
 
 //        menuBar = new MainMenuBar( this, controller );
-
         mapMenuPanel = new CityMapMenuView(this, controller);
         mapContainerPanel = new CityMapContainerView(this, controller);
         deliveryRequestPanel = new DeliveryRequestView(this, controller);
@@ -68,8 +67,8 @@ public class Window extends JFrame {
         setWindowSize();
         setSize(width, height);
         setPreferredSize(new Dimension(width, height));
-        
-        this.addKeyListener( new KeyListener() {
+
+        this.addKeyListener(new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {
@@ -80,13 +79,13 @@ public class Window extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 // TODO Auto-generated method stub
-                if(e.isControlDown() || e.isMetaDown()) {
-                    switch(e.getKeyCode()) {
-                    case KeyEvent.VK_Z:
+                if (e.isControlDown() || e.isMetaDown()) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_Z:
                             Window.this.controller.undo();
 //                            Window.this.getMenuBarPanel().onUndo();
-                    break;
-                    case KeyEvent.VK_Y:
+                            break;
+                        case KeyEvent.VK_Y:
                             Window.this.controller.redo();
 //                            Window.this.getMenuBarPanel().onRedo();
                             break;
@@ -96,7 +95,7 @@ public class Window extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                    // TODO Auto-generated method stub
+                // TODO Auto-generated method stub
 
             }
 
@@ -122,8 +121,7 @@ public class Window extends JFrame {
 //    public MainMenuBar getMenuBarPanel() {
 //    		return this.menuBar;
 //		}
-
-    public void setColors(Color[] colors){
+    public void setColors(Color[] colors) {
         colors[1] = new Color(205, 0, 0);
         colors[2] = new Color(0, 155, 0);
         colors[3] = new Color(0, 155, 216);
@@ -155,16 +153,16 @@ public class Window extends JFrame {
     }
 
     public void setWaitingState(int ws) {
-        if (ws == 0){
+        if (ws == 0) {
             mapMenuPanel.getComputeCircuitsButton().setEnabled(false);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(false);
             mapMenuPanel.getLoadNewCityMapButton().setEnabled(false);
             mapMenuPanel.getAddNewDeliveryButton().setEnabled(false);
 
-        } else if (ws == 1){
+        } else if (ws == 1) {
             mapMenuPanel.addNewDelivery("time");
 
-        } else if (ws == 2){
+        } else if (ws == 2) {
             mapMenuPanel.addNewDelivery("");
             mapMenuPanel.getComputeCircuitsButton().setEnabled(true);
             mapMenuPanel.getLoadDeliveryRequestButton().setEnabled(true);

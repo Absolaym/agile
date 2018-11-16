@@ -14,27 +14,27 @@ import model.Delivery;
  *
  * @author lgalle
  */
-public interface State{
-    
-    public abstract void loadCityMap(String path,Controller c);
-    
-    public abstract void loadDeliveryRequest(String path,Controller c);
-    
+public interface State {
+
+    public abstract void loadCityMap(String path, Controller c);
+
+    public abstract void loadDeliveryRequest(String path, Controller c);
+
     public abstract void computeCircuits(Controller c);
-    
+
     public abstract void addDelivery(Delivery d, Circuit c);
-        
+
     public abstract void deleteDelivery(Delivery d, Circuit c);
-    
+
     public abstract void changeCircuit(Delivery d, Circuit oc, Circuit tc);
-    
+
     public abstract void moveDeliveryBefore(Delivery d, Circuit c);
-    
+
     public abstract void moveDeliveryAfter(Delivery d, Circuit c);
-    
+
     public abstract void addDeliveryToDeliveryRequest(Delivery d, Circuit c);
-    
+
     public abstract void undoCde();
-    
+
     public abstract void redoCde();
 }

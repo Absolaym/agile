@@ -174,7 +174,7 @@ public class DeliveryRequestView extends JPanel {
             JButton btnMoveBefore = new JButton("");
             JButton btnMoveAfter = new JButton("");
             JButton btnDelete = new JButton("Delete");
-            
+
             ButtonListener btnListener = new ButtonListener(controller, window, d);
 
             txtArrivalTime.setOpaque(false);
