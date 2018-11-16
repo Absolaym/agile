@@ -1,14 +1,7 @@
 package pld.agile;
 
 import junit.framework.*;
-import model.Delivery;
-import model.DeliveryRequest;
-import model.CityMap;
-import model.Geolocation;
-import model.Intersection;
-import model.Section;
 import model.Vector2D;
-import utils.XmlParser;
 
 public class Vector2DTest extends TestCase {
 

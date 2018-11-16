@@ -25,7 +25,7 @@ public class tspImprovementsTest extends TestCase {
 		}
 	}
 	
-	public void boundTest() {
+	public void testBestSolution() {
 		int nbSommets = 4;
 		ArrayList<Integer> nonVus = new ArrayList<Integer>();
     for (int i = 1; i < nbSommets; i++) {
