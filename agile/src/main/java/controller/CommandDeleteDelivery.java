@@ -16,52 +16,67 @@ import model.Trip;
  */
 public class CommandDeleteDelivery implements Command {
 
-    private Delivery delivery;
-    private int deliveryIndex;
+    private Delivery originalDelivery;
+    private int originalDeliveryIndex;
     
-    private Circuit circuit;
-    private int circuitIndex;
+    private Circuit originalCircuit;
+    private int originalCircuitIndex;
+    
+    private Delivery refToDeletedDelivery;
     
     public CommandDeleteDelivery(Delivery d, Circuit c){
-        this.delivery = d;
-                
-        this.circuit = c;
-        this.circuitIndex = Model.getInstance().getCircuits().indexOf(c);
-        this.deliveryIndex = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().indexOf(d);
-    }
-
-    CommandDeleteDelivery() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        this.originalDelivery = new Delivery(d);
+        this.originalCircuit = new Circuit(c);
+        
+        this.originalDeliveryIndex = c.getDeliveries().indexOf(d);
+        this.originalCircuitIndex = Model.getInstance().getCircuits().indexOf(c);
+        
+        refToDeletedDelivery = d;
     }
     
     @Override
     public void execute() {
         
+        Delivery updatedDelivery = new Delivery(originalDelivery);
+        Circuit updatedCircuit = new Circuit(originalCircuit);
+        
+        int deliveryIndex = originalDeliveryIndex;
+        int circuitIndex = originalCircuitIndex;
+        
+        Model model = Model.getInstance();
+        
         String tripOrigin;
         String tripTarget;
         
         if(deliveryIndex == 0) {
-            tripOrigin = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
+            tripOrigin = model.getDeliveryRequest().getWarehouseAddress();
         } else {
-            tripOrigin = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex-1).getAddress();
+            tripOrigin = updatedCircuit.getDeliveries().get(deliveryIndex-1).getAddress();
         }
         
-        if(deliveryIndex == Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().size()-1){
-            tripTarget = Model.getInstance().getDeliveryRequest().getWarehouseAddress();
+        if(deliveryIndex == updatedCircuit.getDeliveries().size()-1){
+            tripTarget = model.getDeliveryRequest().getWarehouseAddress();
         } else {
-            tripTarget = Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().get(deliveryIndex+1).getAddress();
+            tripTarget = updatedCircuit.getDeliveries().get(deliveryIndex+1).getAddress();
         }
         
-        Model.getInstance().getDeliveryRequest().removeDelivery(delivery);
+        boolean removedFromDR = 
+        model.getDeliveryRequest().removeDelivery(refToDeletedDelivery);
+        System.out.println("Delivery removed from DR (delete)? "+ removedFromDR);
         
-        Model.getInstance().getCircuits().get(circuitIndex).getDeliveries().remove(delivery);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
-        Model.getInstance().getCircuits().get(circuitIndex).getTrips().remove(deliveryIndex);
+        updatedCircuit.getDeliveries().remove(deliveryIndex);
+        updatedCircuit.getTrips().remove(deliveryIndex);
+        updatedCircuit.getTrips().remove(deliveryIndex);
         
-        Trip trip = Model.getInstance().getTripBetweenIntersections(tripOrigin, tripTarget);
-        Model.getInstance().getCircuits().get(circuitIndex).addTrip(deliveryIndex, trip);
+        Trip trip = model.getTripBetweenIntersections(tripOrigin, tripTarget);
+        updatedCircuit.addTrip(deliveryIndex, trip);
         
-        Model.getInstance().getCircuits().get(circuitIndex).updateDeliveryInfos();
+        updatedCircuit.updateSections();
+        updatedCircuit.updateDeliveryInfos();        
+        
+        model.getCircuits().set(circuitIndex, updatedCircuit);
+        model.rearrangeDeliveries();
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -69,8 +84,20 @@ public class CommandDeleteDelivery implements Command {
     @Override
     public void cancel() {
         
-        Model.getInstance().getDeliveryRequest().addDelivery(delivery);
-        Model.getInstance().getCircuits().set(circuitIndex, circuit);
+        Model model = Model.getInstance();
+        
+        Delivery copyOfOriginalDelivery = new Delivery(originalDelivery);
+        Circuit copyOfOriginalCircuit = new Circuit(originalCircuit);
+        
+        model.getDeliveryRequest().addDelivery(copyOfOriginalDelivery);
+        refToDeletedDelivery = copyOfOriginalDelivery;
+        
+        copyOfOriginalCircuit.updateSections();
+        copyOfOriginalCircuit.updateDeliveryInfos();
+        
+        model.getCircuits().set(originalCircuitIndex, copyOfOriginalCircuit);
+        
+        model.rearrangeDeliveries();
         
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

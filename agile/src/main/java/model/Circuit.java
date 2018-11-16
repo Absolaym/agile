@@ -25,9 +25,24 @@ public class Circuit {
      * Create a circuit
      */
     public Circuit() {
-        this.trips = new LinkedList<Trip>();
-        this.deliveries = new LinkedList<Delivery>();
+        this.trips = new LinkedList<>();
+        this.deliveries = new LinkedList<>();
         courierId = 0;
+    }
+    
+    public Circuit(Circuit c){
+        departureTime = new Time(c.getDepartureTime());
+        courierId = c.getCourierId();
+        
+        trips = new LinkedList<>();
+        for(Trip t : c.getTrips()){
+            trips.add(new Trip(t));        
+        }
+        
+        deliveries = new LinkedList<>();
+        for(Delivery d : c.getDeliveries()){
+            deliveries.add(new Delivery(d));            
+        }
     }
     
     /**

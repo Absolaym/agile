@@ -53,9 +53,8 @@ public class DeliveryRequest {
      * @param delivery The delivery you want to remove from the list
      * @return this
      */
-    public DeliveryRequest removeDelivery(Delivery delivery) {
-        this.deliveries.remove(delivery);
-        return this;
+    public boolean removeDelivery(Delivery delivery) {
+        return this.deliveries.remove(delivery);
     }
     
     public LinkedList<Delivery> getDeliveries() {

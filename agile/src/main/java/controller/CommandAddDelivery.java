@@ -15,10 +15,14 @@ import model.Trip;
  * @author pagilles
  */
 public class CommandAddDelivery implements Command {
+        
+        private Delivery originalDelivery;
+        private int originalDeliveryIndex;
 
-	private Delivery delivery;
-	private Circuit circuit;
-	private int circuitIndex;
+        private Circuit originalCircuit;
+        private int originalCircuitIndex;
+        
+        private Delivery refToAddedDelivery;
 
 	/**
 	 * Create an add delivery command that adds a delivery to a circuit when executed (and removed when cancelled)
@@ -26,45 +30,73 @@ public class CommandAddDelivery implements Command {
 	 * @param c The circuit in which the delivery is added
 	 */
 	public CommandAddDelivery(Delivery d, Circuit c){
-		this.delivery = d;
-		this.circuit = c;
-		this.circuitIndex = Model.getInstance().getCircuits().indexOf(c);
-	}
+           
+            this.originalDelivery = new Delivery(d);
+            this.originalCircuit = new Circuit(c);
+
+            this.originalDeliveryIndex = c.getDeliveries().indexOf(d);
+            this.originalCircuitIndex = Model.getInstance().getCircuits().indexOf(c);
+        }
 
 	@Override
 	public void execute() {
+            
+                Delivery copyOfOriginalDelivery = new Delivery(originalDelivery);
+                Circuit updatedCircuit = new Circuit(originalCircuit);
+                refToAddedDelivery = copyOfOriginalDelivery;
+
+                int deliveryIndex = originalDeliveryIndex;
+                int circuitIndex = originalCircuitIndex;
 
 		Model model = Model.getInstance();
 
-		model.addDelivery(delivery);
+		model.addDelivery(copyOfOriginalDelivery);
 
-		String trip1Origin = model.getCircuits().get(circuitIndex).getDeliveries().getLast().getAddress();
+		String trip1Origin = updatedCircuit.getDeliveries().getLast().getAddress();
 
-		model.getCircuits().get(circuitIndex).addDelivery(delivery);
-		model.getCircuits().get(circuitIndex).getTrips().removeLast();
+		updatedCircuit.addDelivery(copyOfOriginalDelivery);
+		updatedCircuit.getTrips().removeLast();
 
-
-		String trip1Target = model.getCircuits().get(circuitIndex).getDeliveries().getLast().getAddress();
-		Trip trip1 = model.getTripBetweenIntersections(trip1Origin, trip1Target);
-
+		String trip1Target = updatedCircuit.getDeliveries().getLast().getAddress();
+		
+                Trip trip1 = model.getTripBetweenIntersections(trip1Origin, trip1Target);
 
 		String trip2Origin = trip1Target;
 		String trip2Target = model.getDeliveryRequest().getWarehouseAddress();
-		Trip trip2 = model.getTripBetweenIntersections(trip2Origin, trip2Target);
+		
+                Trip trip2 = model.getTripBetweenIntersections(trip2Origin, trip2Target);
 
+		updatedCircuit.addTrip(trip1);
+		updatedCircuit.addTrip(trip2);
 
-		model.getCircuits().get(circuitIndex).addTrip(trip1);
-		model.getCircuits().get(circuitIndex).addTrip(trip2);
-
-		model.getCircuits().get(circuitIndex).updateDeliveryInfos();
+                updatedCircuit.updateSections();
+		updatedCircuit.updateDeliveryInfos();
+                
+                model.getCircuits().set(circuitIndex, updatedCircuit);
 		model.rearrangeDeliveries();
 	}
 
 	@Override
 	public void cancel() {
+            
 		Model model = Model.getInstance();
-		model.getDeliveryRequest().removeDelivery(delivery);
-		model.getCircuits().set(circuitIndex, circuit);
+                
+                Delivery copyOfOriginalDelivery = new Delivery(originalDelivery);
+                Circuit copyOfOriginalCircuit = new Circuit(originalCircuit);
+                
+                boolean removedFromDR = 
+		model.getDeliveryRequest().removeDelivery(refToAddedDelivery);
+                System.out.println("Delivery removed from DR (add) ? "+ removedFromDR);
+                
+                copyOfOriginalCircuit.updateSections();
+                copyOfOriginalCircuit.updateDeliveryInfos();
+
+                model.getCircuits().set(originalCircuitIndex, copyOfOriginalCircuit);
+                
+                refToAddedDelivery.setCircuit(null);
+                refToAddedDelivery.setIsSelected(false);
+                
+                model.rearrangeDeliveries();
 	}
 
 }
