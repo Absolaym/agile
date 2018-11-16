@@ -5,12 +5,12 @@ package controller;
  * @author pagilles
  */
 public interface Command {
-	/**
-	 * The code for execution of the command should be placed in this method
-	 */
-	void execute();
-	/**
-	 * The code for the cancellation of the command should be placed in this method
-	 */
-	void cancel();
+    /**
+     * The code for execution of the command should be placed in this method
+     */
+    void execute();
+    /**
+     * The code for the cancellation of the command should be placed in this method
+     */
+    void cancel();
 }

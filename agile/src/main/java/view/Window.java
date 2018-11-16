@@ -46,6 +46,7 @@ public class Window extends JFrame {
 
     public Window(Controller controller) {
         super("Agility is the delivery");
+
         this.controller = controller;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
