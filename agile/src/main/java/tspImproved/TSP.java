@@ -16,15 +16,15 @@ public interface TSP {
      * @param tpsLimite : limite (en millisecondes) sur le temps d'execution de
      * chercheSolution
      * @param nbSommets : nombre de sommets du graphe
-     * @param cout : cout[i][j] = duree pour aller de i a j, avec 0 <= i <
-     * nbSommets et 0 <= j < nbSommets @param
-     * duree : duree[i] = duree pour visiter le sommet i, avec 0 <= i <
+     * @param cout matrix2D of path costs from i to j
+     * @param nbSommets number of vertexes
+     * @param duree SAY SMTHG
      * nbSommets
      */
     public void chercheSolution(int tpsLimite, int nbSommets, int[][] cout, int[] duree);
 
     /**
-     * @param i
+     * @param i position of the vertex in the solution
      * @return le sommet visite en i-eme position dans la solution calculee par
      * chercheSolution
      */

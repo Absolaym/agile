@@ -106,7 +106,7 @@ public class Geolocation {
 
     /**
      * Turns radians to degrees
-     * @param deg the angle in radians
+     * @param rad the angle in radians
      * @return the angle in degrees
      */
     public static double RadToDeg(double rad) {
